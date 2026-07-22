@@ -42,6 +42,15 @@ manual analysis.
 
 ## Open loops
 - [ ] Score round 1 of the family contest (Skellefteå 2026-07-22) once results land
-- [ ] Extend scrape back into 2025 for more training data
-- [ ] Gallop detection is regex-on-Swedish-comments; could use structured 'disqualified' flags if found in API
+- [ ] **V2 (agreed 2026-07-22, build after tonight's races)** — trigger: leg-1 winner Edens Odin,
+  32/1 Norwegian raider the model had at 3.4% because Swedish-only data made him a ghost.
+  Principle: fix eyesight, not opinions (measured: foreign+strong horses are OVERbet ratio 0.85 —
+  no blanket raider boost).
+  - [ ] Scrape foreign (NO/DK/FI) tracks from ATG calendar + extend back through 2025
+  - [ ] Class feature from past races' firstPrize (kills the earnings trap)
+  - [ ] Track-adjusted speed figures (km-time normalized by track/distance/startMethod)
+  - [ ] Avg past-odds signal over last 5 starts (learned weight)
+  - [ ] Gallop feature via structured disqualification/place codes (archive strips TR comments —
+        current regex feature is blind in training, live-only at predict time)
+  - [ ] Validate: market-weight × data-richness interaction (trust market less on thin-footprint horses)
 - [ ] Ticket optimizer: turn leg probabilities into a budget-constrained system (spik/gardera allocation)

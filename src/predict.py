@@ -28,9 +28,23 @@ def get(url):
         return json.load(r)
 
 
+def load_baselines():
+    raw = json.loads((ROOT / "data" / "baselines.json").read_text())
+    baselines, fallback = {}, {}
+    for k, v in raw.items():
+        if k.startswith("__fb__"):
+            m, b = k[6:].split("|")
+            fallback[(m if m != "None" else None, b)] = v
+        else:
+            t, m, b = k.split("|")
+            baselines[(t, m if m != "None" else None, b)] = v
+    return baselines, fallback
+
+
 def main():
     game_id = sys.argv[1]
     model = json.loads((ROOT / "data" / "model.json").read_text())
+    baselines, fallback = load_baselines()
     game = get(f"{BASE}/games/{game_id}")
 
     all_rows = []
@@ -51,7 +65,7 @@ def main():
         for s in ext["starts"]:
             if s["number"] in scratched:
                 continue
-            f = start_features(ext, s)
+            f = start_features(ext, s, baselines, fallback)
             f["leg"] = leg_no
             f["live_odds"] = odds_by_num.get(s["number"])
             f["bet_dist"] = dist_by_num.get(s["number"])

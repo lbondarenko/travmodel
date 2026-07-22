@@ -5,7 +5,9 @@ Writes one gzipped JSONL file per day to data/raw/<date>.jsonl.gz
 day files are skipped. Days are processed most-recent-first so a
 partial run still yields the freshest training data.
 
-Usage: python src/scrape.py 2026-01-01 2026-07-21
+Usage: python src/scrape.py 2026-01-01 2026-07-21 [countries_csv] [outdir]
+       default countries SE, default outdir data/raw
+       v2: python src/scrape.py 2025-01-01 2026-07-22 SE,NO,DK,FI data/raw2
 """
 import gzip
 import json
@@ -18,6 +20,7 @@ from pathlib import Path
 
 BASE = "https://www.atg.se/services/racinginfo/v1/api"
 RAW = Path(__file__).resolve().parent.parent / "data" / "raw"
+COUNTRIES = {"SE"}
 HEADERS = {"User-Agent": "travmodel-hobby-project/0.1 (personal research)"}
 
 
@@ -48,7 +51,7 @@ def scrape_day(d):
         return "cal-fail"
     rids = []
     for t in cal.get("tracks", []):
-        if t.get("countryCode") != "SE" or t.get("sport") not in (None, "trot"):
+        if t.get("countryCode") not in COUNTRIES or t.get("sport") not in (None, "trot"):
             continue
         for r in t.get("races", []):
             rids.append(r["id"])
@@ -66,8 +69,13 @@ def scrape_day(d):
 
 
 def main():
+    global RAW, COUNTRIES
     start = date.fromisoformat(sys.argv[1])
     end = date.fromisoformat(sys.argv[2])
+    if len(sys.argv) > 3:
+        COUNTRIES = set(sys.argv[3].split(","))
+    if len(sys.argv) > 4:
+        RAW = Path(__file__).resolve().parent.parent / sys.argv[4]
     RAW.mkdir(parents=True, exist_ok=True)
     days = []
     d = end
