@@ -1,6 +1,6 @@
 ---
 name: travmodel
-phase: poc    # concept | poc | mvp | beta | published | promoting | paused
+phase: mvp    # concept | poc | mvp | beta | published | promoting | paused
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -42,15 +42,15 @@ manual analysis.
 
 ## Open loops
 - [ ] Score round 1 of the family contest (Skellefteå 2026-07-22) once results land
-- [ ] **V2 (agreed 2026-07-22, build after tonight's races)** — trigger: leg-1 winner Edens Odin,
+- [x] **V2 (BUILT 2026-07-22 night)** — trigger: leg-1 winner Edens Odin,
   32/1 Norwegian raider the model had at 3.4% because Swedish-only data made him a ghost.
   Principle: fix eyesight, not opinions (measured: foreign+strong horses are OVERbet ratio 0.85 —
   no blanket raider boost).
-  - [ ] Scrape foreign (NO/DK/FI) tracks from ATG calendar + extend back through 2025
-  - [ ] Class feature from past races' firstPrize (kills the earnings trap)
-  - [ ] Track-adjusted speed figures (km-time normalized by track/distance/startMethod)
-  - [ ] Avg past-odds signal over last 5 starts (learned weight)
-  - [ ] Gallop feature via structured disqualification/place codes (archive strips TR comments —
+  - [x] Scrape foreign (NO/DK/FI) tracks from ATG calendar + extend back through 2025
+  - [x] Class feature from past races' firstPrize (kills the earnings trap)
+  - [x] Track-adjusted speed figures (km-time normalized by track/distance/startMethod)
+  - [x] Avg past-odds signal over last 5 starts (learned weight)
+  - [x] Gallop feature via structured disqualification/place codes (archive strips TR comments —
         current regex feature is blind in training, live-only at predict time)
-  - [ ] Validate: market-weight × data-richness interaction (trust market less on thin-footprint horses)
+  - [x] Validate: market-weight × data-richness interaction (trust market less on thin-footprint horses)
 - [ ] Ticket optimizer: turn leg probabilities into a budget-constrained system (spik/gardera allocation)
