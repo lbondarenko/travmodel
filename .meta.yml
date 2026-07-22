@@ -1,0 +1,10 @@
+# Machine-readable subset of PROJECT.md — the audit agent reads this.
+name: travmodel
+phase: concept
+created: 2026-07-22
+updated: 2026-07-22
+repos: []
+hosting: null
+website: null
+accounts: []     # each: { name, owner_email, in_vault: false }
+secrets: []      # names only, never values
