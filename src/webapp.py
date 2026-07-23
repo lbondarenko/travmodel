@@ -249,6 +249,7 @@ TIX_HTML = """
 </div>
 <input type="file" id="tixphoto" accept="image/*" style="display:none">
 <img id="tixpreview" alt="" style="display:none">
+<p class="mnote" id="tixqr" style="display:none"></p>
 <div id="tixmanual" style="display:none">
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
@@ -264,6 +265,7 @@ TIX_HTML = """
 """
 
 TIX_JS = """
+<script src="../jsqr.js"></script>
 <script>
 (function(){
 var TM = __TMDATA__;
@@ -304,7 +306,24 @@ window.tixOpen=function(){
 };
 window.tixClose=function(){ document.getElementById("tixmodal").style.display="none"; };
 function showPhoto(blob){ var img=document.getElementById("tixpreview");
-  img.src=URL.createObjectURL(blob); img.style.display="block"; }
+  img.src=URL.createObjectURL(blob); img.style.display="block";
+  img.onload=function(){ try{ scanQR(img); }catch(e){} }; }
+function scanQR(img){
+  if(typeof jsQR==="undefined") return;
+  var note=document.getElementById("tixqr");
+  var scale=Math.min(1, 1400/Math.max(img.naturalWidth||1,img.naturalHeight||1));
+  var c=document.createElement("canvas");
+  c.width=Math.round((img.naturalWidth||0)*scale); c.height=Math.round((img.naturalHeight||0)*scale);
+  if(!c.width||!c.height) return;
+  var x=c.getContext("2d"); x.drawImage(img,0,0,c.width,c.height);
+  var d=x.getImageData(0,0,c.width,c.height);
+  var q=jsQR(d.data,c.width,c.height);
+  if(q && q.data){
+    document.getElementById("tixno").value=String(q.data).slice(0,80);
+    if(note){ note.textContent="\u2713 Ticket number read from the QR code"; note.className="mnote ok"; note.style.display="block"; }
+  } else if(note){ note.textContent="No QR found in the photo \u2014 enter the ticket number manually.";
+    note.className="mnote"; note.style.display="block"; }
+}
 document.addEventListener("change",function(ev){
   if(ev.target && ev.target.id==="tixphoto" && ev.target.files[0]){
     showPhoto(ev.target.files[0]); }});
@@ -421,6 +440,7 @@ TIX_CSS = """
   .mbtn.save{ background:var(--pick); border-color:var(--pick); color:#fff; }
   .mlink{ background:none; border:none; color:var(--pick); font:600 13px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
     cursor:pointer; padding:0; margin:14px 0 0; text-decoration:underline; display:block; }
+  .mnote.ok{ color:var(--pick); font-weight:600; }
   .cmp{ display:none; margin-top:40px; }
   .cmp.hasusr{ display:block; }
   .cmp table{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }

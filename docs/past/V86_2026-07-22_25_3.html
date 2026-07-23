@@ -203,6 +203,7 @@ tr.win-miss td:nth-child(2){ color:#C23B2E; font-weight:700; }
   footer{ margin-top:64px !important; }
   .mlink{ background:none; border:none; color:var(--pick); font:600 13px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
     cursor:pointer; padding:0; margin:14px 0 0; text-decoration:underline; display:block; }
+  .mnote.ok{ color:var(--pick); font-weight:600; }
 </style></head><body><main>
 <div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
 <script>
@@ -269,6 +270,7 @@ Open the 🎟️ drawer for our corrected kupong.</div>
 </div>
 <input type="file" id="tixphoto" accept="image/*" style="display:none">
 <img id="tixpreview" alt="" style="display:none">
+<p class="mnote" id="tixqr" style="display:none"></p>
 <div id="tixmanual" style="display:none">
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
@@ -282,6 +284,7 @@ Open the 🎟️ drawer for our corrected kupong.</div>
 </div></div>
 <section class="cmp" id="cmpsec"></section>
 
+<script src="../jsqr.js"></script>
 <script>
 (function(){
 var TM = {"game": "V86_2026-07-22_25_3", "modelName": "our played ticket · 192 rader · 48 kr", "legs": {"1": [3, 5, 2, 8, 4, 7, 6, 1], "2": [7, 4, 11, 10, 6, 1, 3, 9, 5, 2, 8, 12], "3": [2, 12, 1, 9, 7, 13, 4, 3, 5, 11, 6, 10, 8], "4": [11, 10, 8, 6, 4, 9, 2, 7, 5, 3], "5": [2, 11, 15, 7, 9, 12, 6, 10, 13, 4, 8, 14, 1, 3, 5], "6": [4, 6, 9, 7, 12, 1, 8, 10, 2, 11, 5, 3], "7": [5, 2, 4, 9, 6, 1, 3, 7, 8, 10, 12], "8": [12, 5, 7, 4, 3, 1, 2, 11, 10]}, "model": {"1": [3, 5], "2": [1, 4, 7, 11], "3": [2], "4": [8, 10, 11], "5": [2], "6": [4, 6], "7": [4, 5], "8": [5, 12]}, "spikNames": {"3": "2 Tyri Leo ★", "5": "2 Önas Samanta ★"}, "winners": {"1": 6, "2": 4, "3": 12, "4": 10, "5": 1, "6": 4, "7": 4, "8": 5}};
@@ -322,7 +325,24 @@ window.tixOpen=function(){
 };
 window.tixClose=function(){ document.getElementById("tixmodal").style.display="none"; };
 function showPhoto(blob){ var img=document.getElementById("tixpreview");
-  img.src=URL.createObjectURL(blob); img.style.display="block"; }
+  img.src=URL.createObjectURL(blob); img.style.display="block";
+  img.onload=function(){ try{ scanQR(img); }catch(e){} }; }
+function scanQR(img){
+  if(typeof jsQR==="undefined") return;
+  var note=document.getElementById("tixqr");
+  var scale=Math.min(1, 1400/Math.max(img.naturalWidth||1,img.naturalHeight||1));
+  var c=document.createElement("canvas");
+  c.width=Math.round((img.naturalWidth||0)*scale); c.height=Math.round((img.naturalHeight||0)*scale);
+  if(!c.width||!c.height) return;
+  var x=c.getContext("2d"); x.drawImage(img,0,0,c.width,c.height);
+  var d=x.getImageData(0,0,c.width,c.height);
+  var q=jsQR(d.data,c.width,c.height);
+  if(q && q.data){
+    document.getElementById("tixno").value=String(q.data).slice(0,80);
+    if(note){ note.textContent="\u2713 Ticket number read from the QR code"; note.className="mnote ok"; note.style.display="block"; }
+  } else if(note){ note.textContent="No QR found in the photo \u2014 enter the ticket number manually.";
+    note.className="mnote"; note.style.display="block"; }
+}
 document.addEventListener("change",function(ev){
   if(ev.target && ev.target.id==="tixphoto" && ev.target.files[0]){
     showPhoto(ev.target.files[0]); }});
