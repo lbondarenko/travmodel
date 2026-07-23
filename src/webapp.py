@@ -321,7 +321,7 @@ function scanQR(img){
   if(q && q.data){
     document.getElementById("tixno").value=String(q.data).slice(0,80);
     if(note){ note.textContent="\u2713 Ticket number read from the QR code"; note.className="mnote ok"; note.style.display="block"; }
-  } else if(note){ note.textContent="No QR found in the photo \u2014 enter the ticket number manually.";
+  } else if(note){ note.textContent="No QR on this ticket \u2014 type its r\u00e4ttningskod (the short code works fine), or long-press the code in your photo to copy it (Live Text) and paste here.";
     note.className="mnote"; note.style.display="block"; }
 }
 document.addEventListener("change",function(ev){
