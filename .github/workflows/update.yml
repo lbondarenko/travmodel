@@ -1,8 +1,11 @@
 name: update-model-pages
 
+# Note: GitHub's cron scheduler ignored this workflow on 2026-07-23; file
+# re-pushed to re-register the schedule. A local launchd trigger exists as
+# belt-and-braces (see PROJECT.md).
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "3,33 * * * *"
   workflow_dispatch:
 
 permissions:
