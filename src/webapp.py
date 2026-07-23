@@ -734,7 +734,7 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
 
 LOGIN_HTML = """<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lillian's Model — log in</title>
+<title>Travmodel — log in</title>
 <style>__CSS__
   .loginbox{ max-width:340px; margin:10vh auto 0; background:var(--card);
     border:1px solid var(--line); border-radius:12px; padding:26px 26px 22px; }
@@ -749,7 +749,7 @@ LOGIN_HTML = """<!doctype html><html><head><meta charset="utf-8">
   .err{ color:#C23B2E; font-size:13px; margin-top:10px; display:none; }
 </style></head><body><main>
 <form class="loginbox" id="f">
-  <h1>Lillian's Model 🐴</h1>
+  <h1>Travmodel 🐴</h1>
   <label for="u">USERNAME</label><input id="u" autocomplete="username" autocapitalize="none">
   <label for="p">PASSWORD</label><input id="p" type="password" autocomplete="current-password">
   <button type="submit">Log in</button>
@@ -875,12 +875,12 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="600">
 {auth_guard("../login.html")}
-<title>{data['type']} {esc(data['track'])} {start_dt.strftime('%a %d %b %H:%M')} — Lillian's Model</title>
+<title>{data['type']} {esc(data['track'])} {start_dt.strftime('%a %d %b %H:%M')} — Travmodel</title>
 <style>{CSS}{TIX_CSS}</style></head><body><main>
 {USERCHIP}
 <div class="pagehead"><div>
 <h1><a href="../index.html">←</a> {data['type']} {esc(data['track'])} · {start_dt.strftime('%A %d %B %Y')}</h1>
-<p class="sub">First start {start_dt.strftime('%H:%M')} · streck (share of tickets) vs Lillian's Model
+<p class="sub">First start {start_dt.strftime('%H:%M')} · streck (share of tickets) vs Travmodel
 (win probability) · green rows = model's top of the leg · program comments under each table</p>
 <button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button><button class="upbtn" onclick="tixOpen()">📷&nbsp; Upload My Ticket</button>
 </div>{stampbox(updated, start_dt.strftime('%H:%M'))}</div>
@@ -905,10 +905,10 @@ whatever the statistics say.</dd>
 <dt>Green row</dt>
 <dd>The model's top of the leg (top two when the leg is open).</dd>
 <dt>Streck vs Model</dt>
-<dd>Streck = share of all tickets that include the horse. Model = win probability from Lillian's Model.
+<dd>Streck = share of all tickets that include the horse. Model = win probability from Travmodel.
 The gap between them is where the flags come from.</dd>
 </dl>
-<p>Lillian's Model = travmodel v2 · conditional logit on 17,356 Nordic races · market-blended ·
+<p>Travmodel v2 · conditional logit on 17,356 Nordic races · market-blended ·
 data from ATG's open API · page auto-reloads every 10 min · not betting advice, not a valid bet.</p>
 </footer>
 </main></body></html>"""
@@ -938,10 +938,10 @@ def render_index(entries):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="300">
 {auth_guard("login.html")}
-<title>Lillian's Model — next races</title><style>{CSS}{TIX_CSS}</style></head><body><main>
+<title>Travmodel — next races</title><style>{CSS}{TIX_CSS}</style></head><body><main>
 {USERCHIP}
 <div class="pagehead"><div>
-<h1>Lillian's Model 🐴</h1>
+<h1>Travmodel 🐴</h1>
 <p class="sub">The next {len(entries)} betting rounds, scored by travmodel v2. Pages update hourly —
 every 30 minutes inside the final 4 hours before post.</p>
 </div><div class="stampbox"><span class="stamp-label">PAGE GENERATED</span>
