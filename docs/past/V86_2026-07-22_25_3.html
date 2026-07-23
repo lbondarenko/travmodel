@@ -262,12 +262,10 @@ Open the 🎟️ drawer for our corrected kupong.</div>
 <button type="button" class="addbtn" id="addbtn">+</button>
 <div class="addmenu" id="addmenu">
 <a href="#" data-add="files">📎&nbsp; Add files or photos</a>
-<a href="#" data-add="camera">📷&nbsp; Take a photo</a>
 <a href="#" data-add="paste">📋&nbsp; Paste image</a>
 </div>
 </div>
 <input type="file" id="tixphoto" accept="image/*" style="display:none">
-<input type="file" id="tixcam" accept="image/*" capture="environment" style="display:none">
 <img id="tixpreview" alt="" style="display:none">
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
@@ -304,7 +302,6 @@ document.addEventListener("click",function(ev){
   if(item&&m){ ev.preventDefault(); m.classList.remove("open");
     var k=item.getAttribute("data-add");
     if(k==="files") document.getElementById("tixphoto").click();
-    else if(k==="camera") document.getElementById("tixcam").click();
     else tixPaste(); return; }
   if(m) m.classList.remove("open");
 });
@@ -320,7 +317,7 @@ window.tixClose=function(){ document.getElementById("tixmodal").style.display="n
 function showPhoto(blob){ var img=document.getElementById("tixpreview");
   img.src=URL.createObjectURL(blob); img.style.display="block"; }
 document.addEventListener("change",function(ev){
-  if(ev.target && (ev.target.id==="tixphoto"||ev.target.id==="tixcam") && ev.target.files[0]){
+  if(ev.target && ev.target.id==="tixphoto" && ev.target.files[0]){
     showPhoto(ev.target.files[0]); }});
 document.addEventListener("paste",function(ev){
   var m=document.getElementById("tixmodal");
