@@ -251,6 +251,8 @@ TIX_HTML = """
 <img id="tixpreview" alt="" style="display:none">
 <p class="mnote" id="tixqr" style="display:none"></p>
 <div id="tixmanual" style="display:none">
+<label>Paste receipt text (auto-fills everything)</label>
+<textarea id="tixtext" rows="3" placeholder="Long-press the photo — Select All — Copy, then paste here"></textarea>
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
 <label>Ticket number</label>
@@ -345,17 +347,34 @@ window.tixPaste=function(){
     }).catch(function(){ alert("Clipboard blocked by the browser - press Cmd/Ctrl+V instead."); });
   } else alert("Press Cmd/Ctrl+V to paste the screenshot.");
 };
+function parseTicketText(t){
+  var NL=String.fromCharCode(10), CR=String.fromCharCode(13);
+  var lines=t.split(NL).map(function(x){ return x.split(CR).join(""); });
+  Object.keys(TM.legs).forEach(function(l){
+    for(var i=0;i<lines.length;i++){
+      var m=lines[i].match(new RegExp("^[ ]*"+l+"[).:]?[ ]+(.*)$"));
+      if(m){
+        var rest=m[1].split(/[ ]{3,}/)[0];
+        var nums=(rest.match(/[0-9]{1,2}/g)||[]).map(Number).filter(function(n){return TM.legs[l].indexOf(n)>=0;});
+        if(nums.length){ var inp=document.querySelector('.tixleg[data-leg="'+l+'"]');
+          if(inp && !inp.value){ inp.value=nums.join(", "); break; } }
+      }
+    }
+  });
+  var code=t.match(/[A-Z0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}/)||t.match(/[A-Z]{3} [A-Z]{3} [A-Z]{3}/);
+  if(code && !document.getElementById("tixno").value) document.getElementById("tixno").value=code[0];
+  if(/harry[ ]*boy/i.test(t) && !document.getElementById("tixlabel").value)
+    document.getElementById("tixlabel").value="Harry Boy";
+}
 window.tixSave=function(){
   var err=document.getElementById("tixerr"); err.style.display="none";
   var man=document.getElementById("tixmanual");
   if(man.style.display==="none"){
     man.style.display="block";
-    err.textContent="Almost there — add the ticket number and picks below so the ticket can be compared.";
+    err.textContent="Almost there — add the picks below so the ticket can be compared.";
     err.style.display="block"; return; }
   var no=(document.getElementById("tixno").value||"").replace(/\s+/g," ").trim();
   var label=(document.getElementById("tixlabel").value||"Ticket").trim();
-  if(!no){ err.textContent="Ticket number is required (it is how duplicates are caught).";
-    err.style.display="block"; return; }
   var picks={}, bad=null;
   document.querySelectorAll(".tixleg").forEach(function(inp){
     var l=inp.dataset.leg;
@@ -366,9 +385,11 @@ window.tixSave=function(){
     picks[l]=nums;
   });
   if(bad){ err.textContent=bad; err.style.display="block"; return; }
-  var existed=saveTix(no,{label:label,picks:picks,ts:Date.now()});
+  var key=Object.keys(picks).sort(function(a,b){return a-b;}).map(function(l){
+    return l+":"+picks[l].slice().sort(function(a,b){return a-b;}).join(",");}).join("|");
+  var existed=saveTix(key,{label:label,no:no,picks:picks,ts:Date.now()});
   tixClose(); renderCmp();
-  if(existed) alert("That ticket number was already uploaded — it has been updated (no duplicate created).");
+  if(existed) alert("A ticket with exactly these picks was already saved — updated it instead of duplicating.");
 };
 function deco(n,l){
   var w=TM.winners[l];
@@ -390,7 +411,7 @@ window.renderCmp=function(){
   var scored=Object.keys(TM.winners).length>0;
   var h="<div class='leghead'><h2>My Ticket</h2></div>";
   h+="<table><thead><tr><th>Leg</th><th>The Model"+(TM.modelName?"<small>"+TM.modelName+"</small>":"")+"</th>";
-  nos.forEach(function(no){ h+="<th>"+tix[no].label+"<small>"+no+
+  nos.forEach(function(no){ h+="<th>"+tix[no].label+"<small>"+(tix[no].no||"")+
     " <a href='#' class='tixdel' data-no='"+no+"'>remove</a></small></th>"; });
   h+="</tr></thead><tbody>";
   legs.forEach(function(l){
@@ -441,6 +462,8 @@ TIX_CSS = """
   .mlink{ background:none; border:none; color:var(--pick); font:600 13px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
     cursor:pointer; padding:0; margin:14px 0 0; text-decoration:underline; display:block; }
   .mnote.ok{ color:var(--pick); font-weight:600; }
+  .modal textarea{ width:100%; padding:7px 10px; border:1px solid var(--line);
+    border-radius:6px; background:var(--bg); color:var(--ink); font:inherit; font-size:12px; }
   .cmp{ display:none; margin-top:40px; }
   .cmp.hasusr{ display:block; }
   .cmp table{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }

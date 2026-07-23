@@ -176,6 +176,8 @@
   .mlink{ background:none; border:none; color:var(--pick); font:600 13px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
     cursor:pointer; padding:0; margin:14px 0 0; text-decoration:underline; display:block; }
   .mnote.ok{ color:var(--pick); font-weight:600; }
+  .modal textarea{ width:100%; padding:7px 10px; border:1px solid var(--line);
+    border-radius:6px; background:var(--bg); color:var(--ink); font:inherit; font-size:12px; }
   .cmp{ display:none; margin-top:40px; }
   .cmp.hasusr{ display:block; }
   .cmp table{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
@@ -214,7 +216,7 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
 (win probability) · green rows = model's top of the leg · program comments under each table</p>
 <button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button><button class="upbtn" onclick="tixOpen()">📷&nbsp; Upload My Ticket</button>
 </div><div class="stampbox"><span class="stamp-label">DATA SNAPSHOT</span>
-<span class="stamp-time">Thu 23 Jul · 16:30</span>
+<span class="stamp-time">Thu 23 Jul · 16:36</span>
 <span class="stamp-note">streck &amp; odds move until post 19:30 — auto-updates hourly, every 30 min in the last 4 h</span></div></div>
 <aside class="tdrawer" id="tdrawer">
 <button class="ttab" onclick="tdT()">🎟️ KUPONG</button>
@@ -225,14 +227,14 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
   <div class="drow"><span>Spel</span><b>V64</b></div>
   <div class="drow"><span>Bana</span><b>Romme</b></div>
   <div class="drow"><span>Start</span><b>Fri 24 Jul · 19:30</b></div>
-  <div class="drow"><span>Data</span><b>Thu 23 Jul · 16:30</b></div>
+  <div class="drow"><span>Data</span><b>Thu 23 Jul · 16:36</b></div>
   <hr class="drule">
   <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR</th></tr><tr><td class='avd'>1</td><td class='hst'>3, 4, 2</td></tr><tr><td class='avd'>2</td><td class='hst'>11 Here I Come ★</td></tr><tr><td class='avd'>3</td><td class='hst'>7, 5, 2, 4, 6</td></tr><tr><td class='avd'>4</td><td class='hst'>2, 7, 3</td></tr><tr><td class='avd'>5</td><td class='hst'>6 Emerald Broline ★</td></tr><tr><td class='avd'>6</td><td class='hst'>3 Pralines ★ ♥</td></tr></table>
   <hr class="drule">
   <div class="drow"><span>3×1×5×3×1×1</span><b>= 45 rader</b></div>
   <div class="drow"><span>45 × 1 kr</span><b>45.00 kr</b></div>
   <div class="dtotal"><span>TOTALT</span><b>45.00 kr</b></div>
-  <p class="dnote">♥ FAMILJEREGEL: Pralines är Jans häst — alltid spik, oavsett statistik. Modellens egen chans: ~5% att pricka alla 6.
+  <p class="dnote">♥ FAMILJEREGEL: Pralines är Jans häst — alltid spik, oavsett statistik. Modellens egen chans: ~4% att pricka alla 6.
   Byggs om vid varje datauppdatering — kupongen kan ändras. ★ = spik.
   Inget giltigt spel — spela hos atg.se om du vill.</p>
   <div class="dstamp">EJ GILTIGT SPEL<small>ENDAST SKRYTRÄTTIGHETER</small></div>
@@ -260,8 +262,8 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 <div class="infos"><p class='sechead tr'>TR MEDIA</p><p class='info'><b>#2 Håsjökometen</b> (R.Skoglund) — Rikard N Skoglund has 206 wins from 1611 drives in Sweden in the last year (13%).</p><p class='info'><b>#7 Nightbird</b> (M.Djuse) — Daniel Redén has högst segerprocent in Sweden bland tränarna i fältet in the last year (25%).</p><p class='info'><b>#3 Noar</b> (K.Frick) — Noar has finished top-3 in three of five starts with Katrin K Frick in the sulky (60%).</p><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#2 Håsjökometen</b> (37%) — has raced at higher purse levels (class edge) · trainer wins 17%</p><p class='info'><b>#7 Nightbird</b> (26%) — trainer wins 24% · has raced at higher purse levels (class edge) · driver wins 19% of his races</p></div></article></div><div class="legrow"><article class="tile">
 <div class="leghead"><h2>Leg 5</h2><span class="meta">2140m auto · ★ spik candidate</span></div>
 <table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th>Streck</th><th>Model</th></tr></thead>
-<tbody><tr class='top'><td class='nr'>6</td><td>Emerald Broline</td><td class='drv'>M.Djuse</td><td class='num'>60.6%</td><td class='num strong'>65.7%</td></tr><tr class=''><td class='nr'>2</td><td>Fabulous Gent</td><td class='drv'>C.Jepson</td><td class='num'>11.8%</td><td class='num strong'>10.5%</td></tr><tr class=''><td class='nr'>11</td><td>Montanaro</td><td class='drv'>R.Skoglund</td><td class='num'>6.1%</td><td class='num strong'>6.9%</td></tr><tr class=''><td class='nr'>12</td><td>Bill Woodland</td><td class='drv'>I.Jansson Wiklund</td><td class='num'>0.1%</td><td class='num strong'>6.1%</td></tr><tr class=''><td class='nr'>10</td><td>Twigs Like U.</td><td class='drv'>K.Frick</td><td class='num'>1.2%</td><td class='num strong'>3.4%</td></tr><tr class=''><td class='nr'>5</td><td>Geisha Road Grif</td><td class='drv'>J.Kontio</td><td class='num'>6.4%</td><td class='num strong'>2.3%</td></tr><tr class=''><td class='nr'>7</td><td>Pretty Effect</td><td class='drv'>C.Sjöström</td><td class='num'>6.3%</td><td class='num strong'>1.2%</td></tr><tr class=''><td class='nr'>1</td><td>Ziva Bris</td><td class='drv'>J.Persson</td><td class='num'>0.8%</td><td class='num strong'>1.1%</td></tr><tr class=''><td class='nr'>3</td><td>Kentucky Shadow</td><td class='drv'>T.Andersen</td><td class='num'>1.9%</td><td class='num strong'>0.9%</td></tr><tr class=''><td class='nr'>9</td><td>Exclusive Creation</td><td class='drv'>J.Nilsson</td><td class='num'>1.6%</td><td class='num strong'>0.9%</td></tr><tr class=''><td class='nr'>8</td><td>Spirit W.J.</td><td class='drv'>R.Wilhelmsson</td><td class='num'>0.1%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>4</td><td>Dominica Face</td><td class='drv'>G.Jansson</td><td class='num'>3.2%</td><td class='num strong'>0.4%</td></tr></tbody></table>
-<div class="infos"><p class='sechead tr'>TR MEDIA</p><p class='info'><b>#6 Emerald Broline</b> (M.Djuse) — Emerald Broline has two wins from three attempts as the bet-down favorite in the big pool games (67%).</p><p class='info'><b>#2 Fabulous Gent</b> (C.Jepson) — Carl Johan Jepson has 26 wins from 140 drives in Sweden in the last month (19%).</p><p class='info'><b>#11 Montanaro</b> (R.Skoglund) — Daniel Redén has 26 trainer wins from 95 starts in the last month in Sweden (27%).</p><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#6 Emerald Broline</b> (66%) — top speed figure (-8.0s vs a typical winner) · trainer wins 17% · driver wins 19% of his races</p><p class='info'><b>#2 Fabulous Gent</b> (10%) — has raced at higher purse levels (class edge) · driver wins 20% of his races · top speed figure (-2.1s vs a typical winner)</p></div></article><article class="tile famtile">
+<tbody><tr class='top'><td class='nr'>6</td><td>Emerald Broline</td><td class='drv'>M.Djuse</td><td class='num'>60.6%</td><td class='num strong'>61.5%</td></tr><tr class=''><td class='nr'>2</td><td>Fabulous Gent</td><td class='drv'>C.Jepson</td><td class='num'>11.8%</td><td class='num strong'>10.0%</td></tr><tr class=''><td class='nr'>9</td><td>Exclusive Creation</td><td class='drv'>J.Nilsson</td><td class='num'>1.6%</td><td class='num strong'>7.0%</td></tr><tr class=''><td class='nr'>11</td><td>Montanaro</td><td class='drv'>R.Skoglund</td><td class='num'>6.1%</td><td class='num strong'>6.3%</td></tr><tr class=''><td class='nr'>12</td><td>Bill Woodland</td><td class='drv'>I.Jansson Wiklund</td><td class='num'>0.1%</td><td class='num strong'>5.8%</td></tr><tr class=''><td class='nr'>10</td><td>Twigs Like U.</td><td class='drv'>K.Frick</td><td class='num'>1.2%</td><td class='num strong'>3.3%</td></tr><tr class=''><td class='nr'>5</td><td>Geisha Road Grif</td><td class='drv'>J.Kontio</td><td class='num'>6.4%</td><td class='num strong'>2.3%</td></tr><tr class=''><td class='nr'>7</td><td>Pretty Effect</td><td class='drv'>C.Sjöström</td><td class='num'>6.3%</td><td class='num strong'>1.1%</td></tr><tr class=''><td class='nr'>1</td><td>Ziva Bris</td><td class='drv'>J.Persson</td><td class='num'>0.8%</td><td class='num strong'>1.0%</td></tr><tr class=''><td class='nr'>3</td><td>Kentucky Shadow</td><td class='drv'>T.Andersen</td><td class='num'>1.9%</td><td class='num strong'>0.9%</td></tr><tr class=''><td class='nr'>8</td><td>Spirit W.J.</td><td class='drv'>R.Wilhelmsson</td><td class='num'>0.1%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>4</td><td>Dominica Face</td><td class='drv'>G.Jansson</td><td class='num'>3.2%</td><td class='num strong'>0.4%</td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>TR MEDIA</p><p class='info'><b>#6 Emerald Broline</b> (M.Djuse) — Emerald Broline has two wins from three attempts as the bet-down favorite in the big pool games (67%).</p><p class='info'><b>#2 Fabulous Gent</b> (C.Jepson) — Carl Johan Jepson has 26 wins from 140 drives in Sweden in the last month (19%).</p><p class='info'><b>#9 Exclusive Creation</b> (J.Nilsson) — Exclusive Creation has started seven times this summer and won two of them (29%).</p><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#6 Emerald Broline</b> (61%) — top speed figure (-8.0s vs a typical winner) · trainer wins 17% · driver wins 19% of his races</p><p class='info'><b>#2 Fabulous Gent</b> (10%) — has raced at higher purse levels (class edge) · driver wins 20% of his races · top speed figure (-2.1s vs a typical winner)</p></div></article><article class="tile famtile">
 <div class="leghead"><h2>Leg 6</h2><span class="meta">1640m auto</span><span class='fambadge'>♥ PRALINES</span></div>
 <table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th>Streck</th><th>Model</th></tr></thead>
 <tbody><tr class='top fam'><td class='nr'>3</td><td>Pralines <span class='famtag'>♥ JANS HÄST</span></td><td class='drv'>C.Jepson</td><td class='num'>37.0%</td><td class='num strong'>33.8%</td></tr><tr class='top'><td class='nr'>11</td><td>Tactic Lane <span class='flag value'>VALUE</span></td><td class='drv'>R.Skoglund</td><td class='num'>8.4%</td><td class='num strong'>25.9%</td></tr><tr class=''><td class='nr'>4</td><td>Fashionable Dance <span class='flag value'>VALUE</span></td><td class='drv'>P.Lundberg</td><td class='num'>1.8%</td><td class='num strong'>13.5%</td></tr><tr class=''><td class='nr'>1</td><td>Tom's Got Drive <span class='flag value'>VALUE</span></td><td class='drv'>O.Alsén</td><td class='num'>3.3%</td><td class='num strong'>8.7%</td></tr><tr class=''><td class='nr'>2</td><td>Römossan</td><td class='drv'>D.Wäjersten</td><td class='num'>6.6%</td><td class='num strong'>6.5%</td></tr><tr class=''><td class='nr'>5</td><td>Blu Warlock <span class='flag over'>OVERBET</span></td><td class='drv'>M.Djuse</td><td class='num'>23.4%</td><td class='num strong'>5.8%</td></tr><tr class=''><td class='nr'>7</td><td>Mellby Lovely</td><td class='drv'>C.Sjöström</td><td class='num'>1.9%</td><td class='num strong'>2.4%</td></tr><tr class=''><td class='nr'>8</td><td>Maggie May Malt</td><td class='drv'>M.Balogh</td><td class='num'>3.8%</td><td class='num strong'>1.5%</td></tr><tr class=''><td class='nr'>12</td><td>Urano Unico</td><td class='drv'>J.Kontio</td><td class='num'>2.0%</td><td class='num strong'>0.8%</td></tr><tr class=''><td class='nr'>9</td><td>Okura Greenwood</td><td class='drv'>W.Paal</td><td class='num'>10.8%</td><td class='num strong'>0.7%</td></tr><tr class=''><td class='nr'>10</td><td>Formula Photo</td><td class='drv'>O.Östre</td><td class='num'>0.9%</td><td class='num strong'>0.3%</td></tr></tbody></table>
@@ -282,6 +284,8 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 <img id="tixpreview" alt="" style="display:none">
 <p class="mnote" id="tixqr" style="display:none"></p>
 <div id="tixmanual" style="display:none">
+<label>Paste receipt text (auto-fills everything)</label>
+<textarea id="tixtext" rows="3" placeholder="Long-press the photo — Select All — Copy, then paste here"></textarea>
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
 <label>Ticket number</label>
@@ -297,7 +301,7 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 <script src="../jsqr.js"></script>
 <script>
 (function(){
-var TM = {"game": "V64_2026-07-24_23_2", "modelName": "45 rader · 45 kr", "legs": {"1": [3, 4, 2, 8, 1, 9, 5, 7, 6], "2": [11, 14, 4, 5, 1, 10, 2, 7, 8, 3, 9, 13, 6, 15, 12], "3": [7, 5, 2, 4, 6, 3, 1], "4": [2, 7, 3, 1, 4, 5, 10, 6, 9, 8], "5": [6, 2, 11, 12, 10, 5, 7, 1, 3, 9, 8, 4], "6": [3, 11, 4, 1, 2, 5, 7, 8, 12, 9, 10]}, "model": {"1": [3, 4, 2], "2": [11], "3": [7, 5, 2, 4, 6], "4": [2, 7, 3], "5": [6], "6": [3]}, "spikNames": {"2": "11 Here I Come ★", "5": "6 Emerald Broline ★", "6": "3 Pralines ★ ♥"}, "winners": {}};
+var TM = {"game": "V64_2026-07-24_23_2", "modelName": "45 rader · 45 kr", "legs": {"1": [3, 4, 2, 8, 1, 9, 5, 7, 6], "2": [11, 14, 4, 5, 1, 10, 2, 7, 8, 3, 9, 13, 6, 15, 12], "3": [7, 5, 2, 4, 6, 3, 1], "4": [2, 7, 3, 1, 4, 5, 10, 6, 9, 8], "5": [6, 2, 9, 11, 12, 10, 5, 7, 1, 3, 8, 4], "6": [3, 11, 4, 1, 2, 5, 7, 8, 12, 9, 10]}, "model": {"1": [3, 4, 2], "2": [11], "3": [7, 5, 2, 4, 6], "4": [2, 7, 3], "5": [6], "6": [3]}, "spikNames": {"2": "11 Here I Come ★", "5": "6 Emerald Broline ★", "6": "3 Pralines ★ ♥"}, "winners": {}};
 var KEY = "tm_tix_v1";
 function user(){ return localStorage.getItem("tm_user")||"?"; }
 function store(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
@@ -374,17 +378,34 @@ window.tixPaste=function(){
     }).catch(function(){ alert("Clipboard blocked by the browser - press Cmd/Ctrl+V instead."); });
   } else alert("Press Cmd/Ctrl+V to paste the screenshot.");
 };
+function parseTicketText(t){
+  var NL=String.fromCharCode(10), CR=String.fromCharCode(13);
+  var lines=t.split(NL).map(function(x){ return x.split(CR).join(""); });
+  Object.keys(TM.legs).forEach(function(l){
+    for(var i=0;i<lines.length;i++){
+      var m=lines[i].match(new RegExp("^[ ]*"+l+"[).:]?[ ]+(.*)$"));
+      if(m){
+        var rest=m[1].split(/[ ]{3,}/)[0];
+        var nums=(rest.match(/[0-9]{1,2}/g)||[]).map(Number).filter(function(n){return TM.legs[l].indexOf(n)>=0;});
+        if(nums.length){ var inp=document.querySelector('.tixleg[data-leg="'+l+'"]');
+          if(inp && !inp.value){ inp.value=nums.join(", "); break; } }
+      }
+    }
+  });
+  var code=t.match(/[A-Z0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}/)||t.match(/[A-Z]{3} [A-Z]{3} [A-Z]{3}/);
+  if(code && !document.getElementById("tixno").value) document.getElementById("tixno").value=code[0];
+  if(/harry[ ]*boy/i.test(t) && !document.getElementById("tixlabel").value)
+    document.getElementById("tixlabel").value="Harry Boy";
+}
 window.tixSave=function(){
   var err=document.getElementById("tixerr"); err.style.display="none";
   var man=document.getElementById("tixmanual");
   if(man.style.display==="none"){
     man.style.display="block";
-    err.textContent="Almost there — add the ticket number and picks below so the ticket can be compared.";
+    err.textContent="Almost there — add the picks below so the ticket can be compared.";
     err.style.display="block"; return; }
   var no=(document.getElementById("tixno").value||"").replace(/\s+/g," ").trim();
   var label=(document.getElementById("tixlabel").value||"Ticket").trim();
-  if(!no){ err.textContent="Ticket number is required (it is how duplicates are caught).";
-    err.style.display="block"; return; }
   var picks={}, bad=null;
   document.querySelectorAll(".tixleg").forEach(function(inp){
     var l=inp.dataset.leg;
@@ -395,9 +416,11 @@ window.tixSave=function(){
     picks[l]=nums;
   });
   if(bad){ err.textContent=bad; err.style.display="block"; return; }
-  var existed=saveTix(no,{label:label,picks:picks,ts:Date.now()});
+  var key=Object.keys(picks).sort(function(a,b){return a-b;}).map(function(l){
+    return l+":"+picks[l].slice().sort(function(a,b){return a-b;}).join(",");}).join("|");
+  var existed=saveTix(key,{label:label,no:no,picks:picks,ts:Date.now()});
   tixClose(); renderCmp();
-  if(existed) alert("That ticket number was already uploaded — it has been updated (no duplicate created).");
+  if(existed) alert("A ticket with exactly these picks was already saved — updated it instead of duplicating.");
 };
 function deco(n,l){
   var w=TM.winners[l];
@@ -419,7 +442,7 @@ window.renderCmp=function(){
   var scored=Object.keys(TM.winners).length>0;
   var h="<div class='leghead'><h2>My Ticket</h2></div>";
   h+="<table><thead><tr><th>Leg</th><th>The Model"+(TM.modelName?"<small>"+TM.modelName+"</small>":"")+"</th>";
-  nos.forEach(function(no){ h+="<th>"+tix[no].label+"<small>"+no+
+  nos.forEach(function(no){ h+="<th>"+tix[no].label+"<small>"+(tix[no].no||"")+
     " <a href='#' class='tixdel' data-no='"+no+"'>remove</a></small></th>"; });
   h+="</tr></thead><tbody>";
   legs.forEach(function(l){
