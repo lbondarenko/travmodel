@@ -999,7 +999,7 @@ def render_past(gid, snap, results, start_iso):
         for h in horses:
             plc = res["places"].get(h["nr"])
             cls = ("win-hit" if hit else "win-miss") if plc == 1 else ""
-            tag = " <span class='famtag' style='color:var(--pick)'>TRAVMODEL PICK</span>" if h["nr"] in picks else ""
+            tag = " <span class='famtag' style='color:var(--pick)'>OUR PICK</span>" if h["nr"] in picks else ""
             if h.get("family"): tag += " <span class='famtag'>\u2665</span>"
             plcs = {1: "\U0001F947", 2: "2", 3: "3"}.get(plc, "")
             rows.append(f"<tr class='{cls}'><td class='nr'>{h['nr']}</td>"
