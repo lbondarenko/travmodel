@@ -218,6 +218,10 @@ tr.win-miss td:nth-child(2){ color:#C23B2E; font-weight:700; }
     .tickcol{ flex:1; min-width:0; }
     .dphoto{ margin-top:0; }
   }
+  @media print{
+    .legrow:last-of-type{ page-break-after:auto; }
+    .cmp{ display:none !important; }
+  }
 </style></head><body><main>
 <div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
 <script>

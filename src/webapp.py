@@ -431,7 +431,25 @@ window.renderCmp=function(){
   }
   h+="</table>";
   sec.innerHTML=h;
+  renderPrintTix();
 };
+function jesc(x){ return String(x).split("<").join("&lt;").split(">").join("&gt;"); }
+function renderPrintTix(){
+  var row=document.getElementById("ptrow"); if(!row) return;
+  Array.prototype.slice.call(row.querySelectorAll(".ucol")).forEach(function(e){ e.remove(); });
+  var tix=mytix();
+  Object.keys(tix).forEach(function(k){
+    var t=tix[k];
+    var legs=Object.keys(TM.legs).sort(function(a,b){return a-b;});
+    var rows=legs.map(function(l){ return "<tr><td class='avd'>"+l+"</td><td class='hst'>"+
+      jesc((t.picks[l]||[]).join(", "))+"</td></tr>"; }).join("");
+    var d=document.createElement("div"); d.className="tickcol ucol";
+    d.innerHTML="<div class='slipd'><p class='dlogo' style='font-size:14px'>"+jesc(t.label)+"</p>"+
+      (t.no?"<p class='dtag'>"+jesc(t.no)+"</p>":"")+
+      "<hr class='drule solid'><table class='dlegs'><tr><th>AVD</th><th>H\u00c4STAR</th></tr>"+rows+"</table></div>";
+    row.appendChild(d);
+  });
+}
 document.addEventListener("DOMContentLoaded", renderCmp);
 if(document.readyState!=="loading") renderCmp();
 })();
@@ -657,6 +675,8 @@ CSS = """
     color:var(--ink); cursor:pointer; }
   .printbtn:hover{ border-color:var(--pick); color:var(--pick); }
   .printslip{ display:none; }
+  .printtix{ display:none; }
+  .printtix .tickrow{ display:block; }
   .cards{ display:flex; flex-direction:column; gap:14px; }
   .gamecard{ display:block; text-decoration:none; background:var(--card);
     border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
@@ -693,9 +713,13 @@ CSS = """
       page-break-after:always; break-inside:avoid; page-break-inside:avoid; margin-bottom:0; }
     .tile{ border-color:#888; break-inside:avoid; page-break-inside:avoid; }
     .printbtn,.upbtn,.modalback{ display:none; } footer{ display:none; } body{ font-size:10px; }
-    .cmp{ display:block !important; break-before:page; padding-top:24px; }
-    .cmp thead th{ background:#000 !important; color:#fff !important;
-      -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .legrow:last-of-type{ page-break-after:auto; }
+    .cmp{ display:none !important; }
+    .printtix{ display:block; break-before:page; }
+    .printtix .tickrow{ display:flex; gap:14px; align-items:flex-start; }
+    .printtix .tickcol{ flex:1; min-width:0; }
+    .printtix .slipd{ width:auto; height:auto; overflow:visible; box-shadow:none;
+      border:1.5px dashed #999; padding:14px; }
     thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     .stampbox{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     tr.top td{ background:#EDF3EE !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -871,6 +895,8 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
         "spikNames": spik_names, "winners": {},
     }, ensure_ascii=False)
     tix_block = TIX_HTML + TIX_JS.replace("__TMDATA__", tmdata)
+    printtix = ('<section class="printtix"><div class="tickrow" id="ptrow">'
+                '<div class="tickcol"><div class="slipd">' + slip_inner + "</div></div></div></section>")
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="600">
@@ -886,6 +912,7 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 </div>{stampbox(updated, start_dt.strftime('%H:%M'))}</div>
 {ticket_html}
 <div class="grid">{''.join('<div class="legrow">' + ''.join(tiles[i:i+2]) + '</div>' for i in range(0, len(tiles), 2))}</div>
+{printtix}
 {tix_block}
 <footer>
 <p class="legend-title">WHAT THE LABELS MEAN</p>
