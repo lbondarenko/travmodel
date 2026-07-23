@@ -315,20 +315,40 @@ CSS = """
   p.sechead.tr, p.sechead.model{ color:var(--exp); }
   .info{ margin:0 0 5px; font-size:11px; color:var(--muted); line-height:1.5; }
   .info b{ color:var(--pick); }
-  .ticket{ background:var(--card); border:2px solid var(--pick); border-radius:12px;
-    padding:14px 16px 12px; margin-bottom:18px; }
-  .thead{ display:flex; justify-content:space-between; align-items:baseline; gap:10px;
-    flex-wrap:wrap; border-bottom:2px solid var(--ink); padding-bottom:6px; margin-bottom:8px; }
-  .thead span:first-child{ font-size:12px; font-weight:700; letter-spacing:.16em; color:var(--pick); }
-  .thead .tsub{ font-size:10.5px; color:var(--muted); }
-  .tgrid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:6px 18px; }
-  .trow{ display:flex; gap:8px; align-items:baseline; font-size:14px;
-    font-variant-numeric:tabular-nums; }
-  .trow b{ color:var(--pick); }
-  .tl2{ font-size:9px; font-weight:700; letter-spacing:.12em; color:var(--muted); }
-  .tmath{ margin-top:9px; padding-top:7px; border-top:1px dashed var(--line);
-    font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
-  .tmath b{ color:var(--ink); font-size:14px; }
+  .tdrawer{ position:fixed; top:0; right:0; height:100vh; z-index:60;
+    transform:translateX(100%); transition:transform .25s ease; }
+  .tdrawer.open{ transform:translateX(0); }
+  @media (prefers-reduced-motion: reduce){ .tdrawer{ transition:none; } }
+  .ttab{ position:absolute; left:-40px; top:36%; width:40px;
+    writing-mode:vertical-rl; background:var(--pick); color:#fff; border:none;
+    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
+    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  .slipd{ width:min(300px, 86vw); height:100%; overflow-y:auto;
+    background:#FCFAF7; color:#211E1B; padding:24px 18px 30px;
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;
+    font-size:12.5px; line-height:1.5; font-variant-numeric:tabular-nums;
+    box-shadow:-14px 0 34px rgba(0,0,0,.3); }
+  .dlogo{ font-size:18px; font-weight:700; letter-spacing:.16em; text-align:center; margin:0; }
+  .dlogo span{ font-weight:400; }
+  .dtag{ font-size:8.5px; color:#8A837A; letter-spacing:.06em; text-align:center; margin:3px 0 0; }
+  .drule{ border:none; border-top:1.5px dashed #8A837A; opacity:.65; margin:10px 0; }
+  .drule.solid{ border-top:2px solid #211E1B; opacity:1; }
+  .drow{ display:flex; justify-content:space-between; gap:10px; padding:1.5px 0; }
+  .drow span{ color:#8A837A; }
+  .dlegs{ width:100%; border-collapse:collapse; }
+  .dlegs th{ font-size:8.5px; letter-spacing:.14em; color:#8A837A; text-align:left;
+    font-weight:400; padding-bottom:4px; }
+  .dlegs td{ padding:2.5px 0; }
+  .dlegs td.avd{ font-weight:700; width:30px; }
+  .dlegs td.hst{ font-weight:700; }
+  .dtotal{ display:flex; justify-content:space-between; border-top:2px solid #211E1B;
+    margin-top:6px; padding-top:6px; font-weight:700; font-size:15px; }
+  .dnote{ font-size:9.5px; color:#8A837A; line-height:1.55; margin:8px 0 0; }
+  .dstamp{ width:fit-content; margin:14px auto 0; border:2.5px solid #C23B2E; color:#C23B2E;
+    padding:5px 12px; font-weight:700; font-size:11px; letter-spacing:.12em;
+    transform:rotate(-5deg); border-radius:4px; text-align:center; opacity:.85; }
+  .dstamp small{ display:block; font-size:7.5px; letter-spacing:.16em; font-weight:400; }
+  @media print{ .tdrawer{ display:none; } }
   .cards{ display:flex; flex-direction:column; gap:14px; }
   .gamecard{ display:block; text-decoration:none; background:var(--card);
     border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
@@ -473,26 +493,41 @@ def render_game(game, data, updated):
 <tbody>{''.join(rows)}</tbody></table>
 <div class="infos">{''.join(infos)}</div></article>""")
     ticket = build_ticket(data["legs"], data["type"])
-    tparts = []
+    tro = []
     for leg in sorted(ticket["picks"]):
-        nums = ", ".join(str(n) for n in ticket["picks"][leg])
         if leg in ticket["spiks"]:
             sp = ticket["spiks"][leg]
-            tparts.append(f"<div class='trow'><span class='tl2'>Leg {leg}</span>"
-                          f"<b>{sp['nr']} {esc(sp['horse'])} ★</b></div>")
+            val = f"{sp['nr']} {esc(sp['horse'])} ★"
         else:
-            tparts.append(f"<div class='trow'><span class='tl2'>Leg {leg}</span>"
-                          f"<b>{nums}</b></div>")
+            val = ", ".join(str(n) for n in ticket["picks"][leg])
+        tro.append(f"<tr><td class='avd'>{leg}</td><td class='hst'>{val}</td></tr>")
     mult = "×".join(str(len(ticket["picks"][leg])) for leg in sorted(ticket["picks"]))
     price_str = f"{ticket['price']:.2f}".rstrip("0").rstrip(".")
-    ticket_html = f"""<section class="ticket">
-<div class="thead"><span>THE MODEL'S TICKET</span>
-<span class="tsub">auto-built from this data snapshot — picks can change at the next update</span></div>
-<div class="tgrid">{''.join(tparts)}</div>
-<div class="tmath">{mult} = {ticket['rows']} rader × {price_str} kr = <b>{ticket['cost']:.0f} kr</b>
-&nbsp;·&nbsp; model's own estimate: ~{100*ticket['hit_all']:.0f}% to hit all {len(ticket['picks'])}
-&nbsp;·&nbsp; ★ = spik &nbsp;·&nbsp; not betting advice — if you play it, play it at atg.se</div>
-</section>"""
+    ticket_html = f"""<aside class="tdrawer" id="tdrawer">
+<button class="ttab" onclick="tdT()">🎟️ KUPONG</button>
+<div class="slipd">
+  <p class="dlogo">TRAVMODEL<span>™</span></p>
+  <p class="dtag">TEAM LILLIAN × CLAUDE · FAMILJENS EGET SPELBOLAG</p>
+  <hr class="drule solid">
+  <div class="drow"><span>Spel</span><b>{data['type']}</b></div>
+  <div class="drow"><span>Bana</span><b>{esc(data['track'])}</b></div>
+  <div class="drow"><span>Start</span><b>{start_dt.strftime('%a %d %b · %H:%M')}</b></div>
+  <div class="drow"><span>Data</span><b>{updated}</b></div>
+  <hr class="drule">
+  <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR</th></tr>{''.join(tro)}</table>
+  <hr class="drule">
+  <div class="drow"><span>{mult}</span><b>= {ticket['rows']} rader</b></div>
+  <div class="drow"><span>{ticket['rows']} × {price_str} kr</span><b>{ticket['cost']:.2f} kr</b></div>
+  <div class="dtotal"><span>TOTALT</span><b>{ticket['cost']:.2f} kr</b></div>
+  <p class="dnote">Modellens egen chans: ~{100*ticket['hit_all']:.0f}% att pricka alla {len(ticket['picks'])}.
+  Byggs om vid varje datauppdatering — kupongen kan ändras. ★ = spik.
+  Inget giltigt spel — spela hos atg.se om du vill.</p>
+  <div class="dstamp">EJ GILTIGT SPEL<small>ENDAST SKRYTRÄTTIGHETER</small></div>
+</div></aside>""" + """<script>
+function tdT(){var d=document.getElementById('tdrawer');var o=d.classList.toggle('open');
+try{localStorage.setItem('tm_drawer',o?'1':'0');}catch(e){}}
+try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer').classList.add('open');}catch(e){}
+</script>"""
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="600">
