@@ -100,7 +100,12 @@
   .gamecard{ display:block; text-decoration:none; background:var(--card);
     border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
   .gamecard:hover{ border-color:var(--pick); }
-  .gamecard .row1{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .gamecard .row1{ display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+    flex-wrap:wrap; position:relative; }
+  .gamecard .row1 .fambadge{ position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%); margin-left:0; }
+  @media (max-width:640px){
+    .gamecard .row1 .fambadge{ position:static; transform:none; } }
   .gamecard .gt{ font-size:20px; font-weight:700; }
   .gamecard .when{ font-size:14px; font-variant-numeric:tabular-nums; color:var(--muted); }
   .gamecard .row2{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
