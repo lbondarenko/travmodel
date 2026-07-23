@@ -941,9 +941,9 @@ data from ATG's open API · page auto-reloads every 10 min · not betting advice
 </main></body></html>"""
 
 
-def render_index(entries):
+def render_index(entries, extra_past=None):
     past_cards = []
-    for pr in PAST_RACES:
+    for pr in (extra_past or []) + PAST_RACES:
         past_cards.append(f"""<a class="gamecard pastcard" href="{pr['href']}">
 <div class="row1"><span class="gt">{pr['type']} · {esc(pr['track'])}</span>
 <span class="when"><span class="tl">FINISHED</span>{pr['finished']}</span></div>
@@ -958,7 +958,7 @@ def render_index(entries):
         cards.append(f"""<a class="gamecard{' famcard' if fam else ''}" href="game/{e['id']}.html">
 <div class="row1"><span class="gt">{e['type']} · {esc(e.get('track','...'))}</span>{fambadge}
 <span class="when"><span class="tl">RACE STARTS</span>{start_dt.strftime('%A %d %b · %H:%M')}</span></div>
-<div class="row2"><span>{e.get('nlegs','?')} legs · model + streck sheet</span>
+<div class="row2"><span>{e.get('nlegs','?')} legs · model + streck sheet{e.get('phase_label','')}</span>
 <span class="fresh"><span class="tl">DATA UPDATED</span>{upd}</span></div></a>""")
     now = datetime.now().strftime("%a %d %b · %H:%M")
     return f"""<!doctype html><html><head><meta charset="utf-8">
@@ -978,6 +978,116 @@ every 30 minutes inside the final 4 hours before post.</p>
 <p class="secbar">PAST RACES</p>
 <div class="cards">{''.join(past_cards)}</div>
 <footer>travmodel v2 · ATG open data · family duel edition · not betting advice.</footer>
+</main></body></html>"""
+
+
+
+def render_past(gid, snap, results, start_iso):
+    """Automated result page: locked snapshot + final results. results:
+    {leg(str): {"winner": nr, "odds": x, "places": {nr: plc}}}"""
+    data = snap["data"]; ticket = snap["ticket"]
+    start_dt = datetime.fromisoformat(start_iso)
+    legs = data["legs"]; nlegs = len(legs)
+    hits = 0
+    tiles = []
+    for leg in sorted(legs, key=int):
+        horses = legs[leg]; res = results[leg]
+        picks = ticket["picks"].get(leg, [])
+        hit = res["winner"] in picks
+        hits += 1 if hit else 0
+        rows = []
+        for h in horses:
+            plc = res["places"].get(h["nr"])
+            cls = ("win-hit" if hit else "win-miss") if plc == 1 else ""
+            tag = " <span class='famtag' style='color:var(--pick)'>OUR PICK</span>" if h["nr"] in picks else ""
+            if h.get("family"): tag += " <span class='famtag'>\u2665</span>"
+            plcs = {1: "\U0001F947", 2: "2", 3: "3"}.get(plc, "")
+            rows.append(f"<tr class='{cls}'><td class='nr'>{h['nr']}</td>"
+                        f"<td>{esc(h['horse'])}{tag}</td><td class='drv'>{esc(h['driver'])}</td>"
+                        f"<td class='num'>{h['streck']:.1f}%</td>"
+                        f"<td class='num strong'>{h['model']:.1f}%</td>"
+                        f"<td class='num'>{plcs}</td></tr>")
+        w = [h for h in horses if h["nr"] == res["winner"]]
+        wname = w[0]["horse"] if w else "?"
+        wmodel = f"{w[0]['model']:.1f}%" if w else "?"
+        rank = ([h["nr"] for h in horses].index(res["winner"]) + 1) if w else "?"
+        odds_str = f" at {res['odds']:.2f}" if res.get("odds") else ""
+        b1 = f"Winner: #{res['winner']} {esc(wname)}{odds_str} \u2014 the model had {wmodel} (ranked #{rank} of {len(horses)})."
+        b2 = (f"Our ticket covered the winner (picks: {', '.join(map(str, picks))}). \u2713" if hit
+              else f"Our picks ({', '.join(map(str, picks))}) missed the winner. \u2717")
+        tiles.append(f"""<article class="tile">
+<div class="leghead"><h2>Leg {leg}</h2><span class="meta">{esc(data['legmeta'].get(leg) or data['legmeta'].get(int(leg), ''))}</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th>Streck</th><th>Model</th><th>Plc</th></tr></thead>
+<tbody>{''.join(rows)}</tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>{b1}</li><li>{b2}</li></ul></div></article>""")
+    legrows = ''.join('<div class="legrow">' + ''.join(tiles[i:i+2]) + '</div>'
+                      for i in range(0, len(tiles), 2))
+    tro = []
+    for leg in sorted(legs, key=int):
+        picks = ticket["picks"].get(leg, [])
+        hit = results[leg]["winner"] in picks
+        sp = ticket["spiks"].get(leg)
+        val = (f"{sp['nr']} {esc(sp['horse'])} \u2605" + (" \u2665" if sp.get("family") else "")) if sp else ", ".join(map(str, picks))
+        mark = "\u2713" if hit else "\u2717"
+        color = "#2E6B4A" if hit else "#C23B2E"
+        tro.append(f"<tr><td class='avd'>{leg}</td><td class='hst'>{val} "
+                   f"<span style=\"color:{color}\">{mark}</span></td></tr>")
+    mult = "\u00d7".join(str(len(ticket["picks"][l])) for l in sorted(ticket["picks"], key=int))
+    price_str = f"{ticket['price']:.2f}".rstrip("0").rstrip(".")
+    slip_inner = f"""
+  <p class="dlogo">TRAVMODEL<span>\u2122</span></p>
+  <p class="dtag">TEAM LILLIAN \u00d7 CLAUDE \u00b7 FAMILJENS EGET SPELBOLAG</p>
+  <hr class="drule solid">
+  <div class="drow"><span>Spel</span><b>{data['type']}</b></div>
+  <div class="drow"><span>Bana</span><b>{esc(data['track'])}</b></div>
+  <div class="drow"><span>Start</span><b>{start_dt.strftime('%a %d %b · %H:%M')}</b></div>
+  <div class="drow"><span>Status</span><b>R\u00c4TTAD</b></div>
+  <hr class="drule">
+  <table class="dlegs"><tr><th>AVD</th><th>H\u00c4STAR \u00b7 R\u00c4TT?</th></tr>{''.join(tro)}</table>
+  <hr class="drule">
+  <div class="drow"><span>{mult}</span><b>= {ticket['rows']} rader</b></div>
+  <div class="drow"><span>{ticket['rows']} \u00d7 {price_str} kr</span><b>{ticket['cost']:.2f} kr</b></div>
+  <div class="dtotal"><span>RESULTAT</span><b>{hits} AV {nlegs}</b></div>
+  <div class="dstamp">{hits} AV {nlegs}<small>L\u00c5ST F\u00d6RE START \u00b7 AUTOR\u00c4TTAD</small></div>"""
+    import json as _json
+    tmdata = _json.dumps({
+        "game": gid, "modelName": f"{ticket['rows']} rader \u00b7 {ticket['cost']:.0f} kr",
+        "legs": {l: [h["nr"] for h in legs[l]] for l in legs},
+        "model": {l: ticket["picks"].get(l, []) for l in legs},
+        "spikNames": {l: f"{sp['nr']} {esc(sp['horse'])} \u2605"
+                      for l, sp in ticket["spiks"].items()},
+        "winners": {l: results[l]["winner"] for l in legs},
+    }, ensure_ascii=False)
+    tix_block = TIX_HTML + TIX_JS.replace("__TMDATA__", tmdata)
+    printtix = ('<section class="printtix"><div class="tickrow" id="ptrow">'
+                '<div class="tickcol"><div class="slipd">' + slip_inner + "</div></div></div></section>")
+    extra_css = """
+tr.win-hit td{ background:var(--pick-bg); }
+tr.win-hit td:nth-child(2){ color:var(--pick); font-weight:700; }
+tr.win-miss td{ background:color-mix(in srgb, #C23B2E 12%, transparent); }
+tr.win-miss td:nth-child(2){ color:#C23B2E; font-weight:700; }
+ul.infoul{ margin:4px 0 8px 18px; padding:0; }
+ul.infoul li{ font-size:13px; color:var(--muted); line-height:1.55; margin-bottom:4px; }
+"""
+    return f"""<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{auth_guard("../login.html")}
+<title>{data['type']} {esc(data['track'])} {start_dt.strftime('%d %b')} \u2014 result</title>
+<style>{CSS}{TIX_CSS}{extra_css}</style></head><body><main>
+{USERCHIP}
+<div class="pagehead"><div>
+<h1><a href="../index.html">\u2190</a> {data['type']} {esc(data['track'])} \u00b7 {start_dt.strftime('%A %d %B %Y')} \u2014 RESULT</h1>
+<p class="sub">Final locked streck vs Travmodel \u00b7 \U0001F947 = winner \u00b7 green = winner on our kupong, red = winner we missed</p>
+<button class="printbtn" onclick="window.print()">\U0001F5A8\uFE0F&nbsp; Skriv ut / Print</button><button class="upbtn" onclick="tixOpen()">\U0001F4F7&nbsp; Upload My Ticket</button>
+</div>
+<div class="stampbox"><span class="stamp-label">RESULTS FINAL</span>
+<span class="stamp-time">{start_dt.strftime('%a %d %b')}</span>
+<span class="stamp-note">picks were locked 30 min before start \u2014 this page is a permanent record</span></div></div>
+<div class="grid">{legrows}</div>
+{printtix}
+{tix_block}
+<footer><p>Kupongen l\u00e5stes 30 minuter f\u00f6re start; resultat h\u00e4mtade fr\u00e5n ATG. Not betting advice.</p></footer>
 </main></body></html>"""
 
 
@@ -1001,8 +1111,18 @@ def update_game(game):
     updated = datetime.now().strftime("%a %d %b · %H:%M")
     (WEB / "game").mkdir(parents=True, exist_ok=True)
     (WEB / "game" / f"{gid}.html").write_text(render_game(game, data, updated))
+    (WEB / "data").mkdir(parents=True, exist_ok=True)
+    snap = {"game": game, "data": {"track": data["track"], "type": data["type"],
+            "legmeta": data["legmeta"], "fam_legs": data.get("fam_legs", []),
+            "legs": {str(k): v for k, v in data["legs"].items()}},
+            "ticket": {"picks": {str(k): v for k, v in build_ticket(data["legs"], data["type"])["picks"].items()},
+                       "spiks": {str(k): v for k, v in build_ticket(data["legs"], data["type"])["spiks"].items()},
+                       **{k: v for k, v in build_ticket(data["legs"], data["type"]).items() if k in ("rows","price","cost")}},
+            "updated": updated}
+    (WEB / "data" / f"{gid}.json").write_text(json.dumps(snap, ensure_ascii=False, default=str))
     with STATE_LOCK:
-        STATE[gid] = {"last": time.time(), "track": data["track"],
+        STATE[gid] = {**STATE.get(gid, {}),
+                      "last": time.time(), "track": data["track"],
                       "nlegs": len(data["legs"]), "updated": updated,
                       "fam": bool(data.get("fam_legs"))}
     log(f"updated {gid} ({data['type']} {data['track']}, {len(data['legs'])} legs)")
