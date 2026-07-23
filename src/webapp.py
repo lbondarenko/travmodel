@@ -199,6 +199,8 @@ CSS = """
   .gamecard .row2{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
     margin-top:4px; font-size:12.5px; color:var(--muted); }
   .fresh{ color:var(--pick); font-weight:600; }
+  .tl{ font-size:9px; font-weight:700; letter-spacing:.14em; color:var(--muted);
+    margin-right:6px; vertical-align:1px; }
   footer{ margin-top:24px; padding-top:10px; border-top:1px solid var(--line);
     font-size:10.5px; color:var(--muted); line-height:1.6; }
   .userchip{ text-align:right; font-size:12px; color:var(--muted); margin:-20px 0 8px; }
@@ -348,9 +350,9 @@ def render_index(entries):
         upd = e.get("updated", "not yet")
         cards.append(f"""<a class="gamecard" href="game/{e['id']}.html">
 <div class="row1"><span class="gt">{e['type']} · {esc(e.get('track','...'))}</span>
-<span class="when">{start_dt.strftime('%A %d %b · %H:%M')}</span></div>
+<span class="when"><span class="tl">RACE STARTS</span>{start_dt.strftime('%A %d %b · %H:%M')}</span></div>
 <div class="row2"><span>{e.get('nlegs','?')} legs · model + streck sheet</span>
-<span class="fresh">data: {upd}</span></div></a>""")
+<span class="fresh"><span class="tl">DATA UPDATED</span>{upd}</span></div></a>""")
     now = datetime.now().strftime("%a %d %b · %H:%M")
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
