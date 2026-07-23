@@ -59,6 +59,7 @@ def main():
     for g in games:
         entries.append({**g, **webapp.STATE.get(g["id"], {})})
     (DOCS / "index.html").write_text(webapp.render_index(entries))
+    webapp.write_login(DOCS)
     (DOCS / ".nojekyll").write_text("")
     STATE_FILE.write_text(json.dumps(
         {k: v for k, v in webapp.STATE.items()}, default=str))

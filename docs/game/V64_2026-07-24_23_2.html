@@ -1,6 +1,7 @@
 <!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="600">
+<script>if(!localStorage.getItem("tm_user"))location.replace("../login.html");</script>
 <title>V64 Romme Fri 24 Jul 19:30 — Lillian's Model</title>
 <style>
   :root{ --bg:#FAF8F3; --ink:#26241F; --muted:#867F73; --line:#E3DED4;
@@ -60,6 +61,9 @@
   .fresh{ color:var(--pick); font-weight:600; }
   footer{ margin-top:24px; padding-top:10px; border-top:1px solid var(--line);
     font-size:10.5px; color:var(--muted); line-height:1.6; }
+  .userchip{ text-align:right; font-size:12px; color:var(--muted); margin:-20px 0 8px; }
+  .userchip a{ color:var(--pick); }
+  @media print{ .userchip{ display:none; } }
   @media print{
     :root{ --muted:#3A3733; --pick:#1E4A33; --exp:#6B4413; --line:#999; }
     body{ background:#fff; color:#000; padding:0; }
@@ -70,12 +74,17 @@
     .info, .sub, footer, .leghead .meta, td.nr{ color:#3A3733; }
   }
 </style></head><body><main>
+<div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
+<script>
+document.getElementById('tmu').textContent=localStorage.getItem('tm_user')||'';
+document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_user');location.reload();return false;};
+</script>
 <div class="pagehead"><div>
 <h1><a href="../index.html">←</a> V64 Romme · Friday 24 July 2026</h1>
 <p class="sub">First start 19:30 · streck (share of tickets) vs Lillian's Model
 (win probability) · green rows = model's top of the leg · program comments under each table</p>
 </div><div class="stampbox"><span class="stamp-label">DATA SNAPSHOT</span>
-<span class="stamp-time">Thu 23 Jul · 11:24</span>
+<span class="stamp-time">Thu 23 Jul · 11:36</span>
 <span class="stamp-note">streck &amp; odds move until post 19:30 — auto-updates hourly, every 30 min in the last 4 h</span></div></div>
 <div class="grid"><article class="tile">
 <div class="leghead"><h2>Leg 1</h2><span class="meta">3140m volte</span></div>

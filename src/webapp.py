@@ -201,6 +201,9 @@ CSS = """
   .fresh{ color:var(--pick); font-weight:600; }
   footer{ margin-top:24px; padding-top:10px; border-top:1px solid var(--line);
     font-size:10.5px; color:var(--muted); line-height:1.6; }
+  .userchip{ text-align:right; font-size:12px; color:var(--muted); margin:-20px 0 8px; }
+  .userchip a{ color:var(--pick); }
+  @media print{ .userchip{ display:none; } }
   @media print{
     :root{ --muted:#3A3733; --pick:#1E4A33; --exp:#6B4413; --line:#999; }
     body{ background:#fff; color:#000; padding:0; }
@@ -215,6 +218,71 @@ CSS = """
 
 def esc(s):
     return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+# ---------- simple login gate ----------
+# NOTE: static-site gate, not real security — content is public files.
+# Hashes are sha256("username:password").
+AUTH_USERS = {
+    "c83b5c64cb855009fc8ee591068416efb8b1611b8f2830988d25c38e80262a26": "Lillian",
+    "32006fd4a0d2aae8144f86cd555e5f4207b0c5b47a4ee6110893b45d3b7c2423": "Jan",
+}
+
+
+def auth_guard(login_rel):
+    return f"""<script>if(!localStorage.getItem("tm_user"))location.replace("{login_rel}");</script>"""
+
+
+USERCHIP = """<div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
+<script>
+document.getElementById('tmu').textContent=localStorage.getItem('tm_user')||'';
+document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_user');location.reload();return false;};
+</script>"""
+
+LOGIN_HTML = """<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lillian's Model — log in</title>
+<style>__CSS__
+  .loginbox{ max-width:340px; margin:10vh auto 0; background:var(--card);
+    border:1px solid var(--line); border-radius:12px; padding:26px 26px 22px; }
+  .loginbox h1{ margin-bottom:14px; }
+  .loginbox label{ display:block; font-size:12px; color:var(--muted); margin:12px 0 4px;
+    letter-spacing:.06em; }
+  .loginbox input{ width:100%; padding:9px 11px; font-size:15px; border:1px solid var(--line);
+    border-radius:7px; background:var(--bg); color:var(--ink); font-family:inherit; }
+  .loginbox button{ margin-top:18px; width:100%; padding:10px; font-size:15px; font-weight:600;
+    background:var(--pick); color:#fff; border:none; border-radius:7px; cursor:pointer;
+    font-family:inherit; }
+  .err{ color:#C23B2E; font-size:13px; margin-top:10px; display:none; }
+</style></head><body><main>
+<form class="loginbox" id="f">
+  <h1>Lillian's Model 🐴</h1>
+  <label for="u">USERNAME</label><input id="u" autocomplete="username" autocapitalize="none">
+  <label for="p">PASSWORD</label><input id="p" type="password" autocomplete="current-password">
+  <button type="submit">Log in</button>
+  <p class="err" id="e">Wrong username or password.</p>
+</form>
+<script>
+var USERS = __USERS__;
+async function h(s){
+  var b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+document.getElementById("f").onsubmit = async function(ev){
+  ev.preventDefault();
+  var u = document.getElementById("u").value.trim().toLowerCase();
+  var p = document.getElementById("p").value;
+  var d = await h(u + ":" + p);
+  if(USERS[d]){ localStorage.setItem("tm_user", USERS[d]); location.replace("index.html"); }
+  else document.getElementById("e").style.display = "block";
+};
+if(localStorage.getItem("tm_user")) location.replace("index.html");
+</script></main></body></html>"""
+
+
+def write_login(outdir):
+    html = LOGIN_HTML.replace("__CSS__", CSS).replace("__USERS__", json.dumps(AUTH_USERS))
+    (Path(outdir) / "login.html").write_text(html)
 
 
 def stampbox(updated, start_str):
@@ -253,8 +321,10 @@ def render_game(game, data, updated):
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="600">
+{auth_guard("../login.html")}
 <title>{data['type']} {esc(data['track'])} {start_dt.strftime('%a %d %b %H:%M')} — Lillian's Model</title>
 <style>{CSS}</style></head><body><main>
+{USERCHIP}
 <div class="pagehead"><div>
 <h1><a href="../index.html">←</a> {data['type']} {esc(data['track'])} · {start_dt.strftime('%A %d %B %Y')}</h1>
 <p class="sub">First start {start_dt.strftime('%H:%M')} · streck (share of tickets) vs Lillian's Model
@@ -280,7 +350,9 @@ def render_index(entries):
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="300">
+{auth_guard("login.html")}
 <title>Lillian's Model — next races</title><style>{CSS}</style></head><body><main>
+{USERCHIP}
 <div class="pagehead"><div>
 <h1>Lillian's Model 🐴</h1>
 <p class="sub">The next {len(entries)} betting rounds, scored by travmodel v2. Pages update hourly —
@@ -338,6 +410,7 @@ def scheduler():
                 entries.append({**g, **st})
             WEB.mkdir(parents=True, exist_ok=True)
             (WEB / "index.html").write_text(render_index(entries))
+            write_login(WEB)
         except Exception as e:
             log(f"scheduler error: {e}")
         time.sleep(120)
