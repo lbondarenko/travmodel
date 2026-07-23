@@ -717,7 +717,7 @@ CSS = """
     .cmp{ display:none !important; }
     .printtix{ display:block; break-before:page; }
     .printtix .tickrow{ display:flex; gap:14px; align-items:flex-start; }
-    .printtix .tickcol{ flex:1; min-width:0; }
+    .printtix .tickcol{ flex:1 1 0; max-width:300px; min-width:0; }
     .printtix .slipd{ width:auto; height:auto; overflow:visible; box-shadow:none;
       border:1.5px dashed #999; padding:14px; }
     thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
