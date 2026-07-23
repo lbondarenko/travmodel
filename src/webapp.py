@@ -178,7 +178,8 @@ CSS = """
   table{ border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; }
   th,td{ padding:3.5px 6px; text-align:left; font-size:12px; }
   thead th{ background:var(--head-bg); color:var(--head-ink); font-size:9.5px; letter-spacing:.07em; }
-  th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4){ text-align:right; }
+  th:nth-child(4),td:nth-child(4),th:nth-child(5),td:nth-child(5){ text-align:right; }
+  td.drv{ color:var(--muted); font-size:11px; }
   tbody tr{ border-bottom:1px solid var(--line); }
   td.nr{ color:var(--muted); width:22px; }
   td.num{ white-space:nowrap; } td.strong{ font-weight:600; }
@@ -314,6 +315,7 @@ def render_game(game, data, updated):
             cls = "top" if i < (1 if horses[0]["model"] > 45 else 2) else ""
             rows.append(f"<tr class='{cls}'><td class='nr'>{h['nr']}</td>"
                         f"<td>{esc(h['horse'])}{flag}</td>"
+                        f"<td class='drv'>{esc(h['driver'])}</td>"
                         f"<td class='num'>{h['streck']:.1f}%</td>"
                         f"<td class='num strong'>{h['model']:.1f}%</td></tr>")
         for h in horses[:3]:
@@ -323,7 +325,7 @@ def render_game(game, data, updated):
         spik = " · ★ spik candidate" if horses and horses[0]["model"] > 45 else ""
         tiles.append(f"""<article class="tile">
 <div class="leghead"><h2>Leg {leg}</h2><span class="meta">{esc(data['legmeta'].get(leg,''))}{spik}</span></div>
-<table><thead><tr><th>#</th><th>Horse</th><th>Streck</th><th>Model</th></tr></thead>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th>Streck</th><th>Model</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table>
 <div class="infos">{''.join(infos)}</div></article>""")
     return f"""<!doctype html><html><head><meta charset="utf-8">
