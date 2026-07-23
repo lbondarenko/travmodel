@@ -259,17 +259,16 @@ Open the 🎟️ drawer for our corrected kupong.</div>
 <div class="modalback" id="tixmodal">
 <div class="modal">
 <h3>Upload my ticket</h3>
-<label>Photo (optional)</label>
 <div class="addwrap">
 <button type="button" class="addbtn" id="addbtn">+</button>
 <div class="addmenu" id="addmenu">
 <a href="#" data-add="files">📎&nbsp; Add files or photos</a>
 <a href="#" data-add="paste">📋&nbsp; Paste image</a>
+<a href="#" data-add="manual">✏️&nbsp; Enter picks manually</a>
 </div>
 </div>
 <input type="file" id="tixphoto" accept="image/*" style="display:none">
 <img id="tixpreview" alt="" style="display:none">
-<button type="button" class="mlink" id="tixmanbtn">✏️ Enter picks manually</button>
 <div id="tixmanual" style="display:none">
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
@@ -307,14 +306,11 @@ document.addEventListener("click",function(ev){
   if(item&&m){ ev.preventDefault(); m.classList.remove("open");
     var k=item.getAttribute("data-add");
     if(k==="files") document.getElementById("tixphoto").click();
+    else if(k==="manual"){ var d=document.getElementById("tixmanual");
+      d.style.display = d.style.display==="none" ? "block" : "none"; }
     else tixPaste(); return; }
   if(m) m.classList.remove("open");
 });
-document.addEventListener("click",function(ev){
-  if(ev.target && ev.target.id==="tixmanbtn"){
-    var d=document.getElementById("tixmanual");
-    d.style.display = d.style.display==="none" ? "block" : "none";
-  }});
 window.tixOpen=function(){
   document.getElementById("tixmanual").style.display="none";
   var box=document.getElementById("tixlegs"); box.innerHTML="";
