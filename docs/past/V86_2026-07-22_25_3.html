@@ -210,9 +210,7 @@ Open the 🎟️ drawer for our corrected kupong.</div>
 <div class="modalback" id="tixmodal">
 <div class="modal">
 <h3>Upload my ticket</h3>
-<p class="mnote">Attach a photo of the receipt for reference, then type the picks —
-20 seconds, and it never leaves your browser.</p>
-<label>Photo of ticket (optional — gallery, camera, or paste)</label>
+<label>Photo (optional)</label>
 <div class="mrow photorow">
 <button type="button" class="mbtn" onclick="document.getElementById('tixphoto').click()">📁 Gallery</button>
 <button type="button" class="mbtn" onclick="document.getElementById('tixcam').click()">📷 Camera</button>
@@ -221,10 +219,9 @@ Open the 🎟️ drawer for our corrected kupong.</div>
 <input type="file" id="tixphoto" accept="image/*" style="display:none">
 <input type="file" id="tixcam" accept="image/*" capture="environment" style="display:none">
 <img id="tixpreview" alt="" style="display:none">
-<p class="mnote">Tip: Cmd/Ctrl+V anywhere in this dialog pastes a screenshot.</p>
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
-<label>Ticket number (for dedupe — the long number or rättningskod on the receipt)</label>
+<label>Ticket number</label>
 <input type="text" id="tixno" placeholder="e.g. D2F6 4828 7800 2027">
 <div id="tixlegs"></div>
 <p class="mnote err" id="tixerr" style="display:none"></p>
@@ -252,7 +249,7 @@ document.addEventListener("click",function(ev){
 window.tixOpen=function(){
   var box=document.getElementById("tixlegs"); box.innerHTML="";
   Object.keys(TM.legs).sort(function(a,b){return a-b;}).forEach(function(l){
-    box.innerHTML += "<label>Leg "+l+" — horses (e.g. 2, 3, 5)</label>"+
+    box.innerHTML += "<label>Leg "+l+"</label>"+
       "<input type='text' class='tixleg' data-leg='"+l+"' inputmode='numeric'>";
   });
   document.getElementById("tixmodal").style.display="flex";
