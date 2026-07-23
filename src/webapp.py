@@ -309,6 +309,7 @@ CSS = """
   .stamp-time{ font-size:19px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25; }
   .stamp-note{ font-size:10px; opacity:.8; line-height:1.35; margin-top:2px; }
   .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; align-items:start; }
+  .legrow{ display:contents; }
   @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
   .tile{ background:var(--card); border:1px solid var(--line); border-radius:10px;
     padding:12px 14px 10px; break-inside:avoid; }
@@ -416,9 +417,12 @@ CSS = """
   @media print{
     :root{ --muted:#3A3733; --pick:#1E4A33; --exp:#6B4413; --line:#999; }
     body{ background:#fff; color:#000; padding:0; }
-    main{ max-width:none; } .grid{ gap:10px; grid-template-columns:repeat(2,1fr); }
-    .tile{ border-color:#888; } .printbtn{ display:none; } body{ font-size:10px; }
-    .printslip{ display:block; break-before:page; padding-top:24px; }
+    main{ max-width:none; } .grid{ display:block; }
+    .legrow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;
+      page-break-after:always; break-inside:avoid; page-break-inside:avoid; margin-bottom:0; }
+    .tile{ border-color:#888; break-inside:avoid; page-break-inside:avoid; }
+    .printbtn{ display:none; } footer{ display:none; } body{ font-size:10px; }
+    .printslip{ display:block; padding-top:24px; }
     .printslip .slipd{ height:auto; overflow:visible; box-shadow:none; margin:0 auto;
       border:1.5px dashed #999; }
     thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -601,7 +605,7 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 <button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button>
 </div>{stampbox(updated, start_dt.strftime('%H:%M'))}</div>
 {ticket_html}
-<div class="grid">{''.join(tiles)}</div>
+<div class="grid">{''.join('<div class="legrow">' + ''.join(tiles[i:i+2]) + '</div>' for i in range(0, len(tiles), 2))}</div>
 {printslip}
 <footer>
 <p class="legend-title">WHAT THE LABELS MEAN</p>
