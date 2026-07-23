@@ -253,7 +253,8 @@ TIX_HTML = """
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
 <label>Ticket number</label>
 <input type="text" id="tixno" placeholder="e.g. D2F6 4828 7800 2027">
-<div id="tixlegs"></div>
+<button type="button" class="mlink" id="tixmanbtn">✏️ Enter picks manually</button>
+<div id="tixmanual" style="display:none"><div id="tixlegs"></div></div>
 <p class="mnote err" id="tixerr" style="display:none"></p>
 <div class="mrow"><button class="mbtn save" onclick="tixSave()">Save ticket</button>
 <button class="mbtn" onclick="tixClose()">Cancel</button></div>
@@ -289,7 +290,13 @@ document.addEventListener("click",function(ev){
     else tixPaste(); return; }
   if(m) m.classList.remove("open");
 });
+document.addEventListener("click",function(ev){
+  if(ev.target && ev.target.id==="tixmanbtn"){
+    var d=document.getElementById("tixmanual");
+    d.style.display = d.style.display==="none" ? "block" : "none";
+  }});
 window.tixOpen=function(){
+  document.getElementById("tixmanual").style.display="none";
   var box=document.getElementById("tixlegs"); box.innerHTML="";
   Object.keys(TM.legs).sort(function(a,b){return a-b;}).forEach(function(l){
     box.innerHTML += "<label>Leg "+l+"</label>"+
@@ -326,6 +333,11 @@ window.tixSave=function(){
   var no=(document.getElementById("tixno").value||"").replace(/\s+/g," ").trim();
   var label=(document.getElementById("tixlabel").value||"Ticket").trim();
   if(!no){ err.textContent="Ticket number is required (it is how duplicates are caught).";
+    err.style.display="block"; return; }
+  var man=document.getElementById("tixmanual");
+  if(man.style.display==="none"){
+    man.style.display="block";
+    err.textContent="Type the picks for each leg so the ticket can be compared.";
     err.style.display="block"; return; }
   var picks={}, bad=null;
   document.querySelectorAll(".tixleg").forEach(function(inp){
@@ -409,6 +421,8 @@ TIX_CSS = """
   .mbtn{ flex:1; padding:9px; border-radius:7px; border:1px solid var(--line);
     background:none; color:var(--ink); font:600 13px/1 "Avenir Next",system-ui,sans-serif; cursor:pointer; }
   .mbtn.save{ background:var(--pick); border-color:var(--pick); color:#fff; }
+  .mlink{ background:none; border:none; color:var(--pick); font:600 13px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
+    cursor:pointer; padding:0; margin:14px 0 0; text-decoration:underline; display:block; }
   .cmp{ display:none; margin-top:40px; }
   .cmp.hasusr{ display:block; }
   .cmp table{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
