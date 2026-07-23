@@ -156,6 +156,10 @@ ROW_PRICE = {"V64": 1.0, "V65": 1.0, "V75": 0.5, "V86": 0.25, "GS75": 0.25}
 TICKET_BUDGET = 50.0   # kronor
 MAX_PER_LEG = 5
 
+# FAMILY RULE — non-negotiable, overrides all statistics:
+# Pralines is Jan's own horse. When she races, she IS the spik. Always.
+FAMILY_SPIKS = {"pralines": "Jans häst"}
+
 
 def build_ticket(legs, gtype):
     """Greedy budget allocator: repeatedly add the horse that buys the most
@@ -163,8 +167,14 @@ def build_ticket(legs, gtype):
     legs where the top horse is strong (additions there are inefficient)."""
     import math
     price = ROW_PRICE.get(gtype, 1.0)
+    forced = {}
+    for leg, horses in legs.items():
+        for h in horses:
+            if h["horse"].strip().lower() in FAMILY_SPIKS:
+                forced[leg] = h
     sel = {leg: 1 for leg in legs}            # horses taken from the top of each leg
-    cov = {leg: legs[leg][0]["model"] / 100 for leg in legs}
+    cov = {leg: (forced[leg]["model"] / 100 if leg in forced
+                 else legs[leg][0]["model"] / 100) for leg in legs}
 
     def rows():
         r = 1
@@ -176,6 +186,8 @@ def build_ticket(legs, gtype):
         best, best_eff = None, 0.0
         base_rows = rows()
         for leg, horses in legs.items():
+            if leg in forced:
+                continue  # family rule: spik stays a spik, no additions
             k = sel[leg]
             if k >= min(MAX_PER_LEG, len(horses)):
                 continue
@@ -196,12 +208,18 @@ def build_ticket(legs, gtype):
     hit_all = 1.0
     for leg in legs:
         hit_all *= min(cov[leg], 0.99)
-    return {
-        "picks": {leg: [h["nr"] for h in legs[leg][:sel[leg]]] for leg in legs},
-        "spiks": {leg: legs[leg][0] for leg in legs if sel[leg] == 1},
-        "rows": rows(), "price": price, "cost": rows() * price,
-        "hit_all": hit_all,
-    }
+    picks, spiks = {}, {}
+    for leg in legs:
+        if leg in forced:
+            picks[leg] = [forced[leg]["nr"]]
+            spiks[leg] = {**forced[leg], "family": True}
+        else:
+            picks[leg] = [h["nr"] for h in legs[leg][:sel[leg]]]
+            if sel[leg] == 1:
+                spiks[leg] = {**legs[leg][0], "family": False}
+    return {"picks": picks, "spiks": spiks,
+            "rows": rows(), "price": price, "cost": rows() * price,
+            "hit_all": hit_all}
 
 
 # ---------- model reasoning ----------
@@ -497,12 +515,15 @@ def render_game(game, data, updated):
     for leg in sorted(ticket["picks"]):
         if leg in ticket["spiks"]:
             sp = ticket["spiks"][leg]
-            val = f"{sp['nr']} {esc(sp['horse'])} ★"
+            heart = " ♥" if sp.get("family") else ""
+            val = f"{sp['nr']} {esc(sp['horse'])} ★{heart}"
         else:
             val = ", ".join(str(n) for n in ticket["picks"][leg])
         tro.append(f"<tr><td class='avd'>{leg}</td><td class='hst'>{val}</td></tr>")
     mult = "×".join(str(len(ticket["picks"][leg])) for leg in sorted(ticket["picks"]))
     price_str = f"{ticket['price']:.2f}".rstrip("0").rstrip(".")
+    fam_note = "".join(f"♥ FAMILJEREGEL: {esc(h['horse'])} är Jans häst — alltid spik, oavsett statistik. "
+                       for h in ticket["spiks"].values() if h.get("family"))
     ticket_html = f"""<aside class="tdrawer" id="tdrawer">
 <button class="ttab" onclick="tdT()">🎟️ KUPONG</button>
 <div class="slipd">
@@ -519,7 +540,7 @@ def render_game(game, data, updated):
   <div class="drow"><span>{mult}</span><b>= {ticket['rows']} rader</b></div>
   <div class="drow"><span>{ticket['rows']} × {price_str} kr</span><b>{ticket['cost']:.2f} kr</b></div>
   <div class="dtotal"><span>TOTALT</span><b>{ticket['cost']:.2f} kr</b></div>
-  <p class="dnote">Modellens egen chans: ~{100*ticket['hit_all']:.0f}% att pricka alla {len(ticket['picks'])}.
+  <p class="dnote">{fam_note}Modellens egen chans: ~{100*ticket['hit_all']:.0f}% att pricka alla {len(ticket['picks'])}.
   Byggs om vid varje datauppdatering — kupongen kan ändras. ★ = spik.
   Inget giltigt spel — spela hos atg.se om du vill.</p>
   <div class="dstamp">EJ GILTIGT SPEL<small>ENDAST SKRYTRÄTTIGHETER</small></div>
