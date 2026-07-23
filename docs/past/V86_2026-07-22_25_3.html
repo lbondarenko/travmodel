@@ -346,14 +346,14 @@ window.tixPaste=function(){
 };
 window.tixSave=function(){
   var err=document.getElementById("tixerr"); err.style.display="none";
-  var no=(document.getElementById("tixno").value||"").replace(/\s+/g," ").trim();
-  var label=(document.getElementById("tixlabel").value||"Ticket").trim();
-  if(!no){ err.textContent="Ticket number is required (it is how duplicates are caught).";
-    err.style.display="block"; return; }
   var man=document.getElementById("tixmanual");
   if(man.style.display==="none"){
     man.style.display="block";
-    err.textContent="Fill in the ticket details so it can be compared.";
+    err.textContent="Almost there — add the ticket number and picks below so the ticket can be compared.";
+    err.style.display="block"; return; }
+  var no=(document.getElementById("tixno").value||"").replace(/\s+/g," ").trim();
+  var label=(document.getElementById("tixlabel").value||"Ticket").trim();
+  if(!no){ err.textContent="Ticket number is required (it is how duplicates are caught).";
     err.style.display="block"; return; }
   var picks={}, bad=null;
   document.querySelectorAll(".tixleg").forEach(function(inp){
