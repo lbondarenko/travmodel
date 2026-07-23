@@ -380,6 +380,11 @@ CSS = """
   tr.fam td:nth-child(2){ color:var(--fam); font-weight:700; }
   .gamecard.famcard{ border-color:var(--fam); border-width:2px; }
   .gamecard.famcard:hover{ border-color:var(--fam); }
+  .printbtn{ margin-top:10px; background:none; border:1px solid var(--line); border-radius:7px;
+    padding:5px 12px; font:600 12px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
+    color:var(--ink); cursor:pointer; }
+  .printbtn:hover{ border-color:var(--pick); color:var(--pick); }
+  .printslip{ display:none; }
   .cards{ display:flex; flex-direction:column; gap:14px; }
   .gamecard{ display:block; text-decoration:none; background:var(--card);
     border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
@@ -411,7 +416,11 @@ CSS = """
   @media print{
     :root{ --muted:#3A3733; --pick:#1E4A33; --exp:#6B4413; --line:#999; }
     body{ background:#fff; color:#000; padding:0; }
-    main{ max-width:none; } .grid{ gap:10px; } .tile{ border-color:#888; }
+    main{ max-width:none; } .grid{ gap:10px; grid-template-columns:repeat(2,1fr); }
+    .tile{ border-color:#888; } .printbtn{ display:none; } body{ font-size:10px; }
+    .printslip{ display:block; break-before:page; padding-top:24px; }
+    .printslip .slipd{ height:auto; overflow:visible; box-shadow:none; margin:0 auto;
+      border:1.5px dashed #999; }
     thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     .stampbox{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     tr.top td{ background:#EDF3EE !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -553,9 +562,7 @@ def render_game(game, data, updated):
     price_str = f"{ticket['price']:.2f}".rstrip("0").rstrip(".")
     fam_note = "".join(f"♥ FAMILJEREGEL: {esc(h['horse'])} är Jans häst — alltid spik, oavsett statistik. "
                        for h in ticket["spiks"].values() if h.get("family"))
-    ticket_html = f"""<aside class="tdrawer" id="tdrawer">
-<button class="ttab" onclick="tdT()">🎟️ KUPONG</button>
-<div class="slipd">
+    slip_inner = f"""
   <p class="dlogo">TRAVMODEL<span>™</span></p>
   <p class="dtag">TEAM LILLIAN × CLAUDE · FAMILJENS EGET SPELBOLAG</p>
   <hr class="drule solid">
@@ -573,11 +580,13 @@ def render_game(game, data, updated):
   Byggs om vid varje datauppdatering — kupongen kan ändras. ★ = spik.
   Inget giltigt spel — spela hos atg.se om du vill.</p>
   <div class="dstamp">EJ GILTIGT SPEL<small>ENDAST SKRYTRÄTTIGHETER</small></div>
-</div></aside>""" + """<script>
+"""
+    ticket_html = ("""<aside class="tdrawer" id="tdrawer">\n<button class="ttab" onclick="tdT()">🎟️ KUPONG</button>\n<div class="slipd">""" + slip_inner + '</div></aside>') + """<script>
 function tdT(){var d=document.getElementById('tdrawer');var o=d.classList.toggle('open');
 try{localStorage.setItem('tm_drawer',o?'1':'0');}catch(e){}}
 try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer').classList.add('open');}catch(e){}
 </script>"""
+    printslip = '<div class="printslip"><div class="slipd">' + slip_inner + "</div></div>"
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="600">
@@ -589,9 +598,11 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 <h1><a href="../index.html">←</a> {data['type']} {esc(data['track'])} · {start_dt.strftime('%A %d %B %Y')}</h1>
 <p class="sub">First start {start_dt.strftime('%H:%M')} · streck (share of tickets) vs Lillian's Model
 (win probability) · green rows = model's top of the leg · program comments under each table</p>
+<button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button>
 </div>{stampbox(updated, start_dt.strftime('%H:%M'))}</div>
 {ticket_html}
 <div class="grid">{''.join(tiles)}</div>
+{printslip}
 <footer>
 <p class="legend-title">WHAT THE LABELS MEAN</p>
 <dl class="legend">

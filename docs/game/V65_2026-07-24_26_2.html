@@ -98,6 +98,11 @@
   tr.fam td:nth-child(2){ color:var(--fam); font-weight:700; }
   .gamecard.famcard{ border-color:var(--fam); border-width:2px; }
   .gamecard.famcard:hover{ border-color:var(--fam); }
+  .printbtn{ margin-top:10px; background:none; border:1px solid var(--line); border-radius:7px;
+    padding:5px 12px; font:600 12px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
+    color:var(--ink); cursor:pointer; }
+  .printbtn:hover{ border-color:var(--pick); color:var(--pick); }
+  .printslip{ display:none; }
   .cards{ display:flex; flex-direction:column; gap:14px; }
   .gamecard{ display:block; text-decoration:none; background:var(--card);
     border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
@@ -129,7 +134,11 @@
   @media print{
     :root{ --muted:#3A3733; --pick:#1E4A33; --exp:#6B4413; --line:#999; }
     body{ background:#fff; color:#000; padding:0; }
-    main{ max-width:none; } .grid{ gap:10px; } .tile{ border-color:#888; }
+    main{ max-width:none; } .grid{ gap:10px; grid-template-columns:repeat(2,1fr); }
+    .tile{ border-color:#888; } .printbtn{ display:none; } body{ font-size:10px; }
+    .printslip{ display:block; break-before:page; padding-top:24px; }
+    .printslip .slipd{ height:auto; overflow:visible; box-shadow:none; margin:0 auto;
+      border:1.5px dashed #999; }
     thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     .stampbox{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     tr.top td{ background:#EDF3EE !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -145,8 +154,9 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
 <h1><a href="../index.html">←</a> V65 Solänget · Friday 24 July 2026</h1>
 <p class="sub">First start 12:45 · streck (share of tickets) vs Lillian's Model
 (win probability) · green rows = model's top of the leg · program comments under each table</p>
+<button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button>
 </div><div class="stampbox"><span class="stamp-label">DATA SNAPSHOT</span>
-<span class="stamp-time">Thu 23 Jul · 13:01</span>
+<span class="stamp-time">Thu 23 Jul · 13:04</span>
 <span class="stamp-note">streck &amp; odds move until post 12:45 — auto-updates hourly, every 30 min in the last 4 h</span></div></div>
 <aside class="tdrawer" id="tdrawer">
 <button class="ttab" onclick="tdT()">🎟️ KUPONG</button>
@@ -157,7 +167,7 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
   <div class="drow"><span>Spel</span><b>V65</b></div>
   <div class="drow"><span>Bana</span><b>Solänget</b></div>
   <div class="drow"><span>Start</span><b>Fri 24 Jul · 12:45</b></div>
-  <div class="drow"><span>Data</span><b>Thu 23 Jul · 13:01</b></div>
+  <div class="drow"><span>Data</span><b>Thu 23 Jul · 13:04</b></div>
   <hr class="drule">
   <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR</th></tr><tr><td class='avd'>1</td><td class='hst'>3 Tougherthanothers ★</td></tr><tr><td class='avd'>2</td><td class='hst'>2, 5</td></tr><tr><td class='avd'>3</td><td class='hst'>2, 3, 9, 7</td></tr><tr><td class='avd'>4</td><td class='hst'>4, 7, 1</td></tr><tr><td class='avd'>5</td><td class='hst'>1, 3</td></tr><tr><td class='avd'>6</td><td class='hst'>4 Ajlexes MagicWoman ★</td></tr></table>
   <hr class="drule">
@@ -198,6 +208,25 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 <table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th>Streck</th><th>Model</th></tr></thead>
 <tbody><tr class='top'><td class='nr'>4</td><td>Ajlexes MagicWoman</td><td class='drv'>T.Pettersson</td><td class='num'>38.6%</td><td class='num strong'>48.4%</td></tr><tr class=''><td class='nr'>9</td><td>Montana U.B. <span class='flag value'>VALUE</span></td><td class='drv'>R.Skoglund</td><td class='num'>13.3%</td><td class='num strong'>18.0%</td></tr><tr class=''><td class='nr'>3</td><td>Who's Malvina <span class='flag value'>VALUE</span></td><td class='drv'>H.Svensson</td><td class='num'>2.5%</td><td class='num strong'>9.1%</td></tr><tr class=''><td class='nr'>1</td><td>Hervey Island</td><td class='drv'>S.Osterling</td><td class='num'>14.2%</td><td class='num strong'>8.3%</td></tr><tr class=''><td class='nr'>5</td><td>This Love</td><td class='drv'>U.Ohlsson</td><td class='num'>10.3%</td><td class='num strong'>4.2%</td></tr><tr class=''><td class='nr'>10</td><td>Happy Girl</td><td class='drv'>J.Åsberg</td><td class='num'>2.3%</td><td class='num strong'>4.1%</td></tr><tr class=''><td class='nr'>8</td><td>Nova J.C.</td><td class='drv'>O.Lindqvist</td><td class='num'>1.2%</td><td class='num strong'>3.8%</td></tr><tr class=''><td class='nr'>7</td><td>Dior Dalie</td><td class='drv'>M.Lilius</td><td class='num'>0.8%</td><td class='num strong'>1.6%</td></tr><tr class=''><td class='nr'>2</td><td>Crazy Janey</td><td class='drv'>M.Viklund</td><td class='num'>10.2%</td><td class='num strong'>1.4%</td></tr><tr class=''><td class='nr'>6</td><td>Girlpower W.F.</td><td class='drv'>J.Norberg</td><td class='num'>1.9%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>11</td><td>Perez Mora Boko</td><td class='drv'>K.Svedlund</td><td class='num'>4.6%</td><td class='num strong'>0.5%</td></tr></tbody></table>
 <div class="infos"><p class='sechead tr'>TR MEDIA</p><p class='info'><b>#4 Ajlexes MagicWoman</b> (T.Pettersson) — Ajlexes MagicWoman has the fastest record in the field in Sweden over tonight's distance with volt start 2025-2026 - 14,0/2100.</p><p class='info'><b>#9 Montana U.B.</b> (R.Skoglund) — Montana U.B. has finished top-3 in six of twelve starts from a handicap mark (50%).</p><p class='info'><b>#3 Who's Malvina</b> (H.Svensson) — Who's Malvina has finished top-3 in four of ten starts over tonight's distance (40%).</p><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#4 Ajlexes MagicWoman</b> (48%) — shoe change tonight · has raced at higher purse levels (class edge) · trainer wins 12%</p><p class='info'><b>#9 Montana U.B.</b> (18%) — top speed figure (-8.0s vs a typical winner) — caution: 2 gallops in last 5</p></div></article></div>
+<div class="printslip"><div class="slipd">
+  <p class="dlogo">TRAVMODEL<span>™</span></p>
+  <p class="dtag">TEAM LILLIAN × CLAUDE · FAMILJENS EGET SPELBOLAG</p>
+  <hr class="drule solid">
+  <div class="drow"><span>Spel</span><b>V65</b></div>
+  <div class="drow"><span>Bana</span><b>Solänget</b></div>
+  <div class="drow"><span>Start</span><b>Fri 24 Jul · 12:45</b></div>
+  <div class="drow"><span>Data</span><b>Thu 23 Jul · 13:04</b></div>
+  <hr class="drule">
+  <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR</th></tr><tr><td class='avd'>1</td><td class='hst'>3 Tougherthanothers ★</td></tr><tr><td class='avd'>2</td><td class='hst'>2, 5</td></tr><tr><td class='avd'>3</td><td class='hst'>2, 3, 9, 7</td></tr><tr><td class='avd'>4</td><td class='hst'>4, 7, 1</td></tr><tr><td class='avd'>5</td><td class='hst'>1, 3</td></tr><tr><td class='avd'>6</td><td class='hst'>4 Ajlexes MagicWoman ★</td></tr></table>
+  <hr class="drule">
+  <div class="drow"><span>1×2×4×3×2×1</span><b>= 48 rader</b></div>
+  <div class="drow"><span>48 × 1 kr</span><b>48.00 kr</b></div>
+  <div class="dtotal"><span>TOTALT</span><b>48.00 kr</b></div>
+  <p class="dnote">Modellens egen chans: ~7% att pricka alla 6.
+  Byggs om vid varje datauppdatering — kupongen kan ändras. ★ = spik.
+  Inget giltigt spel — spela hos atg.se om du vill.</p>
+  <div class="dstamp">EJ GILTIGT SPEL<small>ENDAST SKRYTRÄTTIGHETER</small></div>
+</div></div>
 <footer>
 <p class="legend-title">WHAT THE LABELS MEAN</p>
 <dl class="legend">
