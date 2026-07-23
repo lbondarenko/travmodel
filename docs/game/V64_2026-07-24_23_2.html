@@ -1,0 +1,107 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="600">
+<title>V64 Romme Fri 24 Jul 19:30 — Lillian's Model</title>
+<style>
+  :root{ --bg:#FAF8F3; --ink:#26241F; --muted:#867F73; --line:#E3DED4;
+    --pick:#2E6B4A; --pick-bg:#EDF3EE; --head-bg:#26241F; --head-ink:#FAF8F3;
+    --exp:#8A5A1E; --card:#FFFFFF; }
+  @media (prefers-color-scheme: dark){ :root{ --bg:#181A16; --ink:#E9E6DD; --muted:#98937F;
+    --line:#37392F; --pick:#8CC3A4; --pick-bg:#26312A; --head-bg:#E9E6DD; --head-ink:#1D1F1B;
+    --exp:#D4A860; --card:#22241F; } }
+  *{ box-sizing:border-box; } html,body{ margin:0; }
+  body{ background:var(--bg); color:var(--ink); line-height:1.45; padding:36px 18px 60px;
+    font-family:"Avenir Next","Seravek",Seravek,system-ui,-apple-system,sans-serif; }
+  main{ max-width:960px; margin:0 auto; }
+  h1{ font-size:clamp(20px,3.5vw,26px); font-weight:600; margin:0 0 3px; letter-spacing:-.01em; }
+  .sub{ color:var(--muted); font-size:13px; margin:0; }
+  a{ color:inherit; }
+  .pagehead{ position:relative; margin-bottom:20px; padding-right:270px; }
+  .stampbox{ position:absolute; top:0; right:0; display:flex; flex-direction:column; gap:1px;
+    width:250px; background:var(--head-bg); color:var(--head-ink); border-radius:8px;
+    padding:9px 13px; border-left:5px solid var(--exp); }
+  @media (max-width:640px){ .pagehead{ padding-right:0; }
+    .stampbox{ position:static; margin-top:10px; width:auto; max-width:280px; } }
+  .stamp-label{ font-size:9px; font-weight:700; letter-spacing:.18em; opacity:.75; }
+  .stamp-time{ font-size:19px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25; }
+  .stamp-note{ font-size:10px; opacity:.8; line-height:1.35; margin-top:2px; }
+  .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; align-items:start; }
+  @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
+  .tile{ background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px 10px; break-inside:avoid; }
+  .leghead{ display:flex; gap:10px; align-items:baseline; border-bottom:2px solid var(--ink);
+    padding-bottom:4px; margin-bottom:2px; }
+  .leghead h2{ font-size:15px; margin:0; }
+  .leghead .meta{ color:var(--muted); font-size:11px; }
+  table{ border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; }
+  th,td{ padding:3.5px 6px; text-align:left; font-size:12px; }
+  thead th{ background:var(--head-bg); color:var(--head-ink); font-size:9.5px; letter-spacing:.07em; }
+  th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4){ text-align:right; }
+  tbody tr{ border-bottom:1px solid var(--line); }
+  td.nr{ color:var(--muted); width:22px; }
+  td.num{ white-space:nowrap; } td.strong{ font-weight:600; }
+  tr.top td{ background:var(--pick-bg); }
+  tr.top td:nth-child(2){ color:var(--pick); font-weight:700; }
+  .flag{ font-size:9px; font-weight:700; letter-spacing:.08em; border-radius:3px; padding:0 4px; }
+  .flag.value{ color:var(--pick); border:1px solid currentColor; }
+  .flag.over{ color:var(--exp); border:1px solid currentColor; }
+  .infos{ margin-top:8px; }
+  .info{ margin:0 0 5px; font-size:11px; color:var(--muted); line-height:1.5; }
+  .info b{ color:var(--pick); }
+  .cards{ display:flex; flex-direction:column; gap:14px; }
+  .gamecard{ display:block; text-decoration:none; background:var(--card);
+    border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
+  .gamecard:hover{ border-color:var(--pick); }
+  .gamecard .row1{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .gamecard .gt{ font-size:20px; font-weight:700; }
+  .gamecard .when{ font-size:14px; font-variant-numeric:tabular-nums; color:var(--muted); }
+  .gamecard .row2{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    margin-top:4px; font-size:12.5px; color:var(--muted); }
+  .fresh{ color:var(--pick); font-weight:600; }
+  footer{ margin-top:24px; padding-top:10px; border-top:1px solid var(--line);
+    font-size:10.5px; color:var(--muted); line-height:1.6; }
+  @media print{
+    :root{ --muted:#3A3733; --pick:#1E4A33; --exp:#6B4413; --line:#999; }
+    body{ background:#fff; color:#000; padding:0; }
+    main{ max-width:none; } .grid{ gap:10px; } .tile{ border-color:#888; }
+    thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .stampbox{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    tr.top td{ background:#EDF3EE !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .info, .sub, footer, .leghead .meta, td.nr{ color:#3A3733; }
+  }
+</style></head><body><main>
+<div class="pagehead"><div>
+<h1><a href="../index.html">←</a> V64 Romme · Friday 24 July 2026</h1>
+<p class="sub">First start 19:30 · streck (share of tickets) vs Lillian's Model
+(win probability) · green rows = model's top of the leg · program comments under each table</p>
+</div><div class="stampbox"><span class="stamp-label">DATA SNAPSHOT</span>
+<span class="stamp-time">Thu 23 Jul · 11:24</span>
+<span class="stamp-note">streck &amp; odds move until post 19:30 — auto-updates hourly, every 30 min in the last 4 h</span></div></div>
+<div class="grid"><article class="tile">
+<div class="leghead"><h2>Leg 1</h2><span class="meta">3140m volte</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Streck</th><th>Model</th></tr></thead>
+<tbody><tr class='top'><td class='nr'>8</td><td>Imperatur Am <span class='flag value'>VALUE</span></td><td class='num'>10.6%</td><td class='num strong'>26.3%</td></tr><tr class='top'><td class='nr'>3</td><td>Ninepoints King <span class='flag value'>VALUE</span></td><td class='num'>8.5%</td><td class='num strong'>25.1%</td></tr><tr class=''><td class='nr'>9</td><td>High on Pepper <span class='flag over'>OVERBET</span></td><td class='num'>24.0%</td><td class='num strong'>14.0%</td></tr><tr class=''><td class='nr'>1</td><td>Rarely Access <span class='flag value'>VALUE</span></td><td class='num'>4.3%</td><td class='num strong'>12.0%</td></tr><tr class=''><td class='nr'>4</td><td>Matiere <span class='flag over'>OVERBET</span></td><td class='num'>17.4%</td><td class='num strong'>11.0%</td></tr><tr class=''><td class='nr'>2</td><td>King of the World <span class='flag over'>OVERBET</span></td><td class='num'>17.2%</td><td class='num strong'>9.4%</td></tr><tr class=''><td class='nr'>5</td><td>That's So Clever</td><td class='num'>1.2%</td><td class='num strong'>1.0%</td></tr><tr class=''><td class='nr'>7</td><td>Frank S.H.</td><td class='num'>3.5%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>6</td><td>Västerbo Exciting</td><td class='num'>13.4%</td><td class='num strong'>0.5%</td></tr></tbody></table>
+<div class="infos"><p class='info'><b>#8 Imperatur Am</b> (M.Schön) — Imperatur Am har varit bland de tre främsta i tre av tre starter i Sverige från tillägg (100%).</p><p class='info'><b>#3 Ninepoints King</b> (O.Östre) — Ninepoints King har startat sex gånger på sommaren och vunnit tre av dessa (50%).</p><p class='info'><b>#9 High on Pepper</b> (R.Skoglund) — High On Pepper har snabbaste rekordtiden i fältet i Sverige över aktuell distans med voltstart 2025-2026 - 12,1/3000.</p></div></article><article class="tile">
+<div class="leghead"><h2>Leg 2</h2><span class="meta">2140m volte · ★ spik candidate</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Streck</th><th>Model</th></tr></thead>
+<tbody><tr class='top'><td class='nr'>11</td><td>Here I Come <span class='flag value'>VALUE</span></td><td class='num'>28.4%</td><td class='num strong'>55.0%</td></tr><tr class=''><td class='nr'>4</td><td>Roswitha Boko <span class='flag value'>VALUE</span></td><td class='num'>5.1%</td><td class='num strong'>11.4%</td></tr><tr class=''><td class='nr'>14</td><td>Surpriced Tooma <span class='flag value'>VALUE</span></td><td class='num'>7.6%</td><td class='num strong'>11.2%</td></tr><tr class=''><td class='nr'>5</td><td>Whysoserious <span class='flag value'>VALUE</span></td><td class='num'>0.6%</td><td class='num strong'>8.2%</td></tr><tr class=''><td class='nr'>10</td><td>Muguet d'Erable</td><td class='num'>4.2%</td><td class='num strong'>4.6%</td></tr><tr class=''><td class='nr'>8</td><td>Kilja H.T.V.</td><td class='num'>0.1%</td><td class='num strong'>1.8%</td></tr><tr class=''><td class='nr'>7</td><td>Macchina Vincente <span class='flag over'>OVERBET</span></td><td class='num'>22.8%</td><td class='num strong'>1.3%</td></tr><tr class=''><td class='nr'>2</td><td>Lady Monique</td><td class='num'>4.1%</td><td class='num strong'>1.2%</td></tr><tr class=''><td class='nr'>13</td><td>Penny Vrijthout</td><td class='num'>4.8%</td><td class='num strong'>0.9%</td></tr><tr class=''><td class='nr'>1</td><td>Kelsey Zet</td><td class='num'>10.8%</td><td class='num strong'>0.9%</td></tr><tr class=''><td class='nr'>3</td><td>Manalishi Storm</td><td class='num'>6.0%</td><td class='num strong'>0.8%</td></tr><tr class=''><td class='nr'>9</td><td>Mellby Online</td><td class='num'>3.5%</td><td class='num strong'>0.8%</td></tr><tr class=''><td class='nr'>6</td><td>Pure Image</td><td class='num'>1.2%</td><td class='num strong'>0.8%</td></tr><tr class=''><td class='nr'>15</td><td>Chamsin</td><td class='num'>0.9%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>12</td><td>Treasure</td><td class='num'>0.0%</td><td class='num strong'>0.5%</td></tr></tbody></table>
+<div class="infos"><p class='info'><b>#11 Here I Come</b> (P.Lundberg) — Here I Come har tjänat mest pengar i startfältet.</p><p class='info'><b>#4 Roswitha Boko</b> (R.Skoglund) — Katja Melkko har fyra tränarsegrar på 22 starter den senaste månaden (18%).</p><p class='info'><b>#14 Surpriced Tooma</b> (C.Sjöström) — Surpriced Tooma har varit bland de tre främsta i tre av fem starter från tillägg (60%).</p></div></article><article class="tile">
+<div class="leghead"><h2>Leg 3</h2><span class="meta">2140m auto</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Streck</th><th>Model</th></tr></thead>
+<tbody><tr class='top'><td class='nr'>7</td><td>Olympia Sting <span class='flag value'>VALUE</span></td><td class='num'>9.9%</td><td class='num strong'>36.0%</td></tr><tr class='top'><td class='nr'>5</td><td>Peaceful Day <span class='flag value'>VALUE</span></td><td class='num'>4.9%</td><td class='num strong'>25.4%</td></tr><tr class=''><td class='nr'>4</td><td>Last Cool Cash <span class='flag over'>OVERBET</span></td><td class='num'>36.1%</td><td class='num strong'>19.1%</td></tr><tr class=''><td class='nr'>6</td><td>Puskas Boko <span class='flag over'>OVERBET</span></td><td class='num'>37.3%</td><td class='num strong'>11.6%</td></tr><tr class=''><td class='nr'>2</td><td>Mr Moustache</td><td class='num'>0.4%</td><td class='num strong'>3.1%</td></tr><tr class=''><td class='nr'>1</td><td>The Pope</td><td class='num'>3.0%</td><td class='num strong'>2.7%</td></tr><tr class=''><td class='nr'>3</td><td>Monte Rei</td><td class='num'>8.2%</td><td class='num strong'>2.1%</td></tr></tbody></table>
+<div class="infos"><p class='info'><b>#7 Olympia Sting</b> (C.Sjöström) — Olympia Sting är obesegrad på två starter på Romme (100%).</p><p class='info'><b>#5 Peaceful Day</b> (R.Skoglund) — Peaceful Day är obesegrad på två försök i spets (100%).</p><p class='info'><b>#4 Last Cool Cash</b> (M.Djuse) — Last Cool Cash har två segrar på fem starter i nuvarande regi (40%).</p></div></article><article class="tile">
+<div class="leghead"><h2>Leg 4</h2><span class="meta">2140m auto · ★ spik candidate</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Streck</th><th>Model</th></tr></thead>
+<tbody><tr class='top'><td class='nr'>7</td><td>Nightbird <span class='flag value'>VALUE</span></td><td class='num'>31.1%</td><td class='num strong'>68.1%</td></tr><tr class=''><td class='nr'>2</td><td>Håsjökometen <span class='flag value'>VALUE</span></td><td class='num'>2.7%</td><td class='num strong'>19.3%</td></tr><tr class=''><td class='nr'>4</td><td>Joe's Legacy Games <span class='flag over'>OVERBET</span></td><td class='num'>34.5%</td><td class='num strong'>8.2%</td></tr><tr class=''><td class='nr'>5</td><td>Lucky Weekend</td><td class='num'>1.1%</td><td class='num strong'>0.7%</td></tr><tr class=''><td class='nr'>10</td><td>Aloha</td><td class='num'>4.0%</td><td class='num strong'>0.7%</td></tr><tr class=''><td class='nr'>9</td><td>Maximus Express</td><td class='num'>11.5%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>6</td><td>Neal of Sugar</td><td class='num'>3.1%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>1</td><td>Perfect Gentleman</td><td class='num'>6.5%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>8</td><td>El Jefe</td><td class='num'>0.5%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>3</td><td>Noar</td><td class='num'>5.0%</td><td class='num strong'>0.6%</td></tr></tbody></table>
+<div class="infos"><p class='info'><b>#7 Nightbird</b> (M.Djuse) — Daniel Redén har högst segerprocent i Sverige bland tränarna i fältet senaste året (25%).</p><p class='info'><b>#2 Håsjökometen</b> (R.Skoglund) — Rikard N Skoglund har 206 segrar på 1611 uppsittningar senaste året i Sverige (13%).</p><p class='info'><b>#4 Joe's Legacy Games</b> (J.Kontio) — Joe's Legacy Games(FI) är obesegrad på tre starter med Jorma Kontio i sulkyn (100%).</p></div></article><article class="tile">
+<div class="leghead"><h2>Leg 5</h2><span class="meta">2140m auto · ★ spik candidate</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Streck</th><th>Model</th></tr></thead>
+<tbody><tr class='top'><td class='nr'>6</td><td>Emerald Broline</td><td class='num'>55.4%</td><td class='num strong'>67.0%</td></tr><tr class=''><td class='nr'>2</td><td>Fabulous Gent</td><td class='num'>12.4%</td><td class='num strong'>7.8%</td></tr><tr class=''><td class='nr'>12</td><td>Bill Woodland</td><td class='num'>0.0%</td><td class='num strong'>7.7%</td></tr><tr class=''><td class='nr'>11</td><td>Montanaro</td><td class='num'>6.6%</td><td class='num strong'>7.7%</td></tr><tr class=''><td class='nr'>10</td><td>Twigs Like U.</td><td class='num'>1.9%</td><td class='num strong'>3.3%</td></tr><tr class=''><td class='nr'>5</td><td>Geisha Road Grif</td><td class='num'>6.3%</td><td class='num strong'>2.3%</td></tr><tr class=''><td class='nr'>9</td><td>Exclusive Creation</td><td class='num'>1.0%</td><td class='num strong'>1.2%</td></tr><tr class=''><td class='nr'>7</td><td>Pretty Effect</td><td class='num'>8.0%</td><td class='num strong'>0.7%</td></tr><tr class=''><td class='nr'>1</td><td>Ziva Bris</td><td class='num'>0.8%</td><td class='num strong'>0.7%</td></tr><tr class=''><td class='nr'>8</td><td>Spirit W.J.</td><td class='num'>0.1%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>3</td><td>Kentucky Shadow</td><td class='num'>2.9%</td><td class='num strong'>0.6%</td></tr><tr class=''><td class='nr'>4</td><td>Dominica Face</td><td class='num'>4.7%</td><td class='num strong'>0.4%</td></tr></tbody></table>
+<div class="infos"><p class='info'><b>#6 Emerald Broline</b> (M.Djuse) — Emerald Broline har två segrar på tre försök som favoritspelad på de större streckspelen (67%).</p><p class='info'><b>#2 Fabulous Gent</b> (C.Jepson) — Carl Johan Jepson har 26 segrar på 140 uppsittningar den senaste månaden i Sverige (19%).</p><p class='info'><b>#12 Bill Woodland</b> (I.Jansson Wiklund) — Bill Woodland har startat elva gånger på sommaren och varit bland de tre främsta i fyra av dessa (36%).</p></div></article><article class="tile">
+<div class="leghead"><h2>Leg 6</h2><span class="meta">1640m auto</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Streck</th><th>Model</th></tr></thead>
+<tbody><tr class='top'><td class='nr'>3</td><td>Pralines</td><td class='num'>38.0%</td><td class='num strong'>30.6%</td></tr><tr class='top'><td class='nr'>11</td><td>Tactic Lane <span class='flag value'>VALUE</span></td><td class='num'>6.0%</td><td class='num strong'>24.7%</td></tr><tr class=''><td class='nr'>4</td><td>Fashionable Dance <span class='flag value'>VALUE</span></td><td class='num'>1.7%</td><td class='num strong'>15.8%</td></tr><tr class=''><td class='nr'>1</td><td>Tom's Got Drive <span class='flag value'>VALUE</span></td><td class='num'>4.8%</td><td class='num strong'>10.2%</td></tr><tr class=''><td class='nr'>2</td><td>Römossan <span class='flag value'>VALUE</span></td><td class='num'>5.8%</td><td class='num strong'>8.9%</td></tr><tr class=''><td class='nr'>5</td><td>Blu Warlock <span class='flag over'>OVERBET</span></td><td class='num'>19.9%</td><td class='num strong'>5.2%</td></tr><tr class=''><td class='nr'>8</td><td>Maggie May Malt</td><td class='num'>2.9%</td><td class='num strong'>1.9%</td></tr><tr class=''><td class='nr'>12</td><td>Urano Unico</td><td class='num'>2.4%</td><td class='num strong'>0.8%</td></tr><tr class=''><td class='nr'>9</td><td>Okura Greenwood <span class='flag over'>OVERBET</span></td><td class='num'>16.8%</td><td class='num strong'>0.8%</td></tr><tr class=''><td class='nr'>7</td><td>Mellby Lovely</td><td class='num'>0.6%</td><td class='num strong'>0.7%</td></tr><tr class=''><td class='nr'>10</td><td>Formula Photo</td><td class='num'>0.8%</td><td class='num strong'>0.3%</td></tr></tbody></table>
+<div class="infos"><p class='info'><b>#3 Pralines</b> (C.Jepson) — Pralines har tre segrar på fyra försök som favoritspelad på de större streckspelen (75%).</p><p class='info'><b>#11 Tactic Lane</b> (R.Skoglund) — Tactic Lane har snabbaste rekordtiden i fältet i Sverige över aktuell distans med bilstart 2025-2026 - 11,4/1600.</p><p class='info'><b>#4 Fashionable Dance</b> (P.Lundberg) — Fashionable Dance har suttit i spets varvet kvar i fem av elva starter från spår 1-5 bakom bilen (45%).</p></div></article></div>
+<footer>Lillian's Model = travmodel v2 · conditional logit on 17,356 Nordic races · market-blended ·
+data from ATG's open API · page auto-reloads every 10 min · not betting advice, not a valid bet.</footer>
+</main></body></html>
