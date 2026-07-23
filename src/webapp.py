@@ -150,6 +150,60 @@ def score_game(game_id):
     return {"track": track, "type": gtype, "legs": legs, "legmeta": legmeta}
 
 
+# ---------- ticket builder ----------
+
+ROW_PRICE = {"V64": 1.0, "V65": 1.0, "V75": 0.5, "V86": 0.25, "GS75": 0.25}
+TICKET_BUDGET = 50.0   # kronor
+MAX_PER_LEG = 5
+
+
+def build_ticket(legs, gtype):
+    """Greedy budget allocator: repeatedly add the horse that buys the most
+    log-coverage per krona, until the budget is exhausted. Spiks emerge on
+    legs where the top horse is strong (additions there are inefficient)."""
+    import math
+    price = ROW_PRICE.get(gtype, 1.0)
+    sel = {leg: 1 for leg in legs}            # horses taken from the top of each leg
+    cov = {leg: legs[leg][0]["model"] / 100 for leg in legs}
+
+    def rows():
+        r = 1
+        for n in sel.values():
+            r *= n
+        return r
+
+    while True:
+        best, best_eff = None, 0.0
+        base_rows = rows()
+        for leg, horses in legs.items():
+            k = sel[leg]
+            if k >= min(MAX_PER_LEG, len(horses)):
+                continue
+            p_next = horses[k]["model"] / 100
+            new_cost = price * base_rows * (k + 1) / k
+            if new_cost > TICKET_BUDGET:
+                continue
+            gain = math.log((cov[leg] + p_next) / cov[leg])
+            added_cost = new_cost - price * base_rows
+            eff = gain / added_cost if added_cost > 0 else 0
+            if eff > best_eff:
+                best, best_eff = leg, eff
+        if best is None:
+            break
+        cov[best] += legs[best][sel[best]]["model"] / 100
+        sel[best] += 1
+
+    hit_all = 1.0
+    for leg in legs:
+        hit_all *= min(cov[leg], 0.99)
+    return {
+        "picks": {leg: [h["nr"] for h in legs[leg][:sel[leg]]] for leg in legs},
+        "spiks": {leg: legs[leg][0] for leg in legs if sel[leg] == 1},
+        "rows": rows(), "price": price, "cost": rows() * price,
+        "hit_all": hit_all,
+    }
+
+
 # ---------- model reasoning ----------
 
 def _phrase(name, r):
@@ -261,6 +315,20 @@ CSS = """
   p.sechead.tr, p.sechead.model{ color:var(--exp); }
   .info{ margin:0 0 5px; font-size:11px; color:var(--muted); line-height:1.5; }
   .info b{ color:var(--pick); }
+  .ticket{ background:var(--card); border:2px solid var(--pick); border-radius:12px;
+    padding:14px 16px 12px; margin-bottom:18px; }
+  .thead{ display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+    flex-wrap:wrap; border-bottom:2px solid var(--ink); padding-bottom:6px; margin-bottom:8px; }
+  .thead span:first-child{ font-size:12px; font-weight:700; letter-spacing:.16em; color:var(--pick); }
+  .thead .tsub{ font-size:10.5px; color:var(--muted); }
+  .tgrid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:6px 18px; }
+  .trow{ display:flex; gap:8px; align-items:baseline; font-size:14px;
+    font-variant-numeric:tabular-nums; }
+  .trow b{ color:var(--pick); }
+  .tl2{ font-size:9px; font-weight:700; letter-spacing:.12em; color:var(--muted); }
+  .tmath{ margin-top:9px; padding-top:7px; border-top:1px dashed var(--line);
+    font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .tmath b{ color:var(--ink); font-size:14px; }
   .cards{ display:flex; flex-direction:column; gap:14px; }
   .gamecard{ display:block; text-decoration:none; background:var(--card);
     border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
@@ -404,6 +472,27 @@ def render_game(game, data, updated):
 <table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th>Streck</th><th>Model</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table>
 <div class="infos">{''.join(infos)}</div></article>""")
+    ticket = build_ticket(data["legs"], data["type"])
+    tparts = []
+    for leg in sorted(ticket["picks"]):
+        nums = ", ".join(str(n) for n in ticket["picks"][leg])
+        if leg in ticket["spiks"]:
+            sp = ticket["spiks"][leg]
+            tparts.append(f"<div class='trow'><span class='tl2'>Leg {leg}</span>"
+                          f"<b>{sp['nr']} {esc(sp['horse'])} ★</b></div>")
+        else:
+            tparts.append(f"<div class='trow'><span class='tl2'>Leg {leg}</span>"
+                          f"<b>{nums}</b></div>")
+    mult = "×".join(str(len(ticket["picks"][leg])) for leg in sorted(ticket["picks"]))
+    price_str = f"{ticket['price']:.2f}".rstrip("0").rstrip(".")
+    ticket_html = f"""<section class="ticket">
+<div class="thead"><span>THE MODEL'S TICKET</span>
+<span class="tsub">auto-built from this data snapshot — picks can change at the next update</span></div>
+<div class="tgrid">{''.join(tparts)}</div>
+<div class="tmath">{mult} = {ticket['rows']} rader × {price_str} kr = <b>{ticket['cost']:.0f} kr</b>
+&nbsp;·&nbsp; model's own estimate: ~{100*ticket['hit_all']:.0f}% to hit all {len(ticket['picks'])}
+&nbsp;·&nbsp; ★ = spik &nbsp;·&nbsp; not betting advice — if you play it, play it at atg.se</div>
+</section>"""
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="600">
@@ -416,6 +505,7 @@ def render_game(game, data, updated):
 <p class="sub">First start {start_dt.strftime('%H:%M')} · streck (share of tickets) vs Lillian's Model
 (win probability) · green rows = model's top of the leg · program comments under each table</p>
 </div>{stampbox(updated, start_dt.strftime('%H:%M'))}</div>
+{ticket_html}
 <div class="grid">{''.join(tiles)}</div>
 <footer>Lillian's Model = travmodel v2 · conditional logit on 17,356 Nordic races · market-blended ·
 data from ATG's open API · page auto-reloads every 10 min · not betting advice, not a valid bet.</footer>
