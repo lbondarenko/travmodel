@@ -240,10 +240,13 @@ TIX_HTML = """
 <div class="modal">
 <h3>Upload my ticket</h3>
 <label>Photo (optional)</label>
-<div class="mrow photorow">
-<button type="button" class="mbtn" onclick="document.getElementById('tixphoto').click()">📁 Gallery</button>
-<button type="button" class="mbtn" onclick="document.getElementById('tixcam').click()">📷 Camera</button>
-<button type="button" class="mbtn" onclick="tixPaste()">📋 Paste</button>
+<div class="addwrap">
+<button type="button" class="addbtn" id="addbtn">+</button>
+<div class="addmenu" id="addmenu">
+<a href="#" data-add="files">📎&nbsp; Add files or photos</a>
+<a href="#" data-add="camera">📷&nbsp; Take a photo</a>
+<a href="#" data-add="paste">📋&nbsp; Paste image</a>
+</div>
 </div>
 <input type="file" id="tixphoto" accept="image/*" style="display:none">
 <input type="file" id="tixcam" accept="image/*" capture="environment" style="display:none">
@@ -276,6 +279,18 @@ function delTix(no){ var s=store(); if(s[user()]&&s[user()][TM.game]){ delete s[
 document.addEventListener("click",function(ev){
   var a=(ev.target.closest?ev.target.closest(".tixdel"):null);
   if(a){ ev.preventDefault(); delTix(a.getAttribute("data-no")); }
+});
+document.addEventListener("click",function(ev){
+  var b=ev.target.closest?ev.target.closest("#addbtn"):null;
+  var m=document.getElementById("addmenu");
+  if(b&&m){ ev.preventDefault(); m.classList.toggle("open"); return; }
+  var item=ev.target.closest?ev.target.closest("[data-add]"):null;
+  if(item&&m){ ev.preventDefault(); m.classList.remove("open");
+    var k=item.getAttribute("data-add");
+    if(k==="files") document.getElementById("tixphoto").click();
+    else if(k==="camera") document.getElementById("tixcam").click();
+    else tixPaste(); return; }
+  if(m) m.classList.remove("open");
 });
 window.tixOpen=function(){
   var box=document.getElementById("tixlegs"); box.innerHTML="";
@@ -347,7 +362,7 @@ window.renderCmp=function(){
   sec.classList.toggle("hasusr", nos.length>0);
   var legs=Object.keys(TM.legs).sort(function(a,b){return a-b;});
   var scored=Object.keys(TM.winners).length>0;
-  var h="<div class='leghead'><h2>Tickets — the model vs "+user()+"</h2></div>";
+  var h="<div class='leghead'><h2>My Ticket</h2></div>";
   h+="<table><thead><tr><th>Leg</th><th>The Model"+(TM.modelName?"<small>"+TM.modelName+"</small>":"")+"</th>";
   nos.forEach(function(no){ h+="<th>"+tix[no].label+"<small>"+no+
     " <a href='#' class='tixdel' data-no='"+no+"'>remove</a></small></th>"; });
@@ -410,6 +425,18 @@ TIX_CSS = """
     border-radius:50%; color:var(--pick); font-weight:700; padding:0 3px; }
   .lostnum{ color:var(--muted); text-decoration-color:#C23B2E; }
   .misscell{ color:#C23B2E; }
+
+  .addwrap{ position:relative; display:inline-block; }
+  .addbtn{ width:38px; height:38px; border-radius:9px; border:1px solid var(--line);
+    background:var(--bg); color:var(--ink); font-size:20px; line-height:1; cursor:pointer; }
+  .addbtn:hover{ border-color:var(--pick); color:var(--pick); }
+  .addmenu{ display:none; position:absolute; left:0; top:44px; z-index:90; min-width:210px;
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.18); padding:6px; }
+  .addmenu.open{ display:block; }
+  .addmenu a{ display:block; padding:9px 12px; border-radius:7px; text-decoration:none;
+    font-size:14px; color:var(--ink); }
+  .addmenu a:hover{ background:var(--pick-bg); }
   footer{ margin-top:64px !important; }
 """
 
