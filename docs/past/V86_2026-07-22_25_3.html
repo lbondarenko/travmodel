@@ -208,6 +208,16 @@ tr.win-miss td:nth-child(2){ color:#C23B2E; font-weight:700; }
     border-radius:6px; background:var(--bg); color:var(--ink); font:inherit; font-size:12px; }
   .dphoto{ width:100%; border-radius:6px; margin-top:10px; border:1px solid #DDD8CE; display:block; }
   .dcap{ font-size:9.5px; color:#8A837A; margin:3px 0 0; text-align:center; letter-spacing:.04em; }
+  .tickrow{ display:block; }
+  @media print{
+    .tdrawer{ display:block !important; position:static; transform:none; height:auto;
+      break-before:page; }
+    .ttab{ display:none !important; }
+    .slipd{ width:auto; height:auto; overflow:visible; box-shadow:none; }
+    .tickrow{ display:flex; gap:14px; align-items:flex-start; }
+    .tickcol{ flex:1; min-width:0; }
+    .dphoto{ margin-top:0; }
+  }
 </style></head><body><main>
 <div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
 <script>
@@ -218,6 +228,7 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
 <h1><a href="../index.html">←</a> V86 Skellefteå · Wednesday 22 July 2026 — RESULT</h1>
 <p class="sub">The founding round of the family duel, scored and dissected. Final streck vs the v2 model's
 (retrospective, unseen-data) probabilities · 🥇 = winner · green = winner we covered, red = winner we missed</p>
+<button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button>
 </div>
 <div class="stampbox"><span class="stamp-label">RESULTS FINAL</span>
 <span class="stamp-time">Wed 22 Jul · 21:4x</span>
@@ -465,7 +476,7 @@ never trained on). Streck = final V86 distribution. Not betting advice.</p></foo
 </main>
 <aside class="tdrawer" id="tdrawer">
 <button class="ttab" onclick="tdT()">🎟️ KUPONG</button>
-<div class="slipd"><p class="dlogo">TRAVMODEL<span>™</span></p>
+<div class="slipd"><div class="tickrow"><div class="tickcol"><p class="dlogo">TRAVMODEL<span>™</span></p>
 <p class="dtag">TEAM LILLIAN × CLAUDE · FAMILJENS EGET SPELBOLAG</p>
 <hr class="drule solid">
 <div class="drow"><span>Spel</span><b>V86</b></div>
@@ -481,12 +492,9 @@ never trained on). Streck = final V86 distribution. Not betting advice.</p></foo
 <p class="dnote">6+ rätt krävs för utdelning — 0 kr. Jämförelse: Jans Harry Boy (288 kr) också 5 av 8,
 Jans egen rad (270 kr) 2 av 8. En enda kupong i Sverige hade alla åtta: 6 099 475 kr.</p>
 <div class="dstamp">5 AV 8<small>INGEN UTDELNING · BARA LÄRDOM</small></div>
-<hr class="drule">
-<p class="dtag" style="letter-spacing:.14em; font-size:10px; margin-bottom:6px">JANS KUPONGER</p>
-<img class="dphoto" src="tickets/harry-boy.jpg" alt="Jans Harry Boy-kvitto" loading="lazy">
-<p class="dcap">Harry Boy · 288 kr · 5 av 8</p>
-<img class="dphoto" src="tickets/jans-egen.jpg" alt="Jans egen rad" loading="lazy">
-<p class="dcap">Jans egen rad · 270 kr · 2 av 8</p></div></aside>
+</div><div class="tickcol"><p class="dtag" style="letter-spacing:.14em; font-size:10px; margin:0 0 6px">JANS KUPONGER</p><img class="dphoto" src="tickets/harry-boy.jpg" alt="Jans Harry Boy-kvitto" loading="lazy">
+<p class="dcap">Harry Boy · 288 kr · 5 av 8</p></div><div class="tickcol"><img class="dphoto" src="tickets/jans-egen.jpg" alt="Jans egen rad" loading="lazy">
+<p class="dcap">Jans egen rad · 270 kr · 2 av 8</p></div></div></div></aside>
 <script>
 function tdT(){var d=document.getElementById('tdrawer');var o=d.classList.toggle('open');
 try{localStorage.setItem('tm_drawer',o?'1':'0');}catch(e){}}
