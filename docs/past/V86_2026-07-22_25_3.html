@@ -245,6 +245,10 @@ function saveTix(no,obj){ var s=store(); s[user()]=s[user()]||{}; s[user()][TM.g
   localStorage.setItem(KEY, JSON.stringify(s)); return existed; }
 function delTix(no){ var s=store(); if(s[user()]&&s[user()][TM.game]){ delete s[user()][TM.game][no];
   localStorage.setItem(KEY, JSON.stringify(s)); } renderCmp(); }
+document.addEventListener("click",function(ev){
+  var a=(ev.target.closest?ev.target.closest(".tixdel"):null);
+  if(a){ ev.preventDefault(); delTix(a.getAttribute("data-no")); }
+});
 window.tixOpen=function(){
   var box=document.getElementById("tixlegs"); box.innerHTML="";
   Object.keys(TM.legs).sort(function(a,b){return a-b;}).forEach(function(l){
@@ -318,7 +322,7 @@ window.renderCmp=function(){
   var h="<div class='leghead'><h2>Tickets — the model vs "+user()+"</h2></div>";
   h+="<table><thead><tr><th>Leg</th><th>The Model"+(TM.modelName?"<small>"+TM.modelName+"</small>":"")+"</th>";
   nos.forEach(function(no){ h+="<th>"+tix[no].label+"<small>"+no+
-    " <a href='#' onclick="delTix('"+no+"');return false;">remove</a></small></th>"; });
+    " <a href='#' class='tixdel' data-no='"+no+"'>remove</a></small></th>"; });
   h+="</tr></thead><tbody>";
   legs.forEach(function(l){
     h+="<tr><th>"+l+"</th>"+cell(TM.model[l]||[],l,TM.spikNames[l]||null);
