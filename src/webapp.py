@@ -29,6 +29,7 @@ WEB = ROOT / "web"
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from features import start_features  # noqa: E402
 from train import prepare  # noqa: E402
+from sv_en import translate  # noqa: E402
 
 BASE = "https://www.atg.se/services/racinginfo/v1/api"
 GAME_TYPES = ["V86", "V75", "GS75", "V64", "V65"]
@@ -318,7 +319,7 @@ def render_game(game, data, updated):
         for h in horses[:3]:
             if h["comment"]:
                 infos.append(f"<p class='info'><b>#{h['nr']} {esc(h['horse'])}</b> "
-                             f"({esc(h['driver'])}) — {esc(h['comment'])}</p>")
+                             f"({esc(h['driver'])}) — {esc(translate(h['comment']))}</p>")
         spik = " · ★ spik candidate" if horses and horses[0]["model"] > 45 else ""
         tiles.append(f"""<article class="tile">
 <div class="leghead"><h2>Leg {leg}</h2><span class="meta">{esc(data['legmeta'].get(leg,''))}{spik}</span></div>
