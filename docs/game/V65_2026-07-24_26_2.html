@@ -199,7 +199,7 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
 (win probability) · green rows = model's top of the leg · program comments under each table</p>
 <button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button><button class="upbtn" onclick="tixOpen()">📷&nbsp; Upload My Ticket</button>
 </div><div class="stampbox"><span class="stamp-label">DATA SNAPSHOT</span>
-<span class="stamp-time">Thu 23 Jul · 14:02</span>
+<span class="stamp-time">Thu 23 Jul · 14:08</span>
 <span class="stamp-note">streck &amp; odds move until post 12:45 — auto-updates hourly, every 30 min in the last 4 h</span></div></div>
 <aside class="tdrawer" id="tdrawer">
 <button class="ttab" onclick="tdT()">🎟️ KUPONG</button>
@@ -210,7 +210,7 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
   <div class="drow"><span>Spel</span><b>V65</b></div>
   <div class="drow"><span>Bana</span><b>Solänget</b></div>
   <div class="drow"><span>Start</span><b>Fri 24 Jul · 12:45</b></div>
-  <div class="drow"><span>Data</span><b>Thu 23 Jul · 14:02</b></div>
+  <div class="drow"><span>Data</span><b>Thu 23 Jul · 14:08</b></div>
   <hr class="drule">
   <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR</th></tr><tr><td class='avd'>1</td><td class='hst'>3 Tougherthanothers ★</td></tr><tr><td class='avd'>2</td><td class='hst'>2, 5</td></tr><tr><td class='avd'>3</td><td class='hst'>9, 2, 3, 7</td></tr><tr><td class='avd'>4</td><td class='hst'>4 Lomeglimt ★</td></tr><tr><td class='avd'>5</td><td class='hst'>1, 3, 10</td></tr><tr><td class='avd'>6</td><td class='hst'>4, 5</td></tr></table>
   <hr class="drule">
@@ -257,9 +257,16 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 <h3>Upload my ticket</h3>
 <p class="mnote">Attach a photo of the receipt for reference, then type the picks —
 20 seconds, and it never leaves your browser.</p>
-<label>Photo of ticket (optional)</label>
-<input type="file" id="tixphoto" accept="image/*">
+<label>Photo of ticket (optional — gallery, camera, or paste)</label>
+<div class="mrow photorow">
+<button type="button" class="mbtn" onclick="document.getElementById('tixphoto').click()">📁 Gallery</button>
+<button type="button" class="mbtn" onclick="document.getElementById('tixcam').click()">📷 Camera</button>
+<button type="button" class="mbtn" onclick="tixPaste()">📋 Paste</button>
+</div>
+<input type="file" id="tixphoto" accept="image/*" style="display:none">
+<input type="file" id="tixcam" accept="image/*" capture="environment" style="display:none">
 <img id="tixpreview" alt="" style="display:none">
+<p class="mnote">Tip: Cmd/Ctrl+V anywhere in this dialog pastes a screenshot.</p>
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
 <label>Ticket number (for dedupe — the long number or rättningskod on the receipt)</label>
@@ -292,11 +299,29 @@ window.tixOpen=function(){
   document.getElementById("tixmodal").style.display="flex";
 };
 window.tixClose=function(){ document.getElementById("tixmodal").style.display="none"; };
+function showPhoto(blob){ var img=document.getElementById("tixpreview");
+  img.src=URL.createObjectURL(blob); img.style.display="block"; }
 document.addEventListener("change",function(ev){
-  if(ev.target && ev.target.id==="tixphoto" && ev.target.files[0]){
-    var img=document.getElementById("tixpreview");
-    img.src=URL.createObjectURL(ev.target.files[0]); img.style.display="block";
+  if(ev.target && (ev.target.id==="tixphoto"||ev.target.id==="tixcam") && ev.target.files[0]){
+    showPhoto(ev.target.files[0]); }});
+document.addEventListener("paste",function(ev){
+  var m=document.getElementById("tixmodal");
+  if(!m || m.style.display!=="flex" || !ev.clipboardData) return;
+  for(var i=0;i<ev.clipboardData.items.length;i++){
+    var it=ev.clipboardData.items[i];
+    if(it.type && it.type.indexOf("image")===0){ showPhoto(it.getAsFile()); ev.preventDefault(); return; }
   }});
+window.tixPaste=function(){
+  if(navigator.clipboard && navigator.clipboard.read){
+    navigator.clipboard.read().then(function(items){
+      var found=false;
+      for(var i=0;i<items.length;i++){
+        var t=(items[i].types||[]).filter(function(x){return x.indexOf("image")===0;})[0];
+        if(t){ found=true; items[i].getType(t).then(showPhoto); break; } }
+      if(!found) alert("No image on the clipboard - copy a screenshot first.");
+    }).catch(function(){ alert("Clipboard blocked by the browser - press Cmd/Ctrl+V instead."); });
+  } else alert("Press Cmd/Ctrl+V to paste the screenshot.");
+};
 window.tixSave=function(){
   var err=document.getElementById("tixerr"); err.style.display="none";
   var no=(document.getElementById("tixno").value||"").replace(/\s+/g," ").trim();

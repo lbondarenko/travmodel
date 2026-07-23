@@ -241,9 +241,16 @@ TIX_HTML = """
 <h3>Upload my ticket</h3>
 <p class="mnote">Attach a photo of the receipt for reference, then type the picks —
 20 seconds, and it never leaves your browser.</p>
-<label>Photo of ticket (optional)</label>
-<input type="file" id="tixphoto" accept="image/*">
+<label>Photo of ticket (optional — gallery, camera, or paste)</label>
+<div class="mrow photorow">
+<button type="button" class="mbtn" onclick="document.getElementById('tixphoto').click()">📁 Gallery</button>
+<button type="button" class="mbtn" onclick="document.getElementById('tixcam').click()">📷 Camera</button>
+<button type="button" class="mbtn" onclick="tixPaste()">📋 Paste</button>
+</div>
+<input type="file" id="tixphoto" accept="image/*" style="display:none">
+<input type="file" id="tixcam" accept="image/*" capture="environment" style="display:none">
 <img id="tixpreview" alt="" style="display:none">
+<p class="mnote">Tip: Cmd/Ctrl+V anywhere in this dialog pastes a screenshot.</p>
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
 <label>Ticket number (for dedupe — the long number or rättningskod on the receipt)</label>
@@ -278,11 +285,29 @@ window.tixOpen=function(){
   document.getElementById("tixmodal").style.display="flex";
 };
 window.tixClose=function(){ document.getElementById("tixmodal").style.display="none"; };
+function showPhoto(blob){ var img=document.getElementById("tixpreview");
+  img.src=URL.createObjectURL(blob); img.style.display="block"; }
 document.addEventListener("change",function(ev){
-  if(ev.target && ev.target.id==="tixphoto" && ev.target.files[0]){
-    var img=document.getElementById("tixpreview");
-    img.src=URL.createObjectURL(ev.target.files[0]); img.style.display="block";
+  if(ev.target && (ev.target.id==="tixphoto"||ev.target.id==="tixcam") && ev.target.files[0]){
+    showPhoto(ev.target.files[0]); }});
+document.addEventListener("paste",function(ev){
+  var m=document.getElementById("tixmodal");
+  if(!m || m.style.display!=="flex" || !ev.clipboardData) return;
+  for(var i=0;i<ev.clipboardData.items.length;i++){
+    var it=ev.clipboardData.items[i];
+    if(it.type && it.type.indexOf("image")===0){ showPhoto(it.getAsFile()); ev.preventDefault(); return; }
   }});
+window.tixPaste=function(){
+  if(navigator.clipboard && navigator.clipboard.read){
+    navigator.clipboard.read().then(function(items){
+      var found=false;
+      for(var i=0;i<items.length;i++){
+        var t=(items[i].types||[]).filter(function(x){return x.indexOf("image")===0;})[0];
+        if(t){ found=true; items[i].getType(t).then(showPhoto); break; } }
+      if(!found) alert("No image on the clipboard - copy a screenshot first.");
+    }).catch(function(){ alert("Clipboard blocked by the browser - press Cmd/Ctrl+V instead."); });
+  } else alert("Press Cmd/Ctrl+V to paste the screenshot.");
+};
 window.tixSave=function(){
   var err=document.getElementById("tixerr"); err.style.display="none";
   var no=(document.getElementById("tixno").value||"").replace(/\s+/g," ").trim();
