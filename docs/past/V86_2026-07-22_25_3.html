@@ -206,6 +206,8 @@ tr.win-miss td:nth-child(2){ color:#C23B2E; font-weight:700; }
   .mnote.ok{ color:var(--pick); font-weight:600; }
   .modal textarea{ width:100%; padding:7px 10px; border:1px solid var(--line);
     border-radius:6px; background:var(--bg); color:var(--ink); font:inherit; font-size:12px; }
+  .dphoto{ width:100%; border-radius:6px; margin-top:10px; border:1px solid #DDD8CE; display:block; }
+  .dcap{ font-size:9.5px; color:#8A837A; margin:3px 0 0; text-align:center; letter-spacing:.04em; }
 </style></head><body><main>
 <div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
 <script>
@@ -478,7 +480,13 @@ never trained on). Streck = final V86 distribution. Not betting advice.</p></foo
 <div class="dtotal"><span>RESULTAT</span><b>5 AV 8</b></div>
 <p class="dnote">6+ rätt krävs för utdelning — 0 kr. Jämförelse: Jans Harry Boy (288 kr) också 5 av 8,
 Jans egen rad (270 kr) 2 av 8. En enda kupong i Sverige hade alla åtta: 6 099 475 kr.</p>
-<div class="dstamp">5 AV 8<small>INGEN UTDELNING · BARA LÄRDOM</small></div></div></aside>
+<div class="dstamp">5 AV 8<small>INGEN UTDELNING · BARA LÄRDOM</small></div>
+<hr class="drule">
+<p class="dtag" style="letter-spacing:.14em; font-size:10px; margin-bottom:6px">JANS KUPONGER</p>
+<img class="dphoto" src="tickets/harry-boy.jpg" alt="Jans Harry Boy-kvitto" loading="lazy">
+<p class="dcap">Harry Boy · 288 kr · 5 av 8</p>
+<img class="dphoto" src="tickets/jans-egen.jpg" alt="Jans egen rad" loading="lazy">
+<p class="dcap">Jans egen rad · 270 kr · 2 av 8</p></div></aside>
 <script>
 function tdT(){var d=document.getElementById('tdrawer');var o=d.classList.toggle('open');
 try{localStorage.setItem('tm_drawer',o?'1':'0');}catch(e){}}
