@@ -232,6 +232,161 @@ def build_ticket(legs, gtype):
             "hit_all": hit_all}
 
 
+
+
+# ---------- user ticket upload & comparison (client-side, localStorage) ----------
+TIX_HTML = """
+<div class="modalback" id="tixmodal">
+<div class="modal">
+<h3>Upload my ticket</h3>
+<p class="mnote">Attach a photo of the receipt for reference, then type the picks —
+20 seconds, and it never leaves your browser.</p>
+<label>Photo of ticket (optional)</label>
+<input type="file" id="tixphoto" accept="image/*">
+<img id="tixpreview" alt="" style="display:none">
+<label>Label</label>
+<input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
+<label>Ticket number (for dedupe — the long number or rättningskod on the receipt)</label>
+<input type="text" id="tixno" placeholder="e.g. D2F6 4828 7800 2027">
+<div id="tixlegs"></div>
+<p class="mnote err" id="tixerr" style="display:none"></p>
+<div class="mrow"><button class="mbtn save" onclick="tixSave()">Save ticket</button>
+<button class="mbtn" onclick="tixClose()">Cancel</button></div>
+</div></div>
+<section class="cmp" id="cmpsec"></section>
+"""
+
+TIX_JS = """
+<script>
+(function(){
+var TM = __TMDATA__;
+var KEY = "tm_tix_v1";
+function user(){ return localStorage.getItem("tm_user")||"?"; }
+function store(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+function mytix(){ var s=store(); return (s[user()]||{})[TM.game]||{}; }
+function saveTix(no,obj){ var s=store(); s[user()]=s[user()]||{}; s[user()][TM.game]=s[user()][TM.game]||{};
+  var existed = !!s[user()][TM.game][no]; s[user()][TM.game][no]=obj;
+  localStorage.setItem(KEY, JSON.stringify(s)); return existed; }
+function delTix(no){ var s=store(); if(s[user()]&&s[user()][TM.game]){ delete s[user()][TM.game][no];
+  localStorage.setItem(KEY, JSON.stringify(s)); } renderCmp(); }
+window.tixOpen=function(){
+  var box=document.getElementById("tixlegs"); box.innerHTML="";
+  Object.keys(TM.legs).sort(function(a,b){return a-b;}).forEach(function(l){
+    box.innerHTML += "<label>Leg "+l+" — horses (e.g. 2, 3, 5)</label>"+
+      "<input type='text' class='tixleg' data-leg='"+l+"' inputmode='numeric'>";
+  });
+  document.getElementById("tixmodal").style.display="flex";
+};
+window.tixClose=function(){ document.getElementById("tixmodal").style.display="none"; };
+document.addEventListener("change",function(ev){
+  if(ev.target && ev.target.id==="tixphoto" && ev.target.files[0]){
+    var img=document.getElementById("tixpreview");
+    img.src=URL.createObjectURL(ev.target.files[0]); img.style.display="block";
+  }});
+window.tixSave=function(){
+  var err=document.getElementById("tixerr"); err.style.display="none";
+  var no=(document.getElementById("tixno").value||"").replace(/\s+/g," ").trim();
+  var label=(document.getElementById("tixlabel").value||"Ticket").trim();
+  if(!no){ err.textContent="Ticket number is required (it is how duplicates are caught).";
+    err.style.display="block"; return; }
+  var picks={}, bad=null;
+  document.querySelectorAll(".tixleg").forEach(function(inp){
+    var l=inp.dataset.leg;
+    var nums=(inp.value||"").split(/[^0-9]+/).filter(Boolean).map(Number);
+    var valid=TM.legs[l]||[];
+    nums.forEach(function(n){ if(valid.indexOf(n)<0) bad="Leg "+l+": horse "+n+" is not in that leg."; });
+    if(!nums.length) bad=bad||("Leg "+l+" is empty.");
+    picks[l]=nums;
+  });
+  if(bad){ err.textContent=bad; err.style.display="block"; return; }
+  var existed=saveTix(no,{label:label,picks:picks,ts:Date.now()});
+  tixClose(); renderCmp();
+  if(existed) alert("That ticket number was already uploaded — it has been updated (no duplicate created).");
+};
+function deco(n,l){
+  var w=TM.winners[l];
+  if(w===undefined||w===null) return String(n);
+  if(Number(n)===Number(w)) return "<span class='hitnum'>"+n+"</span>";
+  return "<s class='lostnum'>"+n+"</s>";
+}
+function cell(nums,l,label){
+  var w=TM.winners[l];
+  var html=(label&&nums.length===1)?deco(nums[0],l)+" "+label:nums.map(function(n){return deco(n,l);}).join(", ");
+  var miss=(w!==undefined&&w!==null&&nums.map(Number).indexOf(Number(w))<0);
+  return "<td class='"+(miss?"misscell":"")+"'>"+html+(miss?" ✗":"")+"</td>";
+}
+window.renderCmp=function(){
+  var sec=document.getElementById("cmpsec"); if(!sec) return;
+  var tix=mytix(); var nos=Object.keys(tix);
+  sec.classList.toggle("hasusr", nos.length>0);
+  var legs=Object.keys(TM.legs).sort(function(a,b){return a-b;});
+  var scored=Object.keys(TM.winners).length>0;
+  var h="<div class='leghead'><h2>Tickets — the model vs "+user()+"</h2></div>";
+  h+="<table><thead><tr><th>Leg</th><th>The Model"+(TM.modelName?"<small>"+TM.modelName+"</small>":"")+"</th>";
+  nos.forEach(function(no){ h+="<th>"+tix[no].label+"<small>"+no+
+    " <a href='#' onclick=\"delTix('"+no+"');return false;\">remove</a></small></th>"; });
+  h+="</tr></thead><tbody>";
+  legs.forEach(function(l){
+    h+="<tr><th>"+l+"</th>"+cell(TM.model[l]||[],l,TM.spikNames[l]||null);
+    nos.forEach(function(no){ h+=cell(tix[no].picks[l]||[],l,null); });
+    h+="</tr>";
+  });
+  h+="</tbody>";
+  if(scored){
+    h+="<tfoot><tr><td>Legs hit</td>";
+    var cols=[TM.model].concat(nos.map(function(no){return tix[no].picks;}));
+    cols.forEach(function(pk){ var hit=0;
+      legs.forEach(function(l){ var w=TM.winners[l];
+        if(w!==undefined&&(pk[l]||[]).map(Number).indexOf(Number(w))>=0) hit++; });
+      h+="<td><b>"+hit+" of "+legs.length+"</b></td>"; });
+    h+="</tr></tfoot>";
+  }
+  h+="</table>";
+  sec.innerHTML=h;
+};
+document.addEventListener("DOMContentLoaded", renderCmp);
+if(document.readyState!=="loading") renderCmp();
+})();
+</script>
+"""
+
+TIX_CSS = """
+  .upbtn{ margin-top:10px; margin-left:8px; background:none; border:1px solid var(--line);
+    border-radius:7px; padding:5px 12px; font:600 12px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
+    color:var(--ink); cursor:pointer; }
+  .upbtn:hover{ border-color:var(--pick); color:var(--pick); }
+  .modalback{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:80;
+    align-items:flex-start; justify-content:center; overflow-y:auto; padding:5vh 16px; }
+  .modal{ background:var(--card); color:var(--ink); border-radius:12px; padding:20px 22px;
+    width:min(430px,94vw); }
+  .modal h3{ margin:0 0 4px; }
+  .modal label{ display:block; font-size:10.5px; letter-spacing:.08em; color:var(--muted);
+    margin:10px 0 3px; text-transform:uppercase; }
+  .modal input[type=text]{ width:100%; padding:7px 10px; border:1px solid var(--line);
+    border-radius:6px; background:var(--bg); color:var(--ink); font:inherit; }
+  .modal .mnote{ font-size:11.5px; color:var(--muted); margin:2px 0 0; }
+  .modal .mnote.err{ color:#C23B2E; }
+  #tixpreview{ max-width:100%; max-height:180px; margin-top:6px; border-radius:6px; }
+  .mrow{ display:flex; gap:10px; margin-top:16px; }
+  .mbtn{ flex:1; padding:9px; border-radius:7px; border:1px solid var(--line);
+    background:none; color:var(--ink); font:600 13px/1 "Avenir Next",system-ui,sans-serif; cursor:pointer; }
+  .mbtn.save{ background:var(--pick); border-color:var(--pick); color:#fff; }
+  .cmp{ display:none; margin-top:40px; }
+  .cmp.hasusr{ display:block; }
+  .cmp table{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+  .cmp th,.cmp td{ padding:7px 10px; text-align:left; font-size:13.5px; border-bottom:1px solid var(--line); }
+  .cmp thead th{ background:var(--head-bg); color:var(--head-ink); font-size:11px; letter-spacing:.05em; }
+  .cmp thead th small{ display:block; font-weight:400; opacity:.7; font-size:9.5px; }
+  .cmp thead th small a{ color:inherit; }
+  .cmp tbody th{ width:40px; font-weight:700; }
+  .cmp tfoot td{ font-size:13px; border-top:2px solid var(--ink); }
+  .hitnum{ display:inline-block; min-width:1.5em; text-align:center; border:2px solid var(--pick);
+    border-radius:50%; color:var(--pick); font-weight:700; padding:0 3px; }
+  .lostnum{ color:var(--muted); text-decoration-color:#C23B2E; }
+  .misscell{ color:#C23B2E; }
+  footer{ margin-top:64px !important; }
+"""
+
 # ---------- model reasoning ----------
 
 def _phrase(name, r):
@@ -432,10 +587,10 @@ CSS = """
     .legrow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;
       page-break-after:always; break-inside:avoid; page-break-inside:avoid; margin-bottom:0; }
     .tile{ border-color:#888; break-inside:avoid; page-break-inside:avoid; }
-    .printbtn{ display:none; } footer{ display:none; } body{ font-size:10px; }
-    .printslip{ display:block; padding-top:24px; }
-    .printslip .slipd{ height:auto; overflow:visible; box-shadow:none; margin:0 auto;
-      border:1.5px dashed #999; }
+    .printbtn,.upbtn,.modalback{ display:none; } footer{ display:none; } body{ font-size:10px; }
+    .cmp{ display:block !important; break-before:page; padding-top:24px; }
+    .cmp thead th{ background:#000 !important; color:#fff !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     .stampbox{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     tr.top td{ background:#EDF3EE !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -601,23 +756,32 @@ function tdT(){var d=document.getElementById('tdrawer');var o=d.classList.toggle
 try{localStorage.setItem('tm_drawer',o?'1':'0');}catch(e){}}
 try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer').classList.add('open');}catch(e){}
 </script>"""
-    printslip = '<div class="printslip"><div class="slipd">' + slip_inner + "</div></div>"
+    import json as _json
+    spik_names = {str(leg): f"{sp['nr']} {esc(sp['horse'])} \u2605" + (" \u2665" if sp.get("family") else "")
+                  for leg, sp in ticket["spiks"].items()}
+    tmdata = _json.dumps({
+        "game": game["id"], "modelName": f"{ticket['rows']} rader · {ticket['cost']:.0f} kr",
+        "legs": {str(leg): [h["nr"] for h in data["legs"][leg]] for leg in data["legs"]},
+        "model": {str(leg): ticket["picks"][leg] for leg in ticket["picks"]},
+        "spikNames": spik_names, "winners": {},
+    }, ensure_ascii=False)
+    tix_block = TIX_HTML + TIX_JS.replace("__TMDATA__", tmdata)
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="600">
 {auth_guard("../login.html")}
 <title>{data['type']} {esc(data['track'])} {start_dt.strftime('%a %d %b %H:%M')} — Lillian's Model</title>
-<style>{CSS}</style></head><body><main>
+<style>{CSS}{TIX_CSS}</style></head><body><main>
 {USERCHIP}
 <div class="pagehead"><div>
 <h1><a href="../index.html">←</a> {data['type']} {esc(data['track'])} · {start_dt.strftime('%A %d %B %Y')}</h1>
 <p class="sub">First start {start_dt.strftime('%H:%M')} · streck (share of tickets) vs Lillian's Model
 (win probability) · green rows = model's top of the leg · program comments under each table</p>
-<button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button>
+<button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button><button class="upbtn" onclick="tixOpen()">📷&nbsp; Upload My Ticket</button>
 </div>{stampbox(updated, start_dt.strftime('%H:%M'))}</div>
 {ticket_html}
 <div class="grid">{''.join('<div class="legrow">' + ''.join(tiles[i:i+2]) + '</div>' for i in range(0, len(tiles), 2))}</div>
-{printslip}
+{tix_block}
 <footer>
 <p class="legend-title">WHAT THE LABELS MEAN</p>
 <dl class="legend">
@@ -669,7 +833,7 @@ def render_index(entries):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="300">
 {auth_guard("login.html")}
-<title>Lillian's Model — next races</title><style>{CSS}</style></head><body><main>
+<title>Lillian's Model — next races</title><style>{CSS}{TIX_CSS}</style></head><body><main>
 {USERCHIP}
 <div class="pagehead"><div>
 <h1>Lillian's Model 🐴</h1>

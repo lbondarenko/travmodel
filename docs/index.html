@@ -142,15 +142,50 @@
     .legrow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;
       page-break-after:always; break-inside:avoid; page-break-inside:avoid; margin-bottom:0; }
     .tile{ border-color:#888; break-inside:avoid; page-break-inside:avoid; }
-    .printbtn{ display:none; } footer{ display:none; } body{ font-size:10px; }
-    .printslip{ display:block; padding-top:24px; }
-    .printslip .slipd{ height:auto; overflow:visible; box-shadow:none; margin:0 auto;
-      border:1.5px dashed #999; }
+    .printbtn,.upbtn,.modalback{ display:none; } footer{ display:none; } body{ font-size:10px; }
+    .cmp{ display:block !important; break-before:page; padding-top:24px; }
+    .cmp thead th{ background:#000 !important; color:#fff !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     .stampbox{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     tr.top td{ background:#EDF3EE !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     .info, .sub, footer, .leghead .meta, td.nr{ color:#3A3733; }
   }
+
+  .upbtn{ margin-top:10px; margin-left:8px; background:none; border:1px solid var(--line);
+    border-radius:7px; padding:5px 12px; font:600 12px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
+    color:var(--ink); cursor:pointer; }
+  .upbtn:hover{ border-color:var(--pick); color:var(--pick); }
+  .modalback{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:80;
+    align-items:flex-start; justify-content:center; overflow-y:auto; padding:5vh 16px; }
+  .modal{ background:var(--card); color:var(--ink); border-radius:12px; padding:20px 22px;
+    width:min(430px,94vw); }
+  .modal h3{ margin:0 0 4px; }
+  .modal label{ display:block; font-size:10.5px; letter-spacing:.08em; color:var(--muted);
+    margin:10px 0 3px; text-transform:uppercase; }
+  .modal input[type=text]{ width:100%; padding:7px 10px; border:1px solid var(--line);
+    border-radius:6px; background:var(--bg); color:var(--ink); font:inherit; }
+  .modal .mnote{ font-size:11.5px; color:var(--muted); margin:2px 0 0; }
+  .modal .mnote.err{ color:#C23B2E; }
+  #tixpreview{ max-width:100%; max-height:180px; margin-top:6px; border-radius:6px; }
+  .mrow{ display:flex; gap:10px; margin-top:16px; }
+  .mbtn{ flex:1; padding:9px; border-radius:7px; border:1px solid var(--line);
+    background:none; color:var(--ink); font:600 13px/1 "Avenir Next",system-ui,sans-serif; cursor:pointer; }
+  .mbtn.save{ background:var(--pick); border-color:var(--pick); color:#fff; }
+  .cmp{ display:none; margin-top:40px; }
+  .cmp.hasusr{ display:block; }
+  .cmp table{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+  .cmp th,.cmp td{ padding:7px 10px; text-align:left; font-size:13.5px; border-bottom:1px solid var(--line); }
+  .cmp thead th{ background:var(--head-bg); color:var(--head-ink); font-size:11px; letter-spacing:.05em; }
+  .cmp thead th small{ display:block; font-weight:400; opacity:.7; font-size:9.5px; }
+  .cmp thead th small a{ color:inherit; }
+  .cmp tbody th{ width:40px; font-weight:700; }
+  .cmp tfoot td{ font-size:13px; border-top:2px solid var(--ink); }
+  .hitnum{ display:inline-block; min-width:1.5em; text-align:center; border:2px solid var(--pick);
+    border-radius:50%; color:var(--pick); font-weight:700; padding:0 3px; }
+  .lostnum{ color:var(--muted); text-decoration-color:#C23B2E; }
+  .misscell{ color:#C23B2E; }
+  footer{ margin-top:64px !important; }
 </style></head><body><main>
 <div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
 <script>
@@ -162,21 +197,21 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
 <p class="sub">The next 3 betting rounds, scored by travmodel v2. Pages update hourly —
 every 30 minutes inside the final 4 hours before post.</p>
 </div><div class="stampbox"><span class="stamp-label">PAGE GENERATED</span>
-<span class="stamp-time">Thu 23 Jul · 13:41</span>
+<span class="stamp-time">Thu 23 Jul · 14:02</span>
 <span class="stamp-note">each race card shows its own data snapshot</span></div></div>
 <div class="cards"><a class="gamecard" href="game/V64_2026-07-23_9_4.html">
 <div class="row1"><span class="gt">V64 · Bergsåker</span>
 <span class="when"><span class="tl">RACE STARTS</span>Thursday 23 Jul · 19:30</span></div>
 <div class="row2"><span>6 legs · model + streck sheet</span>
-<span class="fresh"><span class="tl">DATA UPDATED</span>Thu 23 Jul · 13:41</span></div></a><a class="gamecard" href="game/V65_2026-07-24_26_2.html">
+<span class="fresh"><span class="tl">DATA UPDATED</span>Thu 23 Jul · 14:02</span></div></a><a class="gamecard" href="game/V65_2026-07-24_26_2.html">
 <div class="row1"><span class="gt">V65 · Solänget</span>
 <span class="when"><span class="tl">RACE STARTS</span>Friday 24 Jul · 12:45</span></div>
 <div class="row2"><span>6 legs · model + streck sheet</span>
-<span class="fresh"><span class="tl">DATA UPDATED</span>Thu 23 Jul · 13:41</span></div></a><a class="gamecard famcard" href="game/V64_2026-07-24_23_2.html">
+<span class="fresh"><span class="tl">DATA UPDATED</span>Thu 23 Jul · 14:02</span></div></a><a class="gamecard famcard" href="game/V64_2026-07-24_23_2.html">
 <div class="row1"><span class="gt">V64 · Romme</span><span class='fambadge'>♥ PRALINES STARTAR</span>
 <span class="when"><span class="tl">RACE STARTS</span>Friday 24 Jul · 19:30</span></div>
 <div class="row2"><span>6 legs · model + streck sheet</span>
-<span class="fresh"><span class="tl">DATA UPDATED</span>Thu 23 Jul · 13:41</span></div></a></div>
+<span class="fresh"><span class="tl">DATA UPDATED</span>Thu 23 Jul · 14:02</span></div></a></div>
 <p class="secbar">PAST RACES</p>
 <div class="cards"><a class="gamecard pastcard" href="past/V86_2026-07-22_25_3.html">
 <div class="row1"><span class="gt">V86 · Skellefteå</span>

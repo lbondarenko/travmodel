@@ -141,10 +141,10 @@
     .legrow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;
       page-break-after:always; break-inside:avoid; page-break-inside:avoid; margin-bottom:0; }
     .tile{ border-color:#888; break-inside:avoid; page-break-inside:avoid; }
-    .printbtn{ display:none; } footer{ display:none; } body{ font-size:10px; }
-    .printslip{ display:block; padding-top:24px; }
-    .printslip .slipd{ height:auto; overflow:visible; box-shadow:none; margin:0 auto;
-      border:1.5px dashed #999; }
+    .printbtn,.upbtn,.modalback{ display:none; } footer{ display:none; } body{ font-size:10px; }
+    .cmp{ display:block !important; break-before:page; padding-top:24px; }
+    .cmp thead th{ background:#000 !important; color:#fff !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     .stampbox{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     tr.top td{ background:#EDF3EE !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
