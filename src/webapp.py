@@ -131,15 +131,81 @@ def score_game(game_id):
     df["u"] = df["u"] - df.groupby("leg")["u"].transform("max")
     df["e"] = np.exp(df["u"])
     df["p"] = df["e"] / df.groupby("leg")["e"].transform("sum")
+    contrib = X * beta.values
+    df["_ci"] = range(len(df))
     legs = {}
     for leg in sorted(df["leg"].unique()):
         d = df[df["leg"] == leg].sort_values("p", ascending=False)
-        legs[int(leg)] = [{
-            "nr": int(r["start_number"]), "horse": r["horse"], "driver": r["driver"],
-            "streck": float(r["streck"]), "model": 100 * float(r["p"]),
-            "comment": comments.get((leg, int(r["start_number"])), ""),
-        } for _, r in d.iterrows()]
+        entries = []
+        for i, (_, r) in enumerate(d.iterrows()):
+            e = {
+                "nr": int(r["start_number"]), "horse": r["horse"], "driver": r["driver"],
+                "streck": float(r["streck"]), "model": 100 * float(r["p"]),
+                "comment": comments.get((leg, int(r["start_number"])), ""),
+            }
+            if i < 2:
+                e["reasons"] = gen_reasons(r, contrib[int(r["_ci"])], cols)
+            entries.append(e)
+        legs[int(leg)] = entries
     return {"track": track, "type": gtype, "legs": legs, "legmeta": legmeta}
+
+
+# ---------- model reasoning ----------
+
+def _phrase(name, r):
+    import math
+    if name == "log_implied":
+        return None  # market view already visible in the streck/odds columns
+    if name == "avg_log_odds_c":
+        avg = math.exp(r["avg_log_odds_c"])
+        return f"consistently short odds recently (~{avg:.1f})" if avg <= 6 else None
+    if name == "drv_winpct_py":
+        v = 100 * r["drv_winpct_py"]
+        return f"driver wins {v:.0f}% of his races" if v >= 12 else None
+    if name == "trn_winpct_py":
+        v = 100 * r["trn_winpct_py"]
+        return f"trainer wins {v:.0f}%" if v >= 12 else None
+    if name == "best_speedfig_c":
+        v = r["best_speedfig_c"]
+        return f"top speed figure ({v:+.1f}s vs a typical winner)" if v <= -1 else None
+    if name == "wins_5":
+        n = int(r["wins_5"])
+        return f"{n} wins in last 5 starts" if n >= 2 else None
+    if name == "top3_5":
+        n = int(r["top3_5"])
+        return f"{n} top-3 finishes in last 5" if n >= 3 else None
+    if name == "avg_place_5_c":
+        v = r["avg_place_5_c"]
+        return f"average finish {v:.1f} in last 5" if v <= 3.5 else None
+    if name == "log_money_per_start":
+        return "high career earnings per start"
+    if name == "log_avg_purse_c":
+        return "has raced at higher purse levels (class edge)"
+    if name == "shoe_change":
+        return "shoe change tonight" if r.get("shoe_change") else None
+    if name == "sulky_change":
+        return "cart change tonight" if r.get("sulky_change") else None
+    return None
+
+
+def gen_reasons(r, contrib_row, cols):
+    """Top positive feature contributions for this horse, phrased; plus cautions."""
+    out = []
+    for name, c in sorted(zip(cols, contrib_row), key=lambda x: -x[1]):
+        if c <= 0.02 or len(out) == 3:
+            break
+        ph = _phrase(name, r)
+        if ph:
+            out.append(ph)
+    cautions = []
+    if r.get("gallops_5", 0) >= 2:
+        cautions.append(f"{int(r['gallops_5'])} gallops in last 5")
+    if r.get("days_since") and r["days_since"] > 45:
+        cautions.append(f"{int(r['days_since'])}-day layoff")
+    txt = " · ".join(out)
+    if cautions:
+        txt += (" — caution: " if txt else "caution: ") + ", ".join(cautions)
+    return txt
 
 
 # ---------- rendering ----------
@@ -189,6 +255,10 @@ CSS = """
   .flag.value{ color:var(--pick); border:1px solid currentColor; }
   .flag.over{ color:var(--exp); border:1px solid currentColor; }
   .infos{ margin-top:8px; }
+  .sechead{ font-size:9px; font-weight:700; letter-spacing:.16em; margin:8px 0 3px;
+    padding-bottom:2px; border-bottom:1px solid var(--line); }
+  .sechead.tr{ color:var(--exp); }
+  .sechead.model{ color:var(--pick); }
   .info{ margin:0 0 5px; font-size:11px; color:var(--muted); line-height:1.5; }
   .info b{ color:var(--pick); }
   .cards{ display:flex; flex-direction:column; gap:14px; }
@@ -318,10 +388,16 @@ def render_game(game, data, updated):
                         f"<td class='drv'>{esc(h['driver'])}</td>"
                         f"<td class='num'>{h['streck']:.1f}%</td>"
                         f"<td class='num strong'>{h['model']:.1f}%</td></tr>")
-        for h in horses[:3]:
-            if h["comment"]:
-                infos.append(f"<p class='info'><b>#{h['nr']} {esc(h['horse'])}</b> "
-                             f"({esc(h['driver'])}) — {esc(translate(h['comment']))}</p>")
+        tr_notes = [f"<p class='info'><b>#{h['nr']} {esc(h['horse'])}</b> "
+                    f"({esc(h['driver'])}) — {esc(translate(h['comment']))}</p>"
+                    for h in horses[:3] if h["comment"]]
+        mr_notes = [f"<p class='info'><b>#{h['nr']} {esc(h['horse'])}</b> "
+                    f"({100*0+h['model']:.0f}%) — {esc(h['reasons'])}</p>"
+                    for h in horses[:2] if h.get("reasons")]
+        if tr_notes:
+            infos.append("<p class='sechead tr'>TR MEDIA</p>" + "".join(tr_notes))
+        if mr_notes:
+            infos.append("<p class='sechead model'>MODEL REASONING</p>" + "".join(mr_notes))
         spik = " · ★ spik candidate" if horses and horses[0]["model"] > 45 else ""
         tiles.append(f"""<article class="tile">
 <div class="leghead"><h2>Leg {leg}</h2><span class="meta">{esc(data['legmeta'].get(leg,''))}{spik}</span></div>
