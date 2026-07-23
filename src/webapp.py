@@ -249,12 +249,14 @@ TIX_HTML = """
 </div>
 <input type="file" id="tixphoto" accept="image/*" style="display:none">
 <img id="tixpreview" alt="" style="display:none">
+<button type="button" class="mlink" id="tixmanbtn">✏️ Enter picks manually</button>
+<div id="tixmanual" style="display:none">
 <label>Label</label>
 <input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
 <label>Ticket number</label>
 <input type="text" id="tixno" placeholder="e.g. D2F6 4828 7800 2027">
-<button type="button" class="mlink" id="tixmanbtn">✏️ Enter picks manually</button>
-<div id="tixmanual" style="display:none"><div id="tixlegs"></div></div>
+<div id="tixlegs"></div>
+</div>
 <p class="mnote err" id="tixerr" style="display:none"></p>
 <div class="mrow"><button class="mbtn save" onclick="tixSave()">Save ticket</button>
 <button class="mbtn" onclick="tixClose()">Cancel</button></div>
@@ -337,7 +339,7 @@ window.tixSave=function(){
   var man=document.getElementById("tixmanual");
   if(man.style.display==="none"){
     man.style.display="block";
-    err.textContent="Type the picks for each leg so the ticket can be compared.";
+    err.textContent="Fill in the ticket details so it can be compared.";
     err.style.display="block"; return; }
   var picks={}, bad=null;
   document.querySelectorAll(".tixleg").forEach(function(inp){
