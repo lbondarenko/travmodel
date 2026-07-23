@@ -153,6 +153,13 @@ def score_game(game_id):
             "fam_legs": fam_legs}
 
 
+# ---------- past races (hand-curated result pages in docs/past/) ----------
+PAST_RACES = [
+    {"href": "past/V86_2026-07-22_25_3.html", "type": "V86", "track": "Skellefteå",
+     "finished": "Wednesday 22 Jul", "outcome": "Our ticket: 5 of 8 legs — no payout (6+ needed)",
+     "note": "Two spik-killing skrälls: 32/1 Edens Odin & 85/1 Grace Kelly"},
+]
+
 # ---------- ticket builder ----------
 
 ROW_PRICE = {"V64": 1.0, "V65": 1.0, "V75": 0.5, "V86": 0.25, "GS75": 0.25}
@@ -380,6 +387,10 @@ CSS = """
   tr.fam td{ background:var(--fam-bg); }
   tr.fam td:nth-child(2){ color:var(--fam); font-weight:700; }
   .gamecard.famcard{ border-color:var(--fam); border-width:2px; }
+  .secbar{ font-size:11px; font-weight:700; letter-spacing:.18em; color:var(--muted);
+    margin:30px 0 10px; border-bottom:1px solid var(--line); padding-bottom:5px; }
+  .gamecard.pastcard{ opacity:.85; }
+  .gamecard.pastcard .fresh{ color:var(--exp); }
   .gamecard.famcard:hover{ border-color:var(--fam); }
   .printbtn{ margin-top:10px; background:none; border:1px solid var(--line); border-radius:7px;
     padding:5px 12px; font:600 12px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
@@ -635,6 +646,13 @@ data from ATG's open API · page auto-reloads every 10 min · not betting advice
 
 
 def render_index(entries):
+    past_cards = []
+    for pr in PAST_RACES:
+        past_cards.append(f"""<a class="gamecard pastcard" href="{pr['href']}">
+<div class="row1"><span class="gt">{pr['type']} · {esc(pr['track'])}</span>
+<span class="when"><span class="tl">FINISHED</span>{pr['finished']}</span></div>
+<div class="row2"><span>{esc(pr['note'])}</span>
+<span class="fresh">{esc(pr['outcome'])}</span></div></a>""")
     cards = []
     for e in entries:
         start_dt = datetime.fromisoformat(e["start"])
@@ -661,6 +679,8 @@ every 30 minutes inside the final 4 hours before post.</p>
 <span class="stamp-time">{now}</span>
 <span class="stamp-note">each race card shows its own data snapshot</span></div></div>
 <div class="cards">{''.join(cards)}</div>
+<p class="secbar">PAST RACES</p>
+<div class="cards">{''.join(past_cards)}</div>
 <footer>travmodel v2 · ATG open data · family duel edition · not betting advice.</footer>
 </main></body></html>"""
 
