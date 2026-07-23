@@ -258,8 +258,7 @@ CSS = """
   p.sechead{ font-size:9.5px; line-height:1.3; font-weight:700; letter-spacing:.16em;
     margin:9px 0 3px; padding-bottom:2px; border-bottom:1px solid var(--line);
     text-transform:uppercase; }
-  p.sechead.tr{ color:var(--exp); }
-  p.sechead.model{ color:var(--acc2); }
+  p.sechead.tr, p.sechead.model{ color:var(--exp); }
   .info{ margin:0 0 5px; font-size:11px; color:var(--muted); line-height:1.5; }
   .info b{ color:var(--pick); }
   .cards{ display:flex; flex-direction:column; gap:14px; }
