@@ -224,7 +224,7 @@ def build_ticket(legs, gtype):
             picks[leg] = [forced[leg]["nr"]]
             spiks[leg] = {**forced[leg], "family": True}
         else:
-            picks[leg] = [h["nr"] for h in legs[leg][:sel[leg]]]
+            picks[leg] = sorted(h["nr"] for h in legs[leg][:sel[leg]])
             if sel[leg] == 1:
                 spiks[leg] = {**legs[leg][0], "family": False}
     return {"picks": picks, "spiks": spiks,
