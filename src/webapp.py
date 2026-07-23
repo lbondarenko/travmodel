@@ -142,12 +142,15 @@ def score_game(game_id):
                 "nr": int(r["start_number"]), "horse": r["horse"], "driver": r["driver"],
                 "streck": float(r["streck"]), "model": 100 * float(r["p"]),
                 "comment": comments.get((leg, int(r["start_number"])), ""),
+                "family": str(r["horse"]).strip().lower() in FAMILY_SPIKS,
             }
             if i < 2:
                 e["reasons"] = gen_reasons(r, contrib[int(r["_ci"])], cols)
             entries.append(e)
         legs[int(leg)] = entries
-    return {"track": track, "type": gtype, "legs": legs, "legmeta": legmeta}
+    fam_legs = [leg for leg, hs in legs.items() if any(h.get("family") for h in hs)]
+    return {"track": track, "type": gtype, "legs": legs, "legmeta": legmeta,
+            "fam_legs": fam_legs}
 
 
 # ---------- ticket builder ----------
@@ -285,10 +288,10 @@ def gen_reasons(r, contrib_row, cols):
 CSS = """
   :root{ --bg:#FAF8F3; --ink:#26241F; --muted:#867F73; --line:#E3DED4;
     --pick:#2E6B4A; --pick-bg:#EDF3EE; --head-bg:#26241F; --head-ink:#FAF8F3;
-    --exp:#8A5A1E; --card:#FFFFFF; --acc2:#46647F; }
+    --exp:#8A5A1E; --card:#FFFFFF; --acc2:#46647F; --fam:#B45062; --fam-bg:#F7E7EA; }
   @media (prefers-color-scheme: dark){ :root{ --bg:#181A16; --ink:#E9E6DD; --muted:#98937F;
     --line:#37392F; --pick:#8CC3A4; --pick-bg:#26312A; --head-bg:#E9E6DD; --head-ink:#1D1F1B;
-    --exp:#D4A860; --card:#22241F; --acc2:#93B4CE; } }
+    --exp:#D4A860; --card:#22241F; --acc2:#93B4CE; --fam:#E39AAB; --fam-bg:#3A2A2E; } }
   *{ box-sizing:border-box; } html,body{ margin:0; }
   body{ background:var(--bg); color:var(--ink); line-height:1.45; padding:36px 18px 60px;
     font-family:"Avenir Next","Seravek",Seravek,system-ui,-apple-system,sans-serif; }
@@ -367,6 +370,16 @@ CSS = """
     transform:rotate(-5deg); border-radius:4px; text-align:center; opacity:.85; }
   .dstamp small{ display:block; font-size:7.5px; letter-spacing:.16em; font-weight:400; }
   @media print{ .tdrawer{ display:none; } }
+  .fambadge{ background:var(--fam-bg); color:var(--fam); border-radius:99px;
+    font-size:10px; font-weight:700; letter-spacing:.1em; padding:2px 9px;
+    margin-left:auto; white-space:nowrap; }
+  .famtag{ color:var(--fam); font-size:9px; font-weight:700; letter-spacing:.08em;
+    border:1px solid currentColor; border-radius:3px; padding:0 4px; }
+  .tile.famtile{ border-color:var(--fam); border-width:2px; }
+  tr.fam td{ background:var(--fam-bg); }
+  tr.fam td:nth-child(2){ color:var(--fam); font-weight:700; }
+  .gamecard.famcard{ border-color:var(--fam); border-width:2px; }
+  .gamecard.famcard:hover{ border-color:var(--fam); }
   .cards{ display:flex; flex-direction:column; gap:14px; }
   .gamecard{ display:block; text-decoration:none; background:var(--card);
     border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
@@ -489,6 +502,9 @@ def render_game(game, data, updated):
             elif edge and edge < 0.7 and h["streck"] > 15:
                 flag = " <span class='flag over'>OVERBET</span>"
             cls = "top" if i < (1 if horses[0]["model"] > 45 else 2) else ""
+            if h.get("family"):
+                cls += " fam"
+                flag = " <span class='famtag'>♥ JANS HÄST</span>" + flag
             rows.append(f"<tr class='{cls}'><td class='nr'>{h['nr']}</td>"
                         f"<td>{esc(h['horse'])}{flag}</td>"
                         f"<td class='drv'>{esc(h['driver'])}</td>"
@@ -505,8 +521,10 @@ def render_game(game, data, updated):
         if mr_notes:
             infos.append("<p class='sechead model'>MODEL REASONING</p>" + "".join(mr_notes))
         spik = " · ★ spik candidate" if horses and horses[0]["model"] > 45 else ""
-        tiles.append(f"""<article class="tile">
-<div class="leghead"><h2>Leg {leg}</h2><span class="meta">{esc(data['legmeta'].get(leg,''))}{spik}</span></div>
+        fam_in_leg = any(h.get("family") for h in horses)
+        fambadge = "<span class='fambadge'>♥ PRALINES</span>" if fam_in_leg else ""
+        tiles.append(f"""<article class="tile{' famtile' if fam_in_leg else ''}">
+<div class="leghead"><h2>Leg {leg}</h2><span class="meta">{esc(data['legmeta'].get(leg,''))}{spik}</span>{fambadge}</div>
 <table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th>Streck</th><th>Model</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table>
 <div class="infos">{''.join(infos)}</div></article>""")
@@ -573,8 +591,10 @@ def render_index(entries):
     for e in entries:
         start_dt = datetime.fromisoformat(e["start"])
         upd = e.get("updated", "not yet")
-        cards.append(f"""<a class="gamecard" href="game/{e['id']}.html">
-<div class="row1"><span class="gt">{e['type']} · {esc(e.get('track','...'))}</span>
+        fam = e.get("fam")
+        fambadge = "<span class='fambadge'>♥ PRALINES STARTAR</span>" if fam else ""
+        cards.append(f"""<a class="gamecard{' famcard' if fam else ''}" href="game/{e['id']}.html">
+<div class="row1"><span class="gt">{e['type']} · {esc(e.get('track','...'))}</span>{fambadge}
 <span class="when"><span class="tl">RACE STARTS</span>{start_dt.strftime('%A %d %b · %H:%M')}</span></div>
 <div class="row2"><span>{e.get('nlegs','?')} legs · model + streck sheet</span>
 <span class="fresh"><span class="tl">DATA UPDATED</span>{upd}</span></div></a>""")
@@ -619,7 +639,8 @@ def update_game(game):
     (WEB / "game" / f"{gid}.html").write_text(render_game(game, data, updated))
     with STATE_LOCK:
         STATE[gid] = {"last": time.time(), "track": data["track"],
-                      "nlegs": len(data["legs"]), "updated": updated}
+                      "nlegs": len(data["legs"]), "updated": updated,
+                      "fam": bool(data.get("fam_legs"))}
     log(f"updated {gid} ({data['type']} {data['track']}, {len(data['legs'])} legs)")
 
 

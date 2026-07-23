@@ -4,10 +4,10 @@
 <style>
   :root{ --bg:#FAF8F3; --ink:#26241F; --muted:#867F73; --line:#E3DED4;
     --pick:#2E6B4A; --pick-bg:#EDF3EE; --head-bg:#26241F; --head-ink:#FAF8F3;
-    --exp:#8A5A1E; --card:#FFFFFF; --acc2:#46647F; }
+    --exp:#8A5A1E; --card:#FFFFFF; --acc2:#46647F; --fam:#B45062; --fam-bg:#F7E7EA; }
   @media (prefers-color-scheme: dark){ :root{ --bg:#181A16; --ink:#E9E6DD; --muted:#98937F;
     --line:#37392F; --pick:#8CC3A4; --pick-bg:#26312A; --head-bg:#E9E6DD; --head-ink:#1D1F1B;
-    --exp:#D4A860; --card:#22241F; --acc2:#93B4CE; } }
+    --exp:#D4A860; --card:#22241F; --acc2:#93B4CE; --fam:#E39AAB; --fam-bg:#3A2A2E; } }
   *{ box-sizing:border-box; } html,body{ margin:0; }
   body{ background:var(--bg); color:var(--ink); line-height:1.45; padding:36px 18px 60px;
     font-family:"Avenir Next","Seravek",Seravek,system-ui,-apple-system,sans-serif; }
@@ -86,6 +86,16 @@
     transform:rotate(-5deg); border-radius:4px; text-align:center; opacity:.85; }
   .dstamp small{ display:block; font-size:7.5px; letter-spacing:.16em; font-weight:400; }
   @media print{ .tdrawer{ display:none; } }
+  .fambadge{ background:var(--fam-bg); color:var(--fam); border-radius:99px;
+    font-size:10px; font-weight:700; letter-spacing:.1em; padding:2px 9px;
+    margin-left:auto; white-space:nowrap; }
+  .famtag{ color:var(--fam); font-size:9px; font-weight:700; letter-spacing:.08em;
+    border:1px solid currentColor; border-radius:3px; padding:0 4px; }
+  .tile.famtile{ border-color:var(--fam); border-width:2px; }
+  tr.fam td{ background:var(--fam-bg); }
+  tr.fam td:nth-child(2){ color:var(--fam); font-weight:700; }
+  .gamecard.famcard{ border-color:var(--fam); border-width:2px; }
+  .gamecard.famcard:hover{ border-color:var(--fam); }
   .cards{ display:flex; flex-direction:column; gap:14px; }
   .gamecard{ display:block; text-decoration:none; background:var(--card);
     border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
