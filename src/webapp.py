@@ -863,7 +863,6 @@ def render_game(game, data, updated):
                        for h in ticket["spiks"].values() if h.get("family"))
     slip_inner = f"""
   <p class="dlogo">TRAVMODEL<span>™</span></p>
-  <p class="dtag">TEAM LILLIAN × CLAUDE · FAMILJENS EGET SPELBOLAG</p>
   <hr class="drule solid">
   <div class="drow"><span>Spel</span><b>{data['type']}</b></div>
   <div class="drow"><span>Bana</span><b>{esc(data['track'])}</b></div>
@@ -1037,7 +1036,6 @@ def render_past(gid, snap, results, start_iso):
     price_str = f"{ticket['price']:.2f}".rstrip("0").rstrip(".")
     slip_inner = f"""
   <p class="dlogo">TRAVMODEL<span>\u2122</span></p>
-  <p class="dtag">TEAM LILLIAN \u00d7 CLAUDE \u00b7 FAMILJENS EGET SPELBOLAG</p>
   <hr class="drule solid">
   <div class="drow"><span>Spel</span><b>{data['type']}</b></div>
   <div class="drow"><span>Bana</span><b>{esc(data['track'])}</b></div>
