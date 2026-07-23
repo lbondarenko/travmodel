@@ -1,6 +1,6 @@
 ---
 name: travmodel
-phase: mvp    # concept | poc | mvp | beta | published | promoting | paused
+phase: published    # concept | poc | mvp | beta | published | promoting | paused
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -17,7 +17,8 @@ manual analysis.
 - **Blocked on:** nothing
 
 ## Identity & accounts
-> Hobby project, no accounts, no money at stake beyond fun-tickets bought manually on ATG.
+> Hobby project. GitHub account: lbondarenko (credentials -> vault). No other accounts,
+> no money at stake beyond fun-tickets bought manually on ATG.
 
 ## Tech
 - Repos: ./src (scrape.py → features.py → train.py → predict.py)
@@ -37,6 +38,8 @@ manual analysis.
   competing against it — the market is the strongest single predictor (Benter's insight).
 
 ## Links
+- Live site: https://lbondarenko.github.io/travmodel/ (GitHub Pages, public)
+- Repo: https://github.com/lbondarenko/travmodel (public — Actions cron */30 min regenerates docs/)
 - Notes: ./notes/
 - ATG API: https://www.atg.se/services/racinginfo/v1/api/{calendar/day/:date, games/:id, races/:id/extended}
 
