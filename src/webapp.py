@@ -399,6 +399,12 @@ CSS = """
     margin-right:6px; vertical-align:1px; }
   footer{ margin-top:24px; padding-top:10px; border-top:1px solid var(--line);
     font-size:10.5px; color:var(--muted); line-height:1.6; }
+  .legend-title{ font-size:9.5px; font-weight:700; letter-spacing:.16em; color:var(--exp);
+    margin:0 0 6px; }
+  dl.legend{ margin:0 0 12px; display:grid; grid-template-columns:auto 1fr; gap:5px 12px;
+    font-size:11px; }
+  dl.legend dt{ font-weight:700; white-space:nowrap; color:var(--ink); }
+  dl.legend dd{ margin:0; line-height:1.55; }
   .userchip{ text-align:right; font-size:12px; color:var(--muted); margin:-20px 0 8px; }
   .userchip a{ color:var(--pick); }
   @media print{ .userchip{ display:none; } }
@@ -586,8 +592,30 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 </div>{stampbox(updated, start_dt.strftime('%H:%M'))}</div>
 {ticket_html}
 <div class="grid">{''.join(tiles)}</div>
-<footer>Lillian's Model = travmodel v2 · conditional logit on 17,356 Nordic races · market-blended ·
-data from ATG's open API · page auto-reloads every 10 min · not betting advice, not a valid bet.</footer>
+<footer>
+<p class="legend-title">WHAT THE LABELS MEAN</p>
+<dl class="legend">
+<dt><span class='flag value'>VALUE</span></dt>
+<dd>The crowd likes this horse <em>less</em> than it deserves — the model's win chance is at least
+1.3× its share of the betting pool. A better deal than its price, not a guaranteed winner.</dd>
+<dt><span class='flag over'>OVERBET</span></dt>
+<dd>The crowd likes this horse <em>more</em> than it deserves — the model's chance is under 0.7×
+its betting share (flagged only when 15%+ of the money is on it). Often a decent horse at a bad price.</dd>
+<dt>★ spik</dt>
+<dd>Banker candidate: the leg's top horse is strong enough (45%+ model chance) to carry the leg alone
+— passes the classic rule "only bank a horse whose real chance ≥ its betting percentage".</dd>
+<dt>♥</dt>
+<dd>Family rule: Pralines is Jan's own horse. When she races she is always the spik on the kupong,
+whatever the statistics say.</dd>
+<dt>Green row</dt>
+<dd>The model's top of the leg (top two when the leg is open).</dd>
+<dt>Streck vs Model</dt>
+<dd>Streck = share of all tickets that include the horse. Model = win probability from Lillian's Model.
+The gap between them is where the flags come from.</dd>
+</dl>
+<p>Lillian's Model = travmodel v2 · conditional logit on 17,356 Nordic races · market-blended ·
+data from ATG's open API · page auto-reloads every 10 min · not betting advice, not a valid bet.</p>
+</footer>
 </main></body></html>"""
 
 
