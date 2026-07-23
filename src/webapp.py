@@ -454,6 +454,39 @@ document.addEventListener("DOMContentLoaded", renderCmp);
 if(document.readyState!=="loading") renderCmp();
 })();
 </script>
+<script>
+(function(){
+function val(td){
+  var t=td.textContent.trim();
+  if(t==="") return 9999;
+  if(t.indexOf("\\uD83E\\uDD47")>=0) return 1;
+  var n=parseFloat(t.replace("%","").replace(",", "."));
+  return isNaN(n) ? t.toLowerCase() : n;
+}
+document.querySelectorAll(".tile table").forEach(function(tb){
+  var ths=tb.querySelectorAll("thead th");
+  ths.forEach(function(th,i){
+    th.style.cursor="pointer"; th.title="Sort by "+th.textContent;
+    th.addEventListener("click",function(){
+      var tbody=tb.querySelector("tbody"); if(!tbody) return;
+      var rows=Array.prototype.slice.call(tbody.querySelectorAll("tr"));
+      var dir=(th.getAttribute("data-dir")==="asc")?"desc":"asc";
+      ths.forEach(function(x){ x.removeAttribute("data-dir");
+        x.textContent=x.textContent.split(" \\u25B2")[0].split(" \\u25BC")[0]; });
+      th.setAttribute("data-dir",dir);
+      rows.sort(function(a,b){
+        var va=val(a.children[i]), vb=val(b.children[i]);
+        if(typeof va!==typeof vb){ va=String(va); vb=String(vb); }
+        if(va<vb) return dir==="asc"?-1:1;
+        if(va>vb) return dir==="asc"?1:-1;
+        return 0; });
+      rows.forEach(function(r){ tbody.appendChild(r); });
+      th.textContent=th.textContent+" "+(dir==="asc"?"\\u25B2":"\\u25BC");
+    });
+  });
+});
+})();
+</script>
 """
 
 TIX_CSS = """
