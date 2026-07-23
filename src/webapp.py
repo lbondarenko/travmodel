@@ -229,8 +229,13 @@ AUTH_USERS = {
 }
 
 
+SESSION_MS = 7 * 24 * 3600 * 1000  # login lasts a week
+
+
 def auth_guard(login_rel):
-    return f"""<script>if(!localStorage.getItem("tm_user"))location.replace("{login_rel}");</script>"""
+    return (f"""<script>(function(){{var t=+localStorage.getItem("tm_ts")||0;"""
+            f"""if(!localStorage.getItem("tm_user")||Date.now()-t>{SESSION_MS})"""
+            f"""location.replace("{login_rel}");}})();</script>""")
 
 
 USERCHIP = """<div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
@@ -273,10 +278,10 @@ document.getElementById("f").onsubmit = async function(ev){
   var u = document.getElementById("u").value.trim().toLowerCase();
   var p = document.getElementById("p").value;
   var d = await h(u + ":" + p);
-  if(USERS[d]){ localStorage.setItem("tm_user", USERS[d]); location.replace("index.html"); }
+  if(USERS[d]){ localStorage.setItem("tm_user", USERS[d]); localStorage.setItem("tm_ts", Date.now()); location.replace("index.html"); }
   else document.getElementById("e").style.display = "block";
 };
-if(localStorage.getItem("tm_user")) location.replace("index.html");
+if(localStorage.getItem("tm_user") && Date.now()-(+localStorage.getItem("tm_ts")||0) < 604800000) location.replace("index.html");
 </script></main></body></html>"""
 
 

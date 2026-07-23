@@ -102,8 +102,8 @@ document.getElementById("f").onsubmit = async function(ev){
   var u = document.getElementById("u").value.trim().toLowerCase();
   var p = document.getElementById("p").value;
   var d = await h(u + ":" + p);
-  if(USERS[d]){ localStorage.setItem("tm_user", USERS[d]); location.replace("index.html"); }
+  if(USERS[d]){ localStorage.setItem("tm_user", USERS[d]); localStorage.setItem("tm_ts", Date.now()); location.replace("index.html"); }
   else document.getElementById("e").style.display = "block";
 };
-if(localStorage.getItem("tm_user")) location.replace("index.html");
+if(localStorage.getItem("tm_user") && Date.now()-(+localStorage.getItem("tm_ts")||0) < 604800000) location.replace("index.html");
 </script></main></body></html>
