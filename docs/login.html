@@ -61,10 +61,14 @@
     transform:translateX(100%); transition:transform .25s ease; }
   .tdrawer.open{ transform:translateX(0); }
   @media (prefers-reduced-motion: reduce){ .tdrawer{ transition:none; } }
-  .ttab{ position:absolute; left:-40px; top:36%; width:40px;
-    writing-mode:vertical-rl; background:var(--pick); color:#fff; border:none;
-    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
-    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  .dwrail{ position:fixed; right:0; top:42%; z-index:70; display:flex;
+    flex-direction:column; gap:8px; }
+  .dwtab{ width:42px; writing-mode:vertical-rl; border:none; border-radius:8px 0 0 8px;
+    padding:16px 11px; cursor:pointer; color:#fff;
+    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.14em; }
+  .dwtab-k{ background:var(--pick); }
+  .dwtab-e{ background:var(--exp); }
+  @media print{ .dwrail{ display:none; } }
   .slipd{ width:min(300px, 86vw); height:100%; overflow-y:auto;
     background:#FCFAF7; color:#211E1B; padding:24px 18px 30px;
     font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;
@@ -95,10 +99,7 @@
     transform:translateX(100%); transition:transform .25s ease; }
   .edrawer.open{ transform:translateX(0); }
   @media (prefers-reduced-motion: reduce){ .edrawer{ transition:none; } }
-  .etab{ position:absolute; left:-40px; top:52%; width:40px;
-    writing-mode:vertical-rl; background:var(--exp); color:#fff; border:none;
-    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
-    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  /* tabs moved into .dwrail */
   .epanel{ width:min(320px, 88vw); height:100%; overflow-y:auto;
     background:var(--card); color:var(--ink); padding:22px 18px 30px;
     border-left:3px solid var(--exp); box-shadow:-14px 0 34px rgba(0,0,0,.3);

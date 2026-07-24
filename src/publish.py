@@ -95,7 +95,17 @@ def try_make_past(gid, st):
             return False
         results[str(i)] = {"winner": winner, "odds": odds, "places": places}
     pool = ((game.get("pools") or {}).get(gid.split("_")[0]) or {}).get("result", {}).get("payouts")
-    html = webapp.render_past(gid, snap, results, st["start"], pool)
+    exf = DOCS / "data" / "experts" / f"{gid}.json"
+    ex = None
+    if exf.exists():
+        try: ex = json.loads(exf.read_text())
+        except Exception: ex = None
+    if ex is None:
+        try:
+            import experts as _experts
+            ex = _experts.get_cached(gid, snap["data"]["track"], gid.split("_")[1], gid.split("_")[0])
+        except Exception: ex = None
+    html = webapp.render_past(gid, snap, results, st["start"], pool, ex)
     (DOCS / "past").mkdir(parents=True, exist_ok=True)
     (DOCS / "past" / f"{gid}.html").write_text(html)
     hits = sum(1 for l, r in results.items()

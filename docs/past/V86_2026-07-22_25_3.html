@@ -244,6 +244,10 @@ tr.win-miss td:nth-child(2){ color:#C23B2E; font-weight:700; }
   .exl{ font-size:10px; font-weight:700; letter-spacing:.12em; color:var(--muted); margin-right:6px; }
   .extop{ font-size:11px; color:var(--muted); margin-top:2px; }
   @media print{ .edrawer{ display:none; } }
+  .dwrail{ position:fixed; right:0; top:42%; z-index:70; display:flex; flex-direction:column; gap:8px; }
+  .dwtab{ width:42px; writing-mode:vertical-rl; border:none; border-radius:8px 0 0 8px; padding:16px 11px; cursor:pointer; color:#fff; font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.14em; }
+  .dwtab-k{ background:var(--pick); } .dwtab-e{ background:var(--exp); }
+  @media print{ .dwrail{ display:none; } }
 </style></head><body><main>
 <div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
 <script>
@@ -499,8 +503,7 @@ if(document.readyState!=="loading") renderCmp();
 <footer><p>Model column = travmodel v2 scored retrospectively on this round (the round was holdout data,
 never trained on). Streck = final V86 distribution. Not betting advice.</p></footer>
 </main>
-<aside class="tdrawer" id="tdrawer">
-<button class="ttab" onclick="tdT()">🎟️ KUPONG</button>
+<aside class="tdrawer dw" id="tdrawer">
 <div class="slipd"><div class="tickrow"><div class="tickcol"><p class="dlogo">TRAVMODEL<span>™</span></p>
 <hr class="drule solid">
 <div class="drow"><span>Spel</span><b>V86</b></div>
@@ -519,11 +522,7 @@ Jans egen rad (270 kr) 2 av 8. En enda kupong i Sverige hade alla åtta: 6 099 4
 </div><div class="tickcol"><p class="dtag" style="letter-spacing:.14em; font-size:10px; margin:0 0 6px">JANS KUPONGER</p><img class="dphoto" src="tickets/harry-boy.jpg" alt="Jans Harry Boy-kvitto" loading="lazy">
 <p class="dcap">Harry Boy · 288 kr · 5 av 8</p></div><div class="tickcol"><img class="dphoto" src="tickets/jans-egen.jpg" alt="Jans egen rad" loading="lazy">
 <p class="dcap">Jans egen rad · 270 kr · 2 av 8</p></div></div></div></aside>
-<script>
-function tdT(){var d=document.getElementById('tdrawer');var o=d.classList.toggle('open');
-try{localStorage.setItem('tm_drawer',o?'1':'0');}catch(e){}}
-try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer').classList.add('open');}catch(e){}
-</script>
+
 <script>
 (function(){
 function val(td){
@@ -557,17 +556,23 @@ document.querySelectorAll(".tile table").forEach(function(tb){
 });
 })();
 </script>
-<aside class="edrawer" id="edrawer">
-<button class="etab" onclick="edT()">EXPERTS</button>
+<aside class="edrawer dw" id="edrawer">
 <div class="epanel">
 <p class="ehead">EXPERT RANKINGS</p>
 <p class="esub">Gratistravtips ABCD · <a href="https://www.gratistravtips.se/skelleftea/2026-07-22/v86" target="_blank" rel="noopener">source</a> ·
 A = best group. Audited on 803 historical legs: their top pick won 25% vs Travmodel's 40% —
 read as context, not gospel.</p>
 <div class='exleg'><span class='exl'>Leg 1</span> <b>B:</b> 5, 3, 2 · <b>C:</b> 6, 4 · <b>D:</b> 8, 7, 1<div class='extop'>their top: #5 B.W.Sture</div></div><div class='exleg'><span class='exl'>Leg 2</span> <b>A:</b> 7 · <b>B:</b> 10, 5, 11 · <b>C:</b> 12, 8, 6, 9 · <b>D:</b> 1, 2, 3, 4<div class='extop'>their top: #7 Karbon Brick</div></div><div class='exleg'><span class='exl'>Leg 3</span> <b>A:</b> 1, 10 · <b>B:</b> 2, 12 · <b>C:</b> 8, 5, 7, 13 · <b>D:</b> 4, 9, 11, 3, 6<div class='extop'>their top: #1 Sjö Kosa</div></div><div class='exleg'><span class='exl'>Leg 4</span> <b>A:</b> 10 · <b>B:</b> 6, 8, 11 · <b>C:</b> 4, 9 · <b>D:</b> 2, 3, 5, 7<div class='extop'>their top: #10 Before Takeoff</div></div><div class='exleg'><span class='exl'>Leg 5</span> <b>A:</b> 15, 11 · <b>B:</b> 9, 7, 2, 13 · <b>C:</b> 12, 10, 3, 14 · <b>D:</b> 8, 5, 1, 4, 6<div class='extop'>their top: #15 Jobiline Ridge*</div></div><div class='exleg'><span class='exl'>Leg 6</span> <b>A:</b> 1, 9 · <b>B:</b> 10 · <b>C:</b> 11, 6, 12, 4 · <b>D:</b> 3, 8, 7, 2, 5<div class='extop'>their top: #1 Fantasy Boy*</div></div><div class='exleg'><span class='exl'>Leg 7</span> <b>A:</b> 5 · <b>B:</b> 4, 1, 7 · <b>C:</b> 2, 12 · <b>D:</b> 6, 9, 8, 10, 3<div class='extop'>their top: #5 Punchboard</div></div><div class='exleg'><span class='exl'>Leg 8</span> <b>A:</b> 5 · <b>B:</b> 7, 12 · <b>C:</b> 3, 1 · <b>D:</b> 11, 2, 4, 10<div class='extop'>their top: #5 Ultimus</div></div>
-</div></aside><script>
-function edT(){var d=document.getElementById('edrawer');var o=d.classList.toggle('open');
-try{localStorage.setItem('tm_edrawer',o?'1':'0');}catch(e){}}
-try{if(localStorage.getItem('tm_edrawer')==='1')document.getElementById('edrawer').classList.add('open');}catch(e){}
+</div></aside>
+<div class="dwrail"><button class="dwtab dwtab-k" onclick="dwGo('tdrawer')">🎟️ KUPONG</button><button class="dwtab dwtab-e" onclick="dwGo('edrawer')">📋 EXPERTS</button></div><script>
+function dwGo(id){
+  var t=document.getElementById('tdrawer'), e=document.getElementById('edrawer');
+  var d=document.getElementById(id); if(!d) return;
+  var opening=!d.classList.contains('open');
+  if(t)t.classList.remove('open'); if(e)e.classList.remove('open');
+  if(opening)d.classList.add('open');
+  try{localStorage.setItem('tm_dw', opening?id:'');}catch(err){}
+}
+try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o); if(el)el.classList.add('open');}}catch(err){}
 </script>
 </body></html>

@@ -678,10 +678,14 @@ CSS = """
     transform:translateX(100%); transition:transform .25s ease; }
   .tdrawer.open{ transform:translateX(0); }
   @media (prefers-reduced-motion: reduce){ .tdrawer{ transition:none; } }
-  .ttab{ position:absolute; left:-40px; top:36%; width:40px;
-    writing-mode:vertical-rl; background:var(--pick); color:#fff; border:none;
-    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
-    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  .dwrail{ position:fixed; right:0; top:42%; z-index:70; display:flex;
+    flex-direction:column; gap:8px; }
+  .dwtab{ width:42px; writing-mode:vertical-rl; border:none; border-radius:8px 0 0 8px;
+    padding:16px 11px; cursor:pointer; color:#fff;
+    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.14em; }
+  .dwtab-k{ background:var(--pick); }
+  .dwtab-e{ background:var(--exp); }
+  @media print{ .dwrail{ display:none; } }
   .slipd{ width:min(300px, 86vw); height:100%; overflow-y:auto;
     background:#FCFAF7; color:#211E1B; padding:24px 18px 30px;
     font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;
@@ -712,10 +716,7 @@ CSS = """
     transform:translateX(100%); transition:transform .25s ease; }
   .edrawer.open{ transform:translateX(0); }
   @media (prefers-reduced-motion: reduce){ .edrawer{ transition:none; } }
-  .etab{ position:absolute; left:-40px; top:52%; width:40px;
-    writing-mode:vertical-rl; background:var(--exp); color:#fff; border:none;
-    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
-    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  /* tabs moved into .dwrail */
   .epanel{ width:min(320px, 88vw); height:100%; overflow-y:auto;
     background:var(--card); color:var(--ink); padding:22px 18px 30px;
     border-left:3px solid var(--exp); box-shadow:-14px 0 34px rgba(0,0,0,.3);
@@ -897,19 +898,31 @@ def experts_drawer(experts, back=""):
                      f"<div class='extop'>their top: #{top['nr']} {esc(top['name'])}</div></div>")
     src = experts.get("source", "experts")
     url = experts.get("url", "#")
-    return f"""<aside class="edrawer" id="edrawer">
-<button class="etab" onclick="edT()">EXPERTS</button>
+    return f"""<aside class="edrawer dw" id="edrawer">
 <div class="epanel">
 <p class="ehead">EXPERT RANKINGS</p>
 <p class="esub">{esc(src)} · <a href="{url}" target="_blank" rel="noopener">source</a> ·
 A = best group. Audited on 803 historical legs: their top pick won 25% vs Travmodel's 40% —
 read as context, not gospel.</p>
 {''.join(parts)}
-</div></aside>""" + """<script>
-function edT(){var d=document.getElementById('edrawer');var o=d.classList.toggle('open');
-try{localStorage.setItem('tm_edrawer',o?'1':'0');}catch(e){}}
-try{if(localStorage.getItem('tm_edrawer')==='1')document.getElementById('edrawer').classList.add('open');}catch(e){}
-</script>"""
+</div></aside>"""
+
+
+def drawer_rail(experts=None):
+    tabs = ['<button class="dwtab dwtab-k" onclick="dwGo(\'tdrawer\')">\U0001F39F\uFE0F KUPONG</button>']
+    if experts and experts.get("legs"):
+        tabs.append('<button class="dwtab dwtab-e" onclick="dwGo(\'edrawer\')">\U0001F4CB EXPERTS</button>')
+    return ('<div class="dwrail">' + ''.join(tabs) + '</div>' + """<script>
+function dwGo(id){
+  var t=document.getElementById('tdrawer'), e=document.getElementById('edrawer');
+  var d=document.getElementById(id); if(!d) return;
+  var opening=!d.classList.contains('open');
+  if(t)t.classList.remove('open'); if(e)e.classList.remove('open');
+  if(opening)d.classList.add('open');
+  try{localStorage.setItem('tm_dw', opening?id:'');}catch(err){}
+}
+try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o); if(el)el.classList.add('open');}}catch(err){}
+</script>""")
 
 
 def render_game(game, data, updated, experts=None):
@@ -989,11 +1002,8 @@ def render_game(game, data, updated, experts=None):
   Inget giltigt spel — spela hos atg.se om du vill.</p>
   <div class="dstamp">EJ GILTIGT SPEL<small>ENDAST SKRYTRÄTTIGHETER</small></div>
 """
-    ticket_html = ("""<aside class="tdrawer" id="tdrawer">\n<button class="ttab" onclick="tdT()">🎟️ KUPONG</button>\n<div class="slipd">""" + slip_inner + '</div></aside>') + """<script>
-function tdT(){var d=document.getElementById('tdrawer');var o=d.classList.toggle('open');
-try{localStorage.setItem('tm_drawer',o?'1':'0');}catch(e){}}
-try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer').classList.add('open');}catch(e){}
-</script>"""
+    ticket_html = ('<aside class="tdrawer dw" id="tdrawer"><div class="slipd">'
+                   + slip_inner + '</div></aside>')
     import json as _json
     spik_names = {str(leg): f"{sp['nr']} {esc(sp['horse'])} \u2605" + (" \u2665" if sp.get("family") else "")
                   for leg, sp in ticket["spiks"].items()}
@@ -1021,6 +1031,7 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 </div>{stampbox(updated, start_dt.strftime('%H:%M'))}</div>
 {ticket_html}
 {experts_drawer(experts)}
+{drawer_rail(experts)}
 <div class="grid">{''.join('<div class="legrow">' + ''.join(tiles[i:i+2]) + '</div>' for i in range(0, len(tiles), 2))}</div>
 {printtix}
 {tix_block}
@@ -1100,7 +1111,7 @@ every 30 minutes inside the final 4 hours before post.</p>
 
 
 
-def render_past(gid, snap, results, start_iso, pool_payouts=None):
+def render_past(gid, snap, results, start_iso, pool_payouts=None, experts=None):
     """Automated result page: locked snapshot + final results. results:
     {leg(str): {"winner": nr, "odds": x, "places": {nr: plc}}}"""
     data = snap["data"]; ticket = snap["ticket"]
@@ -1179,14 +1190,8 @@ def render_past(gid, snap, results, start_iso, pool_payouts=None):
     tix_block = TIX_HTML + TIX_JS.replace("__TMDATA__", tmdata)
     printtix = ('<section class="printtix"><div class="tickrow" id="ptrow">'
                 '<div class="tickcol"><div class="slipd">' + slip_inner + "</div></div></div></section>")
-    drawer = ('<aside class="tdrawer" id="tdrawer">'
-              '<button class="ttab" onclick="tdT()">\U0001F39F\uFE0F KUPONG</button>'
-              '<div class="slipd">' + slip_inner + '</div></aside>'
-              + """<script>
-function tdT(){var d=document.getElementById('tdrawer');var o=d.classList.toggle('open');
-try{localStorage.setItem('tm_drawer',o?'1':'0');}catch(e){}}
-try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer').classList.add('open');}catch(e){}
-</script>""")
+    drawer = ('<aside class="tdrawer dw" id="tdrawer"><div class="slipd">'
+              + slip_inner + '</div></aside>')
     # winnings: distribution of correct-counts across all rows, valued by pool payouts
     ways = {0: 1}
     for leg in sorted(legs, key=int):
@@ -1251,6 +1256,7 @@ ul.infoul li{ font-size:13px; color:var(--muted); line-height:1.55; margin-botto
 {printtix}
 {tix_block}
 {drawer}
+{drawer_rail(experts)}
 <footer><p>Picks were locked 30 minutes before start; results fetched from ATG. Not betting advice.</p></footer>
 </main></body></html>"""
 
