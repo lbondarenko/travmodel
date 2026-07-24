@@ -113,7 +113,7 @@ def try_make_past(gid, st):
     win_kr = sum(ways.get(int(t), 0) * ((i.get("payout",0) if isinstance(i,dict) else i)/100)
                  for t, i in (pool or {}).items())
     net = win_kr - snap["ticket"]["cost"]
-    st["outcome"] = f"Kupongen: {hits} av {len(results)} — netto {net:+.0f} kr"
+    st["outcome"] = f"Ticket: {hits} of {len(results)} — net {net:+.0f} kr"
     biggest = max((r.get("odds") or 0) for r in results.values())
     st["note"] = f"Biggest winner odds: {biggest:.2f}" if biggest else "Auto-scored result"
     webapp.log(f"past page generated for {gid} ({hits}/{len(results)})")

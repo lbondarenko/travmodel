@@ -1121,21 +1121,21 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
         pay = (info.get("payout", 0) if isinstance(info, dict) else info) / 100
         if rows_t and pay:
             win_kr += rows_t * pay
-            win_parts.append(f"{rows_t} rad(er) med {tier} r\u00e4tt \u00e0 {pay:,.0f} kr".replace(",", " "))
+            win_parts.append(f"{rows_t} row(s) with {tier} correct at {pay:,.0f} kr".replace(",", " "))
         elif rows_t and isinstance(info, dict) and info.get("jackpot"):
-            unpaid.append(f"{rows_t} rad med {tier} r\u00e4tt \u2014 under minimiutdelning, gick till jackpot")
+            unpaid.append(f"{rows_t} row(s) with {tier} correct \u2014 below the minimum payout, rolled into the jackpot")
     net = win_kr - ticket["cost"]
     if win_kr > 0:
-        money = (f"Utdelning: {' + '.join(win_parts)} = <b>{win_kr:,.0f} kr</b>".replace(",", " ")
-                 + f" \u00b7 insats {ticket['cost']:.0f} kr \u00b7 netto <b>{net:+,.0f} kr</b>".replace(",", " "))
+        money = (f"Winnings: {' + '.join(win_parts)} = <b>{win_kr:,.0f} kr</b>".replace(",", " ")
+                 + f" \u00b7 stake {ticket['cost']:.0f} kr \u00b7 net <b>{net:+,.0f} kr</b>".replace(",", " "))
     elif pool_payouts and unpaid:
-        money = f"{'; '.join(unpaid)} \u00b7 netto \u2212{ticket['cost']:.0f} kr."
+        money = f"{'; '.join(unpaid)} \u00b7 net \u2212{ticket['cost']:.0f} kr."
     elif pool_payouts:
-        money = f"Ingen utdelningsniv\u00e5 n\u00e5dd \u00b7 netto \u2212{ticket['cost']:.0f} kr."
+        money = f"No paying tier reached \u00b7 net \u2212{ticket['cost']:.0f} kr."
     else:
         money = ""
     resultbar = (f'<div class="resultbar"><b>RESULT: {hits} AV {nlegs}.</b> {money} '
-                 f'\u00d6ppna \U0001F39F\uFE0F-luckan f\u00f6r den r\u00e4ttade kupongen.</div>')
+                 f'Open the \U0001F39F\uFE0F drawer for the corrected kupong.</div>')
     extra_css = """
 .resultbar{ background:var(--card); border:2px solid var(--exp); border-radius:12px;
   padding:12px 16px; margin-bottom:18px; font-size:13.5px; line-height:1.6; }
@@ -1165,7 +1165,7 @@ ul.infoul li{ font-size:13px; color:var(--muted); line-height:1.55; margin-botto
 {printtix}
 {tix_block}
 {drawer}
-<footer><p>Kupongen l\u00e5stes 30 minuter f\u00f6re start; resultat h\u00e4mtade fr\u00e5n ATG. Not betting advice.</p></footer>
+<footer><p>Picks were locked 30 minutes before start; results fetched from ATG. Not betting advice.</p></footer>
 </main></body></html>"""
 
 
