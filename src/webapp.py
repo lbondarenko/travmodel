@@ -1115,17 +1115,21 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
                 new[k] = new.get(k, 0) + v * ww
         ways = new
     win_kr = 0.0
-    win_parts = []
+    win_parts, unpaid = [], []
     for tier, info in (pool_payouts or {}).items():
         rows_t = ways.get(int(tier), 0)
         pay = (info.get("payout", 0) if isinstance(info, dict) else info) / 100
         if rows_t and pay:
             win_kr += rows_t * pay
             win_parts.append(f"{rows_t} rad(er) med {tier} r\u00e4tt \u00e0 {pay:,.0f} kr".replace(",", " "))
+        elif rows_t and isinstance(info, dict) and info.get("jackpot"):
+            unpaid.append(f"{rows_t} rad med {tier} r\u00e4tt \u2014 under minimiutdelning, gick till jackpot")
     net = win_kr - ticket["cost"]
     if win_kr > 0:
         money = (f"Utdelning: {' + '.join(win_parts)} = <b>{win_kr:,.0f} kr</b>".replace(",", " ")
                  + f" \u00b7 insats {ticket['cost']:.0f} kr \u00b7 netto <b>{net:+,.0f} kr</b>".replace(",", " "))
+    elif pool_payouts and unpaid:
+        money = f"{'; '.join(unpaid)} \u00b7 netto \u2212{ticket['cost']:.0f} kr."
     elif pool_payouts:
         money = f"Ingen utdelningsniv\u00e5 n\u00e5dd \u00b7 netto \u2212{ticket['cost']:.0f} kr."
     else:
