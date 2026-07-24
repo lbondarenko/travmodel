@@ -24,7 +24,7 @@
   .stamp-label{ font-size:9px; font-weight:700; letter-spacing:.18em; opacity:.75; }
   .stamp-time{ font-size:19px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25; }
   .stamp-note{ font-size:10px; opacity:.8; line-height:1.35; margin-top:2px; }
-  .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; align-items:start; }
+  .grid{ display:grid; grid-template-columns:1fr; gap:16px; align-items:start; }
   .legrow{ display:contents; }
   @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
   .tile{ background:var(--card); border:1px solid var(--line); border-radius:10px;
@@ -36,8 +36,12 @@
   table{ border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; }
   th,td{ padding:3.5px 6px; text-align:left; font-size:12px; }
   thead th{ background:var(--head-bg); color:var(--head-ink); font-size:9.5px; letter-spacing:.07em; }
-  th:nth-child(4),td:nth-child(4),th:nth-child(5),td:nth-child(5){ text-align:right; }
+  th.r, td.num{ text-align:right; }
   td.drv{ color:var(--muted); font-size:11px; }
+  td.till{ color:var(--exp); font-weight:700; font-size:11px; }
+  td.shoes{ font-size:11px; letter-spacing:1px; }
+  .schg{ color:var(--exp); font-weight:700; font-size:13px; }
+  .dpct{ color:var(--muted); font-size:10px; }
   tbody tr{ border-bottom:1px solid var(--line); }
   td.nr{ color:var(--muted); width:22px; }
   td.num{ white-space:nowrap; } td.strong{ font-weight:600; }
@@ -140,8 +144,9 @@
     :root{ --muted:#3A3733; --pick:#1E4A33; --exp:#6B4413; --line:#999; }
     body{ background:#fff; color:#000; padding:0; }
     main{ max-width:none; } .grid{ display:block; }
-    .legrow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;
-      page-break-after:always; break-inside:avoid; page-break-inside:avoid; margin-bottom:0; }
+    .legrow{ display:block; page-break-after:always; break-inside:avoid;
+      page-break-inside:avoid; margin-bottom:0; }
+    .legrow .tile{ margin-bottom:10px; }
     .tile{ border-color:#888; break-inside:avoid; page-break-inside:avoid; }
     .printbtn,.upbtn,.modalback{ display:none; } footer{ display:none; } body{ font-size:10px; }
     .legrow:last-of-type{ page-break-after:auto; }

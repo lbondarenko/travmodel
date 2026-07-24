@@ -143,6 +143,10 @@ def score_game(game_id):
                 "streck": float(r["streck"]), "model": 100 * float(r["p"]),
                 "comment": comments.get((leg, int(r["start_number"])), ""),
                 "family": str(r["horse"]).strip().lower() in FAMILY_SPIKS,
+                "tillagg": int(r.get("handicap") or 0),
+                "sf": int(r.get("shoe_front") or 0), "sb": int(r.get("shoe_back") or 0),
+                "sch": int(r.get("shoe_change") or 0),
+                "dpct": round(100 * float(r.get("drv_winpct_py") or 0)),
             }
             if i < 2:
                 e["reasons"] = gen_reasons(r, contrib[int(r["_ci"])], cols)
@@ -637,7 +641,7 @@ CSS = """
   .stamp-label{ font-size:9px; font-weight:700; letter-spacing:.18em; opacity:.75; }
   .stamp-time{ font-size:19px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25; }
   .stamp-note{ font-size:10px; opacity:.8; line-height:1.35; margin-top:2px; }
-  .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; align-items:start; }
+  .grid{ display:grid; grid-template-columns:1fr; gap:16px; align-items:start; }
   .legrow{ display:contents; }
   @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
   .tile{ background:var(--card); border:1px solid var(--line); border-radius:10px;
@@ -649,8 +653,12 @@ CSS = """
   table{ border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; }
   th,td{ padding:3.5px 6px; text-align:left; font-size:12px; }
   thead th{ background:var(--head-bg); color:var(--head-ink); font-size:9.5px; letter-spacing:.07em; }
-  th:nth-child(4),td:nth-child(4),th:nth-child(5),td:nth-child(5){ text-align:right; }
+  th.r, td.num{ text-align:right; }
   td.drv{ color:var(--muted); font-size:11px; }
+  td.till{ color:var(--exp); font-weight:700; font-size:11px; }
+  td.shoes{ font-size:11px; letter-spacing:1px; }
+  .schg{ color:var(--exp); font-weight:700; font-size:13px; }
+  .dpct{ color:var(--muted); font-size:10px; }
   tbody tr{ border-bottom:1px solid var(--line); }
   td.nr{ color:var(--muted); width:22px; }
   td.num{ white-space:nowrap; } td.strong{ font-weight:600; }
@@ -753,8 +761,9 @@ CSS = """
     :root{ --muted:#3A3733; --pick:#1E4A33; --exp:#6B4413; --line:#999; }
     body{ background:#fff; color:#000; padding:0; }
     main{ max-width:none; } .grid{ display:block; }
-    .legrow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;
-      page-break-after:always; break-inside:avoid; page-break-inside:avoid; margin-bottom:0; }
+    .legrow{ display:block; page-break-after:always; break-inside:avoid;
+      page-break-inside:avoid; margin-bottom:0; }
+    .legrow .tile{ margin-bottom:10px; }
     .tile{ border-color:#888; break-inside:avoid; page-break-inside:avoid; }
     .printbtn,.upbtn,.modalback{ display:none; } footer{ display:none; } body{ font-size:10px; }
     .legrow:last-of-type{ page-break-after:auto; }
@@ -868,9 +877,15 @@ def render_game(game, data, updated):
             if h.get("family"):
                 cls += " fam"
                 flag = " <span class='famtag'>♥ JANS HÄST</span>" + flag
+            till = f"+{h['tillagg']}" if h.get("tillagg") else ""
+            shoes = ("\u25cf" if h.get("sf") else "\u25cb") + ("\u25cf" if h.get("sb") else "\u25cb")
+            schg = "<span class='schg' title='changed since last start'>*</span>" if h.get("sch") else ""
+            dp = f" <span class='dpct'>{h['dpct']}%</span>" if h.get("dpct") else ""
             rows.append(f"<tr class='{cls}'><td class='nr'>{h['nr']}</td>"
                         f"<td>{esc(h['horse'])}{flag}</td>"
-                        f"<td class='drv'>{esc(h['driver'])}</td>"
+                        f"<td class='num till'>{till}</td>"
+                        f"<td class='shoes'>{shoes}{schg}</td>"
+                        f"<td class='drv'>{esc(h['driver'])}{dp}</td>"
                         f"<td class='num'>{h['streck']:.1f}%</td>"
                         f"<td class='num strong'>{h['model']:.1f}%</td></tr>")
         tr_notes = [f"<p class='info'><b>#{h['nr']} {esc(h['horse'])}</b> "
@@ -888,7 +903,7 @@ def render_game(game, data, updated):
         fambadge = "<span class='fambadge'>♥ PRALINES</span>" if fam_in_leg else ""
         tiles.append(f"""<article class="tile{' famtile' if fam_in_leg else ''}">
 <div class="leghead"><h2>Leg {leg}</h2><span class="meta">{esc(data['legmeta'].get(leg,''))}{spik}</span>{fambadge}</div>
-<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th>Streck</th><th>Model</th></tr></thead>
+<table><thead><tr><th>#</th><th>Horse</th><th class="r">Dist</th><th>Shoes</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table>
 <div class="infos">{''.join(infos)}</div></article>""")
     ticket = build_ticket(data["legs"], data["type"])
@@ -974,6 +989,14 @@ its betting share (flagged only when 15%+ of the money is on it). Often a decent
 whatever the statistics say.</dd>
 <dt>Green row</dt>
 <dd>The model's top of the leg (top two when the leg is open).</dd>
+<dt>+20 / +40</dt>
+<dd>Distance handicap (tillägg): the horse starts that many metres behind the base distance —
+better horses give ground in volt starts.</dd>
+<dt>●● / ○○</dt>
+<dd>Shoes front/back: ● = shoe on, ○ = barefoot. An amber * means it changed since the last start —
+first-time barefoot is the classic "stable means business" signal.</dd>
+<dt>Driver %</dt>
+<dd>The driver's win rate last season.</dd>
 <dt>Streck vs Model</dt>
 <dd>Streck = share of all tickets that include the horse. Model = win probability from Travmodel.
 The gap between them is where the flags come from.</dd>
@@ -1060,7 +1083,7 @@ def render_past(gid, snap, results, start_iso, pool_payouts=None):
               else f"Our picks ({', '.join(map(str, picks))}) missed the winner. \u2717")
         tiles.append(f"""<article class="tile">
 <div class="leghead"><h2>Leg {leg}</h2><span class="meta">{esc(data['legmeta'].get(leg) or data['legmeta'].get(int(leg), ''))}</span></div>
-<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th>Streck</th><th>Model</th><th>Plc</th></tr></thead>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table>
 <div class="infos"><p class='sechead tr'>SUMMARY</p>
 <ul class='infoul'><li>{b1}</li><li>{b2}</li></ul></div></article>""")
