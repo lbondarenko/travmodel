@@ -57,5 +57,28 @@ manual analysis.
         current regex feature is blind in training, live-only at predict time)
   - [x] Validate: market-weight × data-richness interaction (trust market less on thin-footprint horses)
 - [x] Ticket optimizer v1 (greedy budget allocator, shipped in site)
-- [ ] Optimizer v3 (from 23/7 Bergsåker + Jan's input): spik floor (<45% legs must carry 2 horses),
-  payout-aware allocation (dividend skew, skräll economics), expert/streck-vs-model divergence flag
+- [x] **Ticket engine v3 (SHIPPED 2026-07-24)**: EV/jackpot-weighted allocator (Jan's skräll economics).
+  Backtested 208 rounds w/ real dividends: v2 prob-greedy −1.8% ROI · +45% spik-floor +1.1% ·
+  **EV-weighted +14.2% (shipped)** · floor+EV combo −18% (rejected). Payout-aware allocation buys
+  underbet horses; weak-banker problem dies naturally.
+
+## Rejected feature hypotheses (measured, do NOT re-add without new evidence)
+- [x] **Expert rank as model feature** — REJECTED. Audited 803 legs (src/audit_experts.py):
+  Gratistravtips ABCD top pick won 25% vs model 40%. Divergence cell (expert-high/model-low):
+  won 3.0% vs model's 5.0% — no incremental signal. Inverse cell (model-high/expert-C/D):
+  won 33% ≈ model's 37% — trust the model when experts dismiss. (Scope: free-tier ABCD only,
+  which is an ALGORITHM not human handicappers; says nothing about paid Guiden / trainer quotes.)
+- [x] **Spik floor (<45% legs must carry 2 horses)** — REJECTED by backtest: floor+EV = −18% ROI.
+  The floor strangles the lottery structure EV-weighting exploits.
+- [x] **Volt × youth × gallop-history interaction** — REJECTED 2026-07-24. Calibration on 42k starts:
+  green (≤3yo, ≤6 starts) in volt = model 13.6% vs actual 13.4% (ratio 0.98); the exact
+  green+volt+prior-gallop cell = 11.3% vs 10.9% (0.97, noise). Existing gallops_5 + n_recent
+  features already price volt-gallop risk correctly. No interaction term needed.
+
+## Still open
+- [ ] Score round 1 of the family contest (Skellefteå 2026-07-22) — DONE, on site as past race
+- [ ] **Model coefficient retrain — DEFER to ~late August.** Blocker is DATA VOLUME (only ~6 new
+  race-days since v2), not features. Three straight feature hypotheses died in validation → v2 is
+  sound; the retrain's job is to ingest more races, not add cleverness. Re-run scrape (SE+NO+DK+FI,
+  through retrain date) → features → train → publish; expect small movement.
+- [ ] Divergence display flag (expert/streck-vs-model) — display only, not a model feature
