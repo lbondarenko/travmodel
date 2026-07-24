@@ -1134,7 +1134,7 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
         money = f"No paying tier reached \u00b7 net \u2212{ticket['cost']:.0f} kr."
     else:
         money = ""
-    resultbar = (f'<div class="resultbar"><b>RESULT: {hits} AV {nlegs}.</b> {money} '
+    resultbar = (f'<div class="resultbar"><b>RESULT: {hits} OF {nlegs}.</b> {money} '
                  f'Open the \U0001F39F\uFE0F drawer for the corrected kupong.</div>')
     extra_css = """
 .resultbar{ background:var(--card); border:2px solid var(--exp); border-radius:12px;
