@@ -1,0 +1,576 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var t=+localStorage.getItem("tm_ts")||0;if(!localStorage.getItem("tm_user")||Date.now()-t>604800000)location.replace("../login.html");})();</script>
+<title>V65 Solänget 24 Jul — result</title>
+<style>
+  :root{ --bg:#FAF8F3; --ink:#26241F; --muted:#867F73; --line:#E3DED4;
+    --pick:#2E6B4A; --pick-bg:#EDF3EE; --head-bg:#26241F; --head-ink:#FAF8F3;
+    --exp:#8A5A1E; --card:#FFFFFF; --acc2:#46647F; --fam:#B45062; --fam-bg:#F7E7EA; }
+  @media (prefers-color-scheme: dark){ :root{ --bg:#181A16; --ink:#E9E6DD; --muted:#98937F;
+    --line:#37392F; --pick:#8CC3A4; --pick-bg:#26312A; --head-bg:#E9E6DD; --head-ink:#1D1F1B;
+    --exp:#D4A860; --card:#22241F; --acc2:#93B4CE; --fam:#E39AAB; --fam-bg:#3A2A2E; } }
+  *{ box-sizing:border-box; } html,body{ margin:0; }
+  body{ background:var(--bg); color:var(--ink); line-height:1.45; padding:36px 18px 60px;
+    font-family:"Avenir Next","Seravek",Seravek,system-ui,-apple-system,sans-serif; }
+  main{ max-width:960px; margin:0 auto; }
+  h1{ font-size:clamp(20px,3.5vw,26px); font-weight:600; margin:0 0 3px; letter-spacing:-.01em; }
+  .sub{ color:var(--muted); font-size:13px; margin:0; }
+  a{ color:inherit; }
+  .pagehead{ position:relative; margin-bottom:20px; padding-right:270px; }
+  .stampbox{ position:absolute; top:0; right:0; display:flex; flex-direction:column; gap:1px;
+    width:250px; background:var(--head-bg); color:var(--head-ink); border-radius:8px;
+    padding:9px 13px; border-left:5px solid var(--exp); }
+  @media (max-width:640px){ .pagehead{ padding-right:0; }
+    .stampbox{ position:static; margin-top:10px; width:auto; max-width:280px; } }
+  .stamp-label{ font-size:9px; font-weight:700; letter-spacing:.18em; opacity:.75; }
+  .stamp-time{ font-size:19px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25; }
+  .stamp-note{ font-size:10px; opacity:.8; line-height:1.35; margin-top:2px; }
+  .grid{ display:grid; grid-template-columns:1fr; gap:16px; align-items:start; }
+  .legrow{ display:contents; }
+  @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
+  .tile{ background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px 10px; break-inside:avoid; }
+  .leghead{ display:flex; gap:10px; align-items:baseline; border-bottom:2px solid var(--ink);
+    padding-bottom:4px; margin-bottom:2px; }
+  .leghead h2{ font-size:15px; margin:0; }
+  .leghead .meta{ color:var(--muted); font-size:11px; }
+  table{ border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; }
+  th,td{ padding:3.5px 6px; text-align:left; font-size:12px; }
+  thead th{ background:var(--head-bg); color:var(--head-ink); font-size:9.5px; letter-spacing:.07em; }
+  th.r, td.num{ text-align:right; }
+  td.drv{ color:var(--muted); font-size:11px; }
+  td.till{ color:var(--exp); font-weight:700; font-size:11px; }
+  td.shoes{ font-size:11px; letter-spacing:1px; }
+  .schg{ color:var(--exp); font-weight:700; font-size:13px; }
+  .dpct{ color:var(--muted); font-size:10px; }
+  tbody tr{ border-bottom:1px solid var(--line); }
+  td.nr{ color:var(--muted); width:22px; }
+  td.num{ white-space:nowrap; } td.strong{ font-weight:600; }
+  tr.top td{ background:var(--pick-bg); }
+  tr.top td:nth-child(2){ color:var(--pick); font-weight:700; }
+  .flag{ font-size:9px; font-weight:700; letter-spacing:.08em; border-radius:3px; padding:0 4px; }
+  .flag.value{ color:var(--pick); border:1px solid currentColor; }
+  .flag.over{ color:var(--exp); border:1px solid currentColor; }
+  .infos{ margin-top:8px; }
+  p.sechead{ font-size:9.5px; line-height:1.3; font-weight:700; letter-spacing:.16em;
+    margin:9px 0 3px; padding-bottom:2px; border-bottom:1px solid var(--line);
+    text-transform:uppercase; }
+  p.sechead.tr, p.sechead.model{ color:var(--exp); }
+  .info{ margin:0 0 5px; font-size:11px; color:var(--muted); line-height:1.5; }
+  .info b{ color:var(--pick); }
+  .tdrawer{ position:fixed; top:0; right:0; height:100vh; z-index:60;
+    transform:translateX(100%); transition:transform .25s ease; }
+  .tdrawer.open{ transform:translateX(0); }
+  @media (prefers-reduced-motion: reduce){ .tdrawer{ transition:none; } }
+  .ttab{ position:absolute; left:-40px; top:36%; width:40px;
+    writing-mode:vertical-rl; background:var(--pick); color:#fff; border:none;
+    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
+    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  .slipd{ width:min(300px, 86vw); height:100%; overflow-y:auto;
+    background:#FCFAF7; color:#211E1B; padding:24px 18px 30px;
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;
+    font-size:12.5px; line-height:1.5; font-variant-numeric:tabular-nums;
+    box-shadow:-14px 0 34px rgba(0,0,0,.3); }
+  .dlogo{ font-size:18px; font-weight:700; letter-spacing:.16em; text-align:center; margin:0; }
+  .dlogo span{ font-weight:400; }
+  .dtag{ font-size:8.5px; color:#8A837A; letter-spacing:.06em; text-align:center; margin:3px 0 0; }
+  .drule{ border:none; border-top:1.5px dashed #8A837A; opacity:.65; margin:10px 0; }
+  .drule.solid{ border-top:2px solid #211E1B; opacity:1; }
+  .drow{ display:flex; justify-content:space-between; gap:10px; padding:1.5px 0; }
+  .drow span{ color:#8A837A; }
+  .dlegs{ width:100%; border-collapse:collapse; }
+  .dlegs th{ font-size:8.5px; letter-spacing:.14em; color:#8A837A; text-align:left;
+    font-weight:400; padding-bottom:4px; }
+  .dlegs td{ padding:2.5px 0; }
+  .dlegs td.avd{ font-weight:700; width:30px; }
+  .dlegs td.hst{ font-weight:700; }
+  .dtotal{ display:flex; justify-content:space-between; border-top:2px solid #211E1B;
+    margin-top:6px; padding-top:6px; font-weight:700; font-size:15px; }
+  .dnote{ font-size:9.5px; color:#8A837A; line-height:1.55; margin:8px 0 0; }
+  .dstamp{ width:fit-content; margin:14px auto 0; border:2.5px solid #C23B2E; color:#C23B2E;
+    padding:5px 12px; font-weight:700; font-size:11px; letter-spacing:.12em;
+    transform:rotate(-5deg); border-radius:4px; text-align:center; opacity:.85; }
+  .dstamp small{ display:block; font-size:7.5px; letter-spacing:.16em; font-weight:400; }
+  @media print{ .tdrawer{ display:none; } }
+  .edrawer{ position:fixed; top:0; right:0; height:100vh; z-index:58;
+    transform:translateX(100%); transition:transform .25s ease; }
+  .edrawer.open{ transform:translateX(0); }
+  @media (prefers-reduced-motion: reduce){ .edrawer{ transition:none; } }
+  .etab{ position:absolute; left:-40px; top:52%; width:40px;
+    writing-mode:vertical-rl; background:var(--exp); color:#fff; border:none;
+    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
+    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  .epanel{ width:min(320px, 88vw); height:100%; overflow-y:auto;
+    background:var(--card); color:var(--ink); padding:22px 18px 30px;
+    border-left:3px solid var(--exp); box-shadow:-14px 0 34px rgba(0,0,0,.3);
+    font-size:13px; }
+  .ehead{ font-size:12px; font-weight:700; letter-spacing:.16em; color:var(--exp); margin:0 0 4px; }
+  .esub{ font-size:11px; color:var(--muted); margin:0 0 12px; line-height:1.5; }
+  .esub a{ color:var(--exp); }
+  .exleg{ border-top:1px solid var(--line); padding:8px 0; font-variant-numeric:tabular-nums; }
+  .exleg b{ color:var(--exp); }
+  .exl{ font-size:10px; font-weight:700; letter-spacing:.12em; color:var(--muted); margin-right:6px; }
+  .extop{ font-size:11px; color:var(--muted); margin-top:2px; }
+  @media print{ .edrawer{ display:none; } }
+  .fambadge{ background:var(--fam-bg); color:var(--fam); border-radius:99px;
+    font-size:10px; font-weight:700; letter-spacing:.1em; padding:2px 9px;
+    margin-left:auto; white-space:nowrap; }
+  .famtag{ color:var(--fam); font-size:9px; font-weight:700; letter-spacing:.08em;
+    border:1px solid currentColor; border-radius:3px; padding:0 4px; }
+  .tile.famtile{ border-color:var(--fam); border-width:2px; }
+  tr.fam td{ background:var(--fam-bg); }
+  tr.fam td:nth-child(2){ color:var(--fam); font-weight:700; }
+  .gamecard.famcard{ border-color:var(--fam); border-width:2px; }
+  .secbar{ font-size:11px; font-weight:700; letter-spacing:.18em; color:var(--muted);
+    margin:56px 0 10px; border-bottom:1px solid var(--line); padding-bottom:5px; }
+  .gamecard.pastcard{ opacity:.85; }
+  .gamecard.pastcard .fresh{ color:var(--exp); }
+  .gamecard.famcard:hover{ border-color:var(--fam); }
+  .printbtn{ margin-top:10px; background:none; border:1px solid var(--line); border-radius:7px;
+    padding:5px 12px; font:600 12px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
+    color:var(--ink); cursor:pointer; }
+  .printbtn:hover{ border-color:var(--pick); color:var(--pick); }
+  .printslip{ display:none; }
+  .printtix{ display:none; }
+  .printtix .tickrow{ display:block; }
+  .cards{ display:flex; flex-direction:column; gap:14px; }
+  .gamecard{ display:block; text-decoration:none; background:var(--card);
+    border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
+  .gamecard:hover{ border-color:var(--pick); }
+  .gamecard .row1{ display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+    flex-wrap:wrap; position:relative; }
+  .gamecard .row1 .fambadge{ position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%); margin-left:0; }
+  @media (max-width:640px){
+    .gamecard .row1 .fambadge{ position:static; transform:none; } }
+  .gamecard .gt{ font-size:20px; font-weight:700; }
+  .gamecard .when{ font-size:14px; font-variant-numeric:tabular-nums; color:var(--muted); }
+  .gamecard .row2{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    margin-top:4px; font-size:12.5px; color:var(--muted); }
+  .fresh{ color:var(--pick); font-weight:600; }
+  .tl{ font-size:9px; font-weight:700; letter-spacing:.14em; color:var(--muted);
+    margin-right:6px; vertical-align:1px; }
+  footer{ margin-top:24px; padding-top:10px; border-top:1px solid var(--line);
+    font-size:10.5px; color:var(--muted); line-height:1.6; }
+  .legend-title{ font-size:9.5px; font-weight:700; letter-spacing:.16em; color:var(--exp);
+    margin:0 0 6px; }
+  dl.legend{ margin:0 0 12px; display:grid; grid-template-columns:auto 1fr; gap:5px 12px;
+    font-size:11px; }
+  dl.legend dt{ font-weight:700; white-space:nowrap; color:var(--ink); }
+  dl.legend dd{ margin:0; line-height:1.55; }
+  .userchip{ text-align:right; font-size:12px; color:var(--muted); margin:-20px 0 8px; }
+  .userchip a{ color:var(--pick); }
+  @media print{ .userchip{ display:none; } }
+  @media print{
+    :root{ --muted:#3A3733; --pick:#1E4A33; --exp:#6B4413; --line:#999; }
+    body{ background:#fff; color:#000; padding:0; }
+    main{ max-width:none; } .grid{ display:block; }
+    .legrow{ display:block; page-break-after:always; break-inside:avoid;
+      page-break-inside:avoid; margin-bottom:0; }
+    .legrow .tile{ margin-bottom:10px; }
+    .tile{ border-color:#888; break-inside:avoid; page-break-inside:avoid; }
+    .printbtn,.upbtn,.modalback{ display:none; } footer{ display:none; } body{ font-size:10px; }
+    .legrow:last-of-type{ page-break-after:auto; }
+    .cmp{ display:none !important; }
+    .printtix{ display:block; break-before:page; }
+    .printtix .tickrow{ display:flex; gap:14px; align-items:flex-start; }
+    .printtix .tickcol{ flex:1 1 0; max-width:300px; min-width:0; }
+    .printtix .slipd{ width:auto; height:auto; overflow:visible; box-shadow:none;
+      border:1.5px dashed #999; padding:14px; }
+    thead th{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .stampbox{ background:#000 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    tr.top td{ background:#EDF3EE !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .info, .sub, footer, .leghead .meta, td.nr{ color:#3A3733; }
+  }
+
+  .upbtn{ margin-top:10px; margin-left:8px; background:none; border:1px solid var(--line);
+    border-radius:7px; padding:5px 12px; font:600 12px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
+    color:var(--ink); cursor:pointer; }
+  .upbtn:hover{ border-color:var(--pick); color:var(--pick); }
+  .modalback{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:80;
+    align-items:flex-start; justify-content:center; overflow-y:auto; padding:5vh 16px; }
+  .modal{ background:var(--card); color:var(--ink); border-radius:12px; padding:20px 22px;
+    width:min(430px,94vw); }
+  .modal h3{ margin:0 0 4px; }
+  .modal label{ display:block; font-size:10.5px; letter-spacing:.08em; color:var(--muted);
+    margin:10px 0 3px; text-transform:uppercase; }
+  .modal input[type=text]{ width:100%; padding:7px 10px; border:1px solid var(--line);
+    border-radius:6px; background:var(--bg); color:var(--ink); font:inherit; }
+  .modal .mnote{ font-size:11.5px; color:var(--muted); margin:2px 0 0; }
+  .modal .mnote.err{ color:#C23B2E; }
+  #tixpreview{ max-width:100%; max-height:180px; margin-top:6px; border-radius:6px; }
+  .mrow{ display:flex; gap:10px; margin-top:16px; }
+  .mbtn{ flex:1; padding:9px; border-radius:7px; border:1px solid var(--line);
+    background:none; color:var(--ink); font:600 13px/1 "Avenir Next",system-ui,sans-serif; cursor:pointer; }
+  .mbtn.save{ background:var(--pick); border-color:var(--pick); color:#fff; }
+  .mlink{ background:none; border:none; color:var(--pick); font:600 13px/1.2 "Avenir Next","Seravek",system-ui,sans-serif;
+    cursor:pointer; padding:0; margin:14px 0 0; text-decoration:underline; display:block; }
+  .mnote.ok{ color:var(--pick); font-weight:600; }
+  .modal textarea{ width:100%; padding:7px 10px; border:1px solid var(--line);
+    border-radius:6px; background:var(--bg); color:var(--ink); font:inherit; font-size:12px; }
+  .cmp{ display:none; margin-top:40px; }
+  .cmp.hasusr{ display:block; }
+  .cmp table{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+  .cmp th,.cmp td{ padding:7px 10px; text-align:left; font-size:13.5px; border-bottom:1px solid var(--line); }
+  .cmp thead th{ background:var(--head-bg); color:var(--head-ink); font-size:11px; letter-spacing:.05em; }
+  .cmp thead th small{ display:block; font-weight:400; opacity:.7; font-size:9.5px; }
+  .cmp thead th small a{ color:inherit; }
+  .cmp tbody th{ width:40px; font-weight:700; }
+  .cmp tfoot td{ font-size:13px; border-top:2px solid var(--ink); }
+  .hitnum{ display:inline-block; min-width:1.5em; text-align:center; border:2px solid var(--pick);
+    border-radius:50%; color:var(--pick); font-weight:700; padding:0 3px; }
+  .lostnum{ color:var(--muted); text-decoration-color:#C23B2E; }
+  .misscell{ color:#C23B2E; }
+
+  .addwrap{ position:relative; display:inline-block; }
+  .addbtn{ width:38px; height:38px; border-radius:9px; border:1px solid var(--line);
+    background:var(--bg); color:var(--ink); font-size:20px; line-height:1; cursor:pointer; }
+  .addbtn:hover{ border-color:var(--pick); color:var(--pick); }
+  .addmenu{ display:none; position:absolute; left:0; top:44px; z-index:90; min-width:210px;
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.18); padding:6px; }
+  .addmenu.open{ display:block; }
+  .addmenu a{ display:block; padding:9px 12px; border-radius:7px; text-decoration:none;
+    font-size:14px; color:var(--ink); }
+  .addmenu a:hover{ background:var(--pick-bg); }
+  footer{ margin-top:64px !important; }
+
+.resultbar{ background:var(--card); border:2px solid var(--exp); border-radius:12px;
+  padding:12px 16px; margin-bottom:18px; font-size:13.5px; line-height:1.6; }
+tr.win-hit td{ background:var(--pick-bg); }
+tr.win-hit td:nth-child(2){ color:var(--pick); font-weight:700; }
+tr.win-miss td{ background:color-mix(in srgb, #C23B2E 12%, transparent); }
+tr.win-miss td:nth-child(2){ color:#C23B2E; font-weight:700; }
+ul.infoul{ margin:4px 0 8px 18px; padding:0; }
+ul.infoul li{ font-size:13px; color:var(--muted); line-height:1.55; margin-bottom:4px; }
+</style></head><body><main>
+<div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
+<script>
+document.getElementById('tmu').textContent=localStorage.getItem('tm_user')||'';
+document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_user');location.reload();return false;};
+</script>
+<div class="pagehead"><div>
+<h1><a href="../index.html">←</a> V65 Solänget · Friday 24 July 2026 — RESULT</h1>
+<p class="sub">Final locked streck vs Travmodel · 🥇 = winner · green = winner on our kupong, red = winner we missed</p>
+<button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button><button class="upbtn" onclick="tixOpen()">📷&nbsp; Upload My Ticket</button>
+</div>
+<div class="stampbox"><span class="stamp-label">RESULTS FINAL</span>
+<span class="stamp-time">Fri 24 Jul</span>
+<span class="stamp-note">picks were locked 30 min before start — this page is a permanent record</span></div></div>
+<div class="resultbar"><b>RESULT: 5 OF 6.</b> Winnings: 1 row(s) with 5 correct at 26 kr = <b>26 kr</b> · stake 48 kr · net <b>-22 kr</b> Open the 🎟️ drawer for the corrected kupong.</div>
+<div class="grid"><div class="legrow"><article class="tile">
+<div class="leghead"><h2>Leg 1</h2><span class="meta">2640m volte</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class=''><td class='nr'>3</td><td>Tougherthanothers <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>U.Ohlsson</td><td class='num'>69.8%</td><td class='num strong'>66.1%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>5</td><td>Joker Godiva</td><td class='drv'>M.Lilius</td><td class='num'>13.9%</td><td class='num strong'>12.8%</td><td class='num'></td></tr><tr class=''><td class='nr'>4</td><td>Crazy Nolimit</td><td class='drv'>O.Lindqvist</td><td class='num'>8.7%</td><td class='num strong'>7.0%</td><td class='num'></td></tr><tr class='win-miss'><td class='nr'>7</td><td>På Toppen</td><td class='drv'>T.Pettersson</td><td class='num'>3.2%</td><td class='num strong'>5.4%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>6</td><td>Comeati Mei</td><td class='drv'>K.Svedlund</td><td class='num'>1.6%</td><td class='num strong'>2.2%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>9</td><td>Oakmont</td><td class='drv'>S.Osterling</td><td class='num'>1.3%</td><td class='num strong'>2.1%</td><td class='num'></td></tr><tr class=''><td class='nr'>2</td><td>Yolo Memphis</td><td class='drv'>A.Randemo</td><td class='num'>0.5%</td><td class='num strong'>1.8%</td><td class='num'></td></tr><tr class=''><td class='nr'>8</td><td>Cheap Thrill</td><td class='drv'>S.Edin</td><td class='num'>0.3%</td><td class='num strong'>1.8%</td><td class='num'></td></tr><tr class=''><td class='nr'>1</td><td>Kaiser D.K.</td><td class='drv'>R.Eklund</td><td class='num'>0.8%</td><td class='num strong'>0.9%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #7 På Toppen at 5.83 — the model had 5.4% (ranked #4 of 9).</li><li>Our picks (3) missed the winner. ✗</li></ul></div></article><article class="tile">
+<div class="leghead"><h2>Leg 2</h2><span class="meta">2640m volte</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class='win-hit'><td class='nr'>2</td><td>Zevs <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>M.Lilius</td><td class='num'>27.8%</td><td class='num strong'>31.5%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>6</td><td>Tåsjö Teddy <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>S.Osterling</td><td class='num'>14.9%</td><td class='num strong'>18.2%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>8</td><td>Ängsmodde <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>J.Olsen</td><td class='num'>23.1%</td><td class='num strong'>14.5%</td><td class='num'></td></tr><tr class=''><td class='nr'>3</td><td>Guli Rasmus <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>U.Ohlsson</td><td class='num'>11.6%</td><td class='num strong'>7.8%</td><td class='num'></td></tr><tr class=''><td class='nr'>4</td><td>Nordfaks</td><td class='drv'>M.Gällerstedt</td><td class='num'>6.2%</td><td class='num strong'>7.4%</td><td class='num'></td></tr><tr class=''><td class='nr'>1</td><td>Eng Skansen</td><td class='drv'>R.Skoglund</td><td class='num'>7.7%</td><td class='num strong'>5.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>5</td><td>Nord Alma</td><td class='drv'>F.Olsson</td><td class='num'>4.3%</td><td class='num strong'>5.6%</td><td class='num'></td></tr><tr class=''><td class='nr'>9</td><td>Guli Selma</td><td class='drv'>S.Johansson</td><td class='num'>1.8%</td><td class='num strong'>4.2%</td><td class='num'></td></tr><tr class=''><td class='nr'>11</td><td>Nordstorm</td><td class='drv'>T.Pettersson</td><td class='num'>1.3%</td><td class='num strong'>2.2%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>10</td><td>Brenne Bingo</td><td class='drv'>M.J Kärrman</td><td class='num'>0.7%</td><td class='num strong'>2.1%</td><td class='num'></td></tr><tr class=''><td class='nr'>7</td><td>Vännfors Gull</td><td class='drv'>A.Backlund Johansson</td><td class='num'>0.5%</td><td class='num strong'>0.7%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #2 Zevs at 2.32 — the model had 31.5% (ranked #1 of 11).</li><li>Our ticket covered the winner (picks: 2, 3, 6, 8). ✓</li></ul></div></article></div><div class="legrow"><article class="tile">
+<div class="leghead"><h2>Leg 3</h2><span class="meta">2140m volte</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class='win-hit'><td class='nr'>5</td><td>Elmoor Face <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>U.Ohlsson</td><td class='num'>26.3%</td><td class='num strong'>33.8%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>7</td><td>Timotejs NattMara <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>M.Lilius</td><td class='num'>36.0%</td><td class='num strong'>21.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>9</td><td>Hey Sandy Girl <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>T.Pettersson</td><td class='num'>16.9%</td><td class='num strong'>15.2%</td><td class='num'></td></tr><tr class=''><td class='nr'>3</td><td>Kungle</td><td class='drv'>S.Osterling</td><td class='num'>11.1%</td><td class='num strong'>5.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>8</td><td>Miss Superstar</td><td class='drv'>O.Lindqvist</td><td class='num'>3.9%</td><td class='num strong'>4.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>4</td><td>Kjelle</td><td class='drv'>J.Johansson</td><td class='num'>1.6%</td><td class='num strong'>4.0%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>10</td><td>Litas Viking</td><td class='drv'>J.Eriksson</td><td class='num'>1.4%</td><td class='num strong'>3.9%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>2</td><td>Super Goof T.L.</td><td class='drv'>I.Nyberg</td><td class='num'>1.4%</td><td class='num strong'>3.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>11</td><td>Bumblebee Mi</td><td class='drv'>H.Svensson</td><td class='num'>0.3%</td><td class='num strong'>2.1%</td><td class='num'></td></tr><tr class=''><td class='nr'>1</td><td>Kayda</td><td class='drv'>S.Edin</td><td class='num'>0.3%</td><td class='num strong'>2.0%</td><td class='num'></td></tr><tr class=''><td class='nr'>6</td><td>Sisterofnomercy</td><td class='drv'>S.Johansson</td><td class='num'>0.3%</td><td class='num strong'>1.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>12</td><td>Mon's Maple Leaf</td><td class='drv'>F.Sahlén</td><td class='num'>0.4%</td><td class='num strong'>1.2%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #5 Elmoor Face at 3.34 — the model had 33.8% (ranked #1 of 12).</li><li>Our ticket covered the winner (picks: 5, 7, 9). ✓</li></ul></div></article><article class="tile">
+<div class="leghead"><h2>Leg 4</h2><span class="meta">2140m volte</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class='win-hit'><td class='nr'>2</td><td>Järvsödrake <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>M.Lilius</td><td class='num'>33.4%</td><td class='num strong'>35.3%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>4</td><td>Lomeglimt <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>T.Pettersson</td><td class='num'>25.7%</td><td class='num strong'>17.8%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>7</td><td>Fantastisk R.F. <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>I.Nyberg</td><td class='num'>23.2%</td><td class='num strong'>17.5%</td><td class='num'></td></tr><tr class=''><td class='nr'>1</td><td>Hulte Leif <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>H.Svensson</td><td class='num'>7.0%</td><td class='num strong'>12.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>5</td><td>Galliant</td><td class='drv'>S.Lennartson</td><td class='num'>1.1%</td><td class='num strong'>3.8%</td><td class='num'></td></tr><tr class=''><td class='nr'>11</td><td>Sol Vind</td><td class='drv'>C.Larsson</td><td class='num'>4.8%</td><td class='num strong'>3.6%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>8</td><td>Färsta Fyr</td><td class='drv'>S.Edin</td><td class='num'>2.3%</td><td class='num strong'>3.5%</td><td class='num'></td></tr><tr class=''><td class='nr'>6</td><td>Dohbra</td><td class='drv'>J.Johansson</td><td class='num'>0.7%</td><td class='num strong'>3.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>3</td><td>Pir Tabac</td><td class='drv'>S.Johansson</td><td class='num'>1.2%</td><td class='num strong'>2.1%</td><td class='num'></td></tr><tr class=''><td class='nr'>10</td><td>Sundsta Viking</td><td class='drv'>R.Eklund</td><td class='num'>0.4%</td><td class='num strong'>0.8%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #2 Järvsödrake at 2.01 — the model had 35.3% (ranked #1 of 10).</li><li>Our ticket covered the winner (picks: 1, 2, 4, 7). ✓</li></ul></div></article></div><div class="legrow"><article class="tile">
+<div class="leghead"><h2>Leg 5</h2><span class="meta">2140m volte</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class='win-hit'><td class='nr'>1</td><td>Ove Schermer <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>U.Ohlsson</td><td class='num'>75.4%</td><td class='num strong'>63.5%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>7</td><td>Sir Alex</td><td class='drv'>M.Lilius</td><td class='num'>7.1%</td><td class='num strong'>10.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>3</td><td>Titleist</td><td class='drv'>O.Lindqvist</td><td class='num'>9.6%</td><td class='num strong'>7.0%</td><td class='num'></td></tr><tr class=''><td class='nr'>10</td><td>Fralissa Ridge</td><td class='drv'>T.Pettersson</td><td class='num'>3.4%</td><td class='num strong'>4.6%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>12</td><td>Warhol</td><td class='drv'>H.Svensson</td><td class='num'>1.8%</td><td class='num strong'>4.2%</td><td class='num'></td></tr><tr class=''><td class='nr'>11</td><td>Game of Trot</td><td class='drv'>S.Osterling</td><td class='num'>0.6%</td><td class='num strong'>2.0%</td><td class='num'></td></tr><tr class=''><td class='nr'>4</td><td>Pineapple Tour</td><td class='drv'>M.Melander</td><td class='num'>0.4%</td><td class='num strong'>1.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>5</td><td>Steady Roger</td><td class='drv'>M.Viklund</td><td class='num'>0.4%</td><td class='num strong'>1.7%</td><td class='num'></td></tr><tr class=''><td class='nr'>2</td><td>Sommarskuggan</td><td class='drv'>M.Larsson</td><td class='num'>0.3%</td><td class='num strong'>1.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>9</td><td>Cracker Jack</td><td class='drv'>T.Johansson</td><td class='num'>0.8%</td><td class='num strong'>1.2%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>6</td><td>Zacapa</td><td class='drv'>S.Johansson</td><td class='num'>0.2%</td><td class='num strong'>1.1%</td><td class='num'></td></tr><tr class=''><td class='nr'>8</td><td>Blue Kitten</td><td class='drv'>W.Strand</td><td class='num'>0.1%</td><td class='num strong'>0.7%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #1 Ove Schermer at 1.53 — the model had 63.5% (ranked #1 of 12).</li><li>Our ticket covered the winner (picks: 1). ✓</li></ul></div></article><article class="tile">
+<div class="leghead"><h2>Leg 6</h2><span class="meta">2140m volte</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class='win-hit'><td class='nr'>4</td><td>Ajlexes MagicWoman <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>T.Pettersson</td><td class='num'>50.6%</td><td class='num strong'>40.4%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>5</td><td>This Love</td><td class='drv'>U.Ohlsson</td><td class='num'>11.9%</td><td class='num strong'>12.7%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>2</td><td>Crazy Janey</td><td class='drv'>M.Viklund</td><td class='num'>15.6%</td><td class='num strong'>10.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>1</td><td>Hervey Island</td><td class='drv'>S.Osterling</td><td class='num'>7.0%</td><td class='num strong'>6.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>6</td><td>Girlpower W.F.</td><td class='drv'>J.Norberg</td><td class='num'>1.1%</td><td class='num strong'>6.7%</td><td class='num'></td></tr><tr class=''><td class='nr'>11</td><td>Perez Mora Boko</td><td class='drv'>K.Svedlund</td><td class='num'>5.2%</td><td class='num strong'>5.7%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>7</td><td>Dior Dalie</td><td class='drv'>M.Lilius</td><td class='num'>2.6%</td><td class='num strong'>5.4%</td><td class='num'></td></tr><tr class=''><td class='nr'>3</td><td>Who's Malvina</td><td class='drv'>H.Svensson</td><td class='num'>1.1%</td><td class='num strong'>4.6%</td><td class='num'></td></tr><tr class=''><td class='nr'>9</td><td>Montana U.B.</td><td class='drv'>R.Skoglund</td><td class='num'>3.1%</td><td class='num strong'>3.5%</td><td class='num'></td></tr><tr class=''><td class='nr'>8</td><td>Nova J.C.</td><td class='drv'>O.Lindqvist</td><td class='num'>1.6%</td><td class='num strong'>3.2%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #4 Ajlexes MagicWoman at 1.95 — the model had 40.4% (ranked #1 of 10).</li><li>Our ticket covered the winner (picks: 4). ✓</li></ul></div></article></div></div>
+<section class="printtix"><div class="tickrow" id="ptrow"><div class="tickcol"><div class="slipd">
+  <p class="dlogo">TRAVMODEL<span>™</span></p>
+  <hr class="drule solid">
+  <div class="drow"><span>Spel</span><b>V65</b></div>
+  <div class="drow"><span>Bana</span><b>Solänget</b></div>
+  <div class="drow"><span>Start</span><b>Fri 24 Jul · 12:45</b></div>
+  <div class="drow"><span>Status</span><b>RÄTTAD</b></div>
+  <hr class="drule">
+  <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR · RÄTT?</th></tr><tr><td class='avd'>1</td><td class='hst'>3 Tougherthanothers ★ <span style="color:#C23B2E">✗</span></td></tr><tr><td class='avd'>2</td><td class='hst'>2, 3, 6, 8 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>3</td><td class='hst'>5, 7, 9 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>4</td><td class='hst'>1, 2, 4, 7 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>5</td><td class='hst'>1 Ove Schermer ★ <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>6</td><td class='hst'>4 Ajlexes MagicWoman ★ <span style="color:#2E6B4A">✓</span></td></tr></table>
+  <hr class="drule">
+  <div class="drow"><span>1×4×3×4×1×1</span><b>= 48 rader</b></div>
+  <div class="drow"><span>48 × 1 kr</span><b>48.00 kr</b></div>
+  <div class="dtotal"><span>RESULTAT</span><b>5 AV 6</b></div>
+  <div class="dstamp">5 AV 6<small>LÅST FÖRE START · AUTORÄTTAD</small></div></div></div></div></section>
+
+<div class="modalback" id="tixmodal">
+<div class="modal">
+<h3>Upload my ticket</h3>
+<div class="addwrap">
+<button type="button" class="addbtn" id="addbtn">+</button>
+<div class="addmenu" id="addmenu">
+<a href="#" data-add="files">📎&nbsp; Add files or photos</a>
+<a href="#" data-add="paste">📋&nbsp; Paste image</a>
+<a href="#" data-add="manual">✏️&nbsp; Enter picks manually</a>
+</div>
+</div>
+<input type="file" id="tixphoto" accept="image/*" style="display:none">
+<img id="tixpreview" alt="" style="display:none">
+<p class="mnote" id="tixqr" style="display:none"></p>
+<div id="tixmanual" style="display:none">
+<label>Paste receipt text (auto-fills everything)</label>
+<textarea id="tixtext" rows="3" placeholder="Long-press the photo — Select All — Copy, then paste here"></textarea>
+<label>Label</label>
+<input type="text" id="tixlabel" placeholder="e.g. Harry Boy / Min egen">
+<label>Ticket number</label>
+<input type="text" id="tixno" placeholder="e.g. D2F6 4828 7800 2027">
+<div id="tixlegs"></div>
+</div>
+<p class="mnote err" id="tixerr" style="display:none"></p>
+<div class="mrow"><button class="mbtn save" onclick="tixSave()">Save ticket</button>
+<button class="mbtn" onclick="tixClose()">Cancel</button></div>
+</div></div>
+<section class="cmp" id="cmpsec"></section>
+
+<script src="../jsqr.js"></script>
+<script>
+(function(){
+var TM = {"game": "V65_2026-07-24_26_2", "modelName": "48 rader · 48 kr", "legs": {"1": [3, 5, 4, 7, 6, 9, 2, 8, 1], "2": [2, 6, 8, 3, 4, 1, 5, 9, 11, 10, 7], "3": [5, 7, 9, 3, 8, 4, 10, 2, 11, 1, 6, 12], "4": [2, 4, 7, 1, 5, 11, 8, 6, 3, 10], "5": [1, 7, 3, 10, 12, 11, 4, 5, 2, 9, 6, 8], "6": [4, 5, 2, 1, 6, 11, 7, 3, 9, 8]}, "model": {"1": [3], "2": [2, 3, 6, 8], "3": [5, 7, 9], "4": [1, 2, 4, 7], "5": [1], "6": [4]}, "spikNames": {"1": "3 Tougherthanothers ★", "5": "1 Ove Schermer ★", "6": "4 Ajlexes MagicWoman ★"}, "winners": {"1": 7, "2": 2, "3": 5, "4": 2, "5": 1, "6": 4}};
+var KEY = "tm_tix_v1";
+function user(){ return localStorage.getItem("tm_user")||"?"; }
+function store(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+function mytix(){ var s=store(); return (s[user()]||{})[TM.game]||{}; }
+function saveTix(no,obj){ var s=store(); s[user()]=s[user()]||{}; s[user()][TM.game]=s[user()][TM.game]||{};
+  var existed = !!s[user()][TM.game][no]; s[user()][TM.game][no]=obj;
+  localStorage.setItem(KEY, JSON.stringify(s)); return existed; }
+function delTix(no){ var s=store(); if(s[user()]&&s[user()][TM.game]){ delete s[user()][TM.game][no];
+  localStorage.setItem(KEY, JSON.stringify(s)); } renderCmp(); }
+document.addEventListener("click",function(ev){
+  var a=(ev.target.closest?ev.target.closest(".tixdel"):null);
+  if(a){ ev.preventDefault(); delTix(a.getAttribute("data-no")); }
+});
+document.addEventListener("click",function(ev){
+  var b=ev.target.closest?ev.target.closest("#addbtn"):null;
+  var m=document.getElementById("addmenu");
+  if(b&&m){ ev.preventDefault(); m.classList.toggle("open"); return; }
+  var item=ev.target.closest?ev.target.closest("[data-add]"):null;
+  if(item&&m){ ev.preventDefault(); m.classList.remove("open");
+    var k=item.getAttribute("data-add");
+    if(k==="files") document.getElementById("tixphoto").click();
+    else if(k==="manual"){ var d=document.getElementById("tixmanual");
+      d.style.display = d.style.display==="none" ? "block" : "none"; }
+    else tixPaste(); return; }
+  if(m) m.classList.remove("open");
+});
+window.tixOpen=function(){
+  document.getElementById("tixmanual").style.display="none";
+  var box=document.getElementById("tixlegs"); box.innerHTML="";
+  Object.keys(TM.legs).sort(function(a,b){return a-b;}).forEach(function(l){
+    box.innerHTML += "<label>Leg "+l+"</label>"+
+      "<input type='text' class='tixleg' data-leg='"+l+"' inputmode='numeric'>";
+  });
+  document.getElementById("tixmodal").style.display="flex";
+};
+window.tixClose=function(){ document.getElementById("tixmodal").style.display="none"; };
+function showPhoto(blob){ var img=document.getElementById("tixpreview");
+  img.src=URL.createObjectURL(blob); img.style.display="block";
+  img.onload=function(){ try{ scanQR(img); }catch(e){} }; }
+function scanQR(img){
+  if(typeof jsQR==="undefined") return;
+  var note=document.getElementById("tixqr");
+  var scale=Math.min(1, 1400/Math.max(img.naturalWidth||1,img.naturalHeight||1));
+  var c=document.createElement("canvas");
+  c.width=Math.round((img.naturalWidth||0)*scale); c.height=Math.round((img.naturalHeight||0)*scale);
+  if(!c.width||!c.height) return;
+  var x=c.getContext("2d"); x.drawImage(img,0,0,c.width,c.height);
+  var d=x.getImageData(0,0,c.width,c.height);
+  var q=jsQR(d.data,c.width,c.height);
+  if(q && q.data){
+    document.getElementById("tixno").value=String(q.data).slice(0,80);
+    if(note){ note.textContent="✓ Ticket number read from the QR code"; note.className="mnote ok"; note.style.display="block"; }
+  } else if(note){ note.textContent="No QR on this ticket — type its rättningskod (the short code works fine), or long-press the code in your photo to copy it (Live Text) and paste here.";
+    note.className="mnote"; note.style.display="block"; }
+}
+document.addEventListener("change",function(ev){
+  if(ev.target && ev.target.id==="tixphoto" && ev.target.files[0]){
+    showPhoto(ev.target.files[0]); }});
+document.addEventListener("paste",function(ev){
+  var m=document.getElementById("tixmodal");
+  if(!m || m.style.display!=="flex" || !ev.clipboardData) return;
+  for(var i=0;i<ev.clipboardData.items.length;i++){
+    var it=ev.clipboardData.items[i];
+    if(it.type && it.type.indexOf("image")===0){ showPhoto(it.getAsFile()); ev.preventDefault(); return; }
+  }});
+window.tixPaste=function(){
+  if(navigator.clipboard && navigator.clipboard.read){
+    navigator.clipboard.read().then(function(items){
+      var found=false;
+      for(var i=0;i<items.length;i++){
+        var t=(items[i].types||[]).filter(function(x){return x.indexOf("image")===0;})[0];
+        if(t){ found=true; items[i].getType(t).then(showPhoto); break; } }
+      if(!found) alert("No image on the clipboard - copy a screenshot first.");
+    }).catch(function(){ alert("Clipboard blocked by the browser - press Cmd/Ctrl+V instead."); });
+  } else alert("Press Cmd/Ctrl+V to paste the screenshot.");
+};
+function parseTicketText(t){
+  var NL=String.fromCharCode(10), CR=String.fromCharCode(13);
+  var lines=t.split(NL).map(function(x){ return x.split(CR).join(""); });
+  Object.keys(TM.legs).forEach(function(l){
+    for(var i=0;i<lines.length;i++){
+      var m=lines[i].match(new RegExp("^[ ]*"+l+"[).:]?[ ]+(.*)$"));
+      if(m){
+        var rest=m[1].split(/[ ]{3,}/)[0];
+        var nums=(rest.match(/[0-9]{1,2}/g)||[]).map(Number).filter(function(n){return TM.legs[l].indexOf(n)>=0;});
+        if(nums.length){ var inp=document.querySelector('.tixleg[data-leg="'+l+'"]');
+          if(inp && !inp.value){ inp.value=nums.join(", "); break; } }
+      }
+    }
+  });
+  var code=t.match(/[A-Z0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}/)||t.match(/[A-Z]{3} [A-Z]{3} [A-Z]{3}/);
+  if(code && !document.getElementById("tixno").value) document.getElementById("tixno").value=code[0];
+  if(/harry[ ]*boy/i.test(t) && !document.getElementById("tixlabel").value)
+    document.getElementById("tixlabel").value="Harry Boy";
+}
+window.tixSave=function(){
+  var err=document.getElementById("tixerr"); err.style.display="none";
+  var man=document.getElementById("tixmanual");
+  if(man.style.display==="none"){
+    man.style.display="block";
+    err.textContent="Almost there — add the picks below so the ticket can be compared.";
+    err.style.display="block"; return; }
+  var no=(document.getElementById("tixno").value||"").replace(/\s+/g," ").trim();
+  var label=(document.getElementById("tixlabel").value||"Ticket").trim();
+  var picks={}, bad=null;
+  document.querySelectorAll(".tixleg").forEach(function(inp){
+    var l=inp.dataset.leg;
+    var nums=(inp.value||"").split(/[^0-9]+/).filter(Boolean).map(Number);
+    var valid=TM.legs[l]||[];
+    nums.forEach(function(n){ if(valid.indexOf(n)<0) bad="Leg "+l+": horse "+n+" is not in that leg."; });
+    if(!nums.length) bad=bad||("Leg "+l+" is empty.");
+    picks[l]=nums;
+  });
+  if(bad){ err.textContent=bad; err.style.display="block"; return; }
+  var key=Object.keys(picks).sort(function(a,b){return a-b;}).map(function(l){
+    return l+":"+picks[l].slice().sort(function(a,b){return a-b;}).join(",");}).join("|");
+  var existed=saveTix(key,{label:label,no:no,picks:picks,ts:Date.now()});
+  tixClose(); renderCmp();
+  if(existed) alert("A ticket with exactly these picks was already saved — updated it instead of duplicating.");
+};
+function deco(n,l){
+  var w=TM.winners[l];
+  if(w===undefined||w===null) return String(n);
+  if(Number(n)===Number(w)) return "<span class='hitnum'>"+n+"</span>";
+  return "<s class='lostnum'>"+n+"</s>";
+}
+function cell(nums,l,label){
+  var w=TM.winners[l];
+  var html=(label&&nums.length===1)?deco(nums[0],l)+" "+label:nums.map(function(n){return deco(n,l);}).join(", ");
+  var miss=(w!==undefined&&w!==null&&nums.map(Number).indexOf(Number(w))<0);
+  return "<td class='"+(miss?"misscell":"")+"'>"+html+(miss?" ✗":"")+"</td>";
+}
+window.renderCmp=function(){
+  var sec=document.getElementById("cmpsec"); if(!sec) return;
+  var tix=mytix(); var nos=Object.keys(tix);
+  sec.classList.toggle("hasusr", nos.length>0);
+  var legs=Object.keys(TM.legs).sort(function(a,b){return a-b;});
+  var scored=Object.keys(TM.winners).length>0;
+  var h="<div class='leghead'><h2>My Ticket</h2></div>";
+  h+="<table><thead><tr><th>Leg</th><th>The Model"+(TM.modelName?"<small>"+TM.modelName+"</small>":"")+"</th>";
+  nos.forEach(function(no){ h+="<th>"+tix[no].label+"<small>"+(tix[no].no||"")+
+    " <a href='#' class='tixdel' data-no='"+no+"'>remove</a></small></th>"; });
+  h+="</tr></thead><tbody>";
+  legs.forEach(function(l){
+    h+="<tr><th>"+l+"</th>"+cell(TM.model[l]||[],l,TM.spikNames[l]||null);
+    nos.forEach(function(no){ h+=cell(tix[no].picks[l]||[],l,null); });
+    h+="</tr>";
+  });
+  h+="</tbody>";
+  if(scored){
+    h+="<tfoot><tr><td>Legs hit</td>";
+    var cols=[TM.model].concat(nos.map(function(no){return tix[no].picks;}));
+    cols.forEach(function(pk){ var hit=0;
+      legs.forEach(function(l){ var w=TM.winners[l];
+        if(w!==undefined&&(pk[l]||[]).map(Number).indexOf(Number(w))>=0) hit++; });
+      h+="<td><b>"+hit+" of "+legs.length+"</b></td>"; });
+    h+="</tr></tfoot>";
+  }
+  h+="</table>";
+  sec.innerHTML=h;
+  renderPrintTix();
+};
+function jesc(x){ return String(x).split("<").join("&lt;").split(">").join("&gt;"); }
+function renderPrintTix(){
+  var row=document.getElementById("ptrow"); if(!row) return;
+  Array.prototype.slice.call(row.querySelectorAll(".ucol")).forEach(function(e){ e.remove(); });
+  var tix=mytix();
+  Object.keys(tix).forEach(function(k){
+    var t=tix[k];
+    var legs=Object.keys(TM.legs).sort(function(a,b){return a-b;});
+    var rows=legs.map(function(l){ return "<tr><td class='avd'>"+l+"</td><td class='hst'>"+
+      jesc((t.picks[l]||[]).join(", "))+"</td></tr>"; }).join("");
+    var d=document.createElement("div"); d.className="tickcol ucol";
+    d.innerHTML="<div class='slipd'><p class='dlogo' style='font-size:14px'>"+jesc(t.label)+"</p>"+
+      (t.no?"<p class='dtag'>"+jesc(t.no)+"</p>":"")+
+      "<hr class='drule solid'><table class='dlegs'><tr><th>AVD</th><th>HÄSTAR</th></tr>"+rows+"</table></div>";
+    row.appendChild(d);
+  });
+}
+document.addEventListener("DOMContentLoaded", renderCmp);
+if(document.readyState!=="loading") renderCmp();
+})();
+</script>
+<script>
+(function(){
+function val(td){
+  var t=td.textContent.trim();
+  if(t==="") return 9999;
+  if(t.indexOf("\uD83E\uDD47")>=0) return 1;
+  var n=parseFloat(t.replace("%","").replace(",", "."));
+  return isNaN(n) ? t.toLowerCase() : n;
+}
+document.querySelectorAll(".tile table").forEach(function(tb){
+  var ths=tb.querySelectorAll("thead th");
+  ths.forEach(function(th,i){
+    th.style.cursor="pointer"; th.title="Sort by "+th.textContent;
+    th.addEventListener("click",function(){
+      var tbody=tb.querySelector("tbody"); if(!tbody) return;
+      var rows=Array.prototype.slice.call(tbody.querySelectorAll("tr"));
+      var dir=(th.getAttribute("data-dir")==="asc")?"desc":"asc";
+      ths.forEach(function(x){ x.removeAttribute("data-dir");
+        x.textContent=x.textContent.split(" \u25B2")[0].split(" \u25BC")[0]; });
+      th.setAttribute("data-dir",dir);
+      rows.sort(function(a,b){
+        var va=val(a.children[i]), vb=val(b.children[i]);
+        if(typeof va!==typeof vb){ va=String(va); vb=String(vb); }
+        if(va<vb) return dir==="asc"?-1:1;
+        if(va>vb) return dir==="asc"?1:-1;
+        return 0; });
+      rows.forEach(function(r){ tbody.appendChild(r); });
+      th.textContent=th.textContent+" "+(dir==="asc"?"\u25B2":"\u25BC");
+    });
+  });
+});
+})();
+</script>
+
+<aside class="tdrawer" id="tdrawer"><button class="ttab" onclick="tdT()">🎟️ KUPONG</button><div class="slipd">
+  <p class="dlogo">TRAVMODEL<span>™</span></p>
+  <hr class="drule solid">
+  <div class="drow"><span>Spel</span><b>V65</b></div>
+  <div class="drow"><span>Bana</span><b>Solänget</b></div>
+  <div class="drow"><span>Start</span><b>Fri 24 Jul · 12:45</b></div>
+  <div class="drow"><span>Status</span><b>RÄTTAD</b></div>
+  <hr class="drule">
+  <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR · RÄTT?</th></tr><tr><td class='avd'>1</td><td class='hst'>3 Tougherthanothers ★ <span style="color:#C23B2E">✗</span></td></tr><tr><td class='avd'>2</td><td class='hst'>2, 3, 6, 8 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>3</td><td class='hst'>5, 7, 9 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>4</td><td class='hst'>1, 2, 4, 7 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>5</td><td class='hst'>1 Ove Schermer ★ <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>6</td><td class='hst'>4 Ajlexes MagicWoman ★ <span style="color:#2E6B4A">✓</span></td></tr></table>
+  <hr class="drule">
+  <div class="drow"><span>1×4×3×4×1×1</span><b>= 48 rader</b></div>
+  <div class="drow"><span>48 × 1 kr</span><b>48.00 kr</b></div>
+  <div class="dtotal"><span>RESULTAT</span><b>5 AV 6</b></div>
+  <div class="dstamp">5 AV 6<small>LÅST FÖRE START · AUTORÄTTAD</small></div></div></aside><script>
+function tdT(){var d=document.getElementById('tdrawer');var o=d.classList.toggle('open');
+try{localStorage.setItem('tm_drawer',o?'1':'0');}catch(e){}}
+try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer').classList.add('open');}catch(e){}
+</script>
+<footer><p>Picks were locked 30 minutes before start; results fetched from ATG. Not betting advice.</p></footer>
+</main></body></html>
