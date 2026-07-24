@@ -224,6 +224,26 @@ tr.win-miss td:nth-child(2){ color:#C23B2E; font-weight:700; }
   }
   ul.infoul{ margin:4px 0 8px 18px; padding:0; }
   ul.infoul li{ font-size:13px; color:var(--muted); line-height:1.55; margin-bottom:4px; }
+  .edrawer{ position:fixed; top:0; right:0; height:100vh; z-index:58;
+    transform:translateX(100%); transition:transform .25s ease; }
+  .edrawer.open{ transform:translateX(0); }
+  @media (prefers-reduced-motion: reduce){ .edrawer{ transition:none; } }
+  .etab{ position:absolute; left:-40px; top:52%; width:40px;
+    writing-mode:vertical-rl; background:var(--exp); color:#fff; border:none;
+    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
+    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  .epanel{ width:min(320px, 88vw); height:100%; overflow-y:auto;
+    background:var(--card); color:var(--ink); padding:22px 18px 30px;
+    border-left:3px solid var(--exp); box-shadow:-14px 0 34px rgba(0,0,0,.3);
+    font-size:13px; }
+  .ehead{ font-size:12px; font-weight:700; letter-spacing:.16em; color:var(--exp); margin:0 0 4px; }
+  .esub{ font-size:11px; color:var(--muted); margin:0 0 12px; line-height:1.5; }
+  .esub a{ color:var(--exp); }
+  .exleg{ border-top:1px solid var(--line); padding:8px 0; font-variant-numeric:tabular-nums; }
+  .exleg b{ color:var(--exp); }
+  .exl{ font-size:10px; font-weight:700; letter-spacing:.12em; color:var(--muted); margin-right:6px; }
+  .extop{ font-size:11px; color:var(--muted); margin-top:2px; }
+  @media print{ .edrawer{ display:none; } }
 </style></head><body><main>
 <div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
 <script>
@@ -536,5 +556,18 @@ document.querySelectorAll(".tile table").forEach(function(tb){
   });
 });
 })();
+</script>
+<aside class="edrawer" id="edrawer">
+<button class="etab" onclick="edT()">EXPERTS</button>
+<div class="epanel">
+<p class="ehead">EXPERT RANKINGS</p>
+<p class="esub">Gratistravtips ABCD · <a href="https://www.gratistravtips.se/skelleftea/2026-07-22/v86" target="_blank" rel="noopener">source</a> ·
+A = best group. Audited on 803 historical legs: their top pick won 25% vs Travmodel's 40% —
+read as context, not gospel.</p>
+<div class='exleg'><span class='exl'>Leg 1</span> <b>B:</b> 5, 3, 2 · <b>C:</b> 6, 4 · <b>D:</b> 8, 7, 1<div class='extop'>their top: #5 B.W.Sture</div></div><div class='exleg'><span class='exl'>Leg 2</span> <b>A:</b> 7 · <b>B:</b> 10, 5, 11 · <b>C:</b> 12, 8, 6, 9 · <b>D:</b> 1, 2, 3, 4<div class='extop'>their top: #7 Karbon Brick</div></div><div class='exleg'><span class='exl'>Leg 3</span> <b>A:</b> 1, 10 · <b>B:</b> 2, 12 · <b>C:</b> 8, 5, 7, 13 · <b>D:</b> 4, 9, 11, 3, 6<div class='extop'>their top: #1 Sjö Kosa</div></div><div class='exleg'><span class='exl'>Leg 4</span> <b>A:</b> 10 · <b>B:</b> 6, 8, 11 · <b>C:</b> 4, 9 · <b>D:</b> 2, 3, 5, 7<div class='extop'>their top: #10 Before Takeoff</div></div><div class='exleg'><span class='exl'>Leg 5</span> <b>A:</b> 15, 11 · <b>B:</b> 9, 7, 2, 13 · <b>C:</b> 12, 10, 3, 14 · <b>D:</b> 8, 5, 1, 4, 6<div class='extop'>their top: #15 Jobiline Ridge*</div></div><div class='exleg'><span class='exl'>Leg 6</span> <b>A:</b> 1, 9 · <b>B:</b> 10 · <b>C:</b> 11, 6, 12, 4 · <b>D:</b> 3, 8, 7, 2, 5<div class='extop'>their top: #1 Fantasy Boy*</div></div><div class='exleg'><span class='exl'>Leg 7</span> <b>A:</b> 5 · <b>B:</b> 4, 1, 7 · <b>C:</b> 2, 12 · <b>D:</b> 6, 9, 8, 10, 3<div class='extop'>their top: #5 Punchboard</div></div><div class='exleg'><span class='exl'>Leg 8</span> <b>A:</b> 5 · <b>B:</b> 7, 12 · <b>C:</b> 3, 1 · <b>D:</b> 11, 2, 4, 10<div class='extop'>their top: #5 Ultimus</div></div>
+</div></aside><script>
+function edT(){var d=document.getElementById('edrawer');var o=d.classList.toggle('open');
+try{localStorage.setItem('tm_edrawer',o?'1':'0');}catch(e){}}
+try{if(localStorage.getItem('tm_edrawer')==='1')document.getElementById('edrawer').classList.add('open');}catch(e){}
 </script>
 </body></html>

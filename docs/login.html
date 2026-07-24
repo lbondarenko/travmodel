@@ -91,6 +91,26 @@
     transform:rotate(-5deg); border-radius:4px; text-align:center; opacity:.85; }
   .dstamp small{ display:block; font-size:7.5px; letter-spacing:.16em; font-weight:400; }
   @media print{ .tdrawer{ display:none; } }
+  .edrawer{ position:fixed; top:0; right:0; height:100vh; z-index:58;
+    transform:translateX(100%); transition:transform .25s ease; }
+  .edrawer.open{ transform:translateX(0); }
+  @media (prefers-reduced-motion: reduce){ .edrawer{ transition:none; } }
+  .etab{ position:absolute; left:-40px; top:52%; width:40px;
+    writing-mode:vertical-rl; background:var(--exp); color:#fff; border:none;
+    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
+    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  .epanel{ width:min(320px, 88vw); height:100%; overflow-y:auto;
+    background:var(--card); color:var(--ink); padding:22px 18px 30px;
+    border-left:3px solid var(--exp); box-shadow:-14px 0 34px rgba(0,0,0,.3);
+    font-size:13px; }
+  .ehead{ font-size:12px; font-weight:700; letter-spacing:.16em; color:var(--exp); margin:0 0 4px; }
+  .esub{ font-size:11px; color:var(--muted); margin:0 0 12px; line-height:1.5; }
+  .esub a{ color:var(--exp); }
+  .exleg{ border-top:1px solid var(--line); padding:8px 0; font-variant-numeric:tabular-nums; }
+  .exleg b{ color:var(--exp); }
+  .exl{ font-size:10px; font-weight:700; letter-spacing:.12em; color:var(--muted); margin-right:6px; }
+  .extop{ font-size:11px; color:var(--muted); margin-top:2px; }
+  @media print{ .edrawer{ display:none; } }
   .fambadge{ background:var(--fam-bg); color:var(--fam); border-radius:99px;
     font-size:10px; font-weight:700; letter-spacing:.1em; padding:2px 9px;
     margin-left:auto; white-space:nowrap; }

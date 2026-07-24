@@ -708,6 +708,26 @@ CSS = """
     transform:rotate(-5deg); border-radius:4px; text-align:center; opacity:.85; }
   .dstamp small{ display:block; font-size:7.5px; letter-spacing:.16em; font-weight:400; }
   @media print{ .tdrawer{ display:none; } }
+  .edrawer{ position:fixed; top:0; right:0; height:100vh; z-index:58;
+    transform:translateX(100%); transition:transform .25s ease; }
+  .edrawer.open{ transform:translateX(0); }
+  @media (prefers-reduced-motion: reduce){ .edrawer{ transition:none; } }
+  .etab{ position:absolute; left:-40px; top:52%; width:40px;
+    writing-mode:vertical-rl; background:var(--exp); color:#fff; border:none;
+    border-radius:8px 0 0 8px; padding:14px 10px; cursor:pointer;
+    font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.16em; }
+  .epanel{ width:min(320px, 88vw); height:100%; overflow-y:auto;
+    background:var(--card); color:var(--ink); padding:22px 18px 30px;
+    border-left:3px solid var(--exp); box-shadow:-14px 0 34px rgba(0,0,0,.3);
+    font-size:13px; }
+  .ehead{ font-size:12px; font-weight:700; letter-spacing:.16em; color:var(--exp); margin:0 0 4px; }
+  .esub{ font-size:11px; color:var(--muted); margin:0 0 12px; line-height:1.5; }
+  .esub a{ color:var(--exp); }
+  .exleg{ border-top:1px solid var(--line); padding:8px 0; font-variant-numeric:tabular-nums; }
+  .exleg b{ color:var(--exp); }
+  .exl{ font-size:10px; font-weight:700; letter-spacing:.12em; color:var(--muted); margin-right:6px; }
+  .extop{ font-size:11px; color:var(--muted); margin-top:2px; }
+  @media print{ .edrawer{ display:none; } }
   .fambadge{ background:var(--fam-bg); color:var(--fam); border-radius:99px;
     font-size:10px; font-weight:700; letter-spacing:.1em; padding:2px 9px;
     margin-left:auto; white-space:nowrap; }
@@ -861,7 +881,38 @@ def stampbox(updated, start_str):
 <span class="stamp-note">streck &amp; odds move until post {start_str} — auto-updates hourly, every 30 min in the last 4 h</span></div>"""
 
 
-def render_game(game, data, updated):
+def experts_drawer(experts, back=""):
+    if not experts or not experts.get("legs"):
+        return ""
+    parts = []
+    for leg in sorted(experts["legs"], key=int):
+        horses = experts["legs"][leg]
+        groups = {}
+        for h in sorted(horses, key=lambda x: -x.get("pts", 0)):
+            groups.setdefault(h["rank"], []).append(str(h["nr"]))
+        line = " · ".join(f"<b>{r}:</b> {', '.join(groups[r])}"
+                          for r in ("A", "B", "C", "D") if r in groups)
+        top = max(horses, key=lambda x: x.get("pts", 0))
+        parts.append(f"<div class='exleg'><span class='exl'>Leg {leg}</span> {line}"
+                     f"<div class='extop'>their top: #{top['nr']} {esc(top['name'])}</div></div>")
+    src = experts.get("source", "experts")
+    url = experts.get("url", "#")
+    return f"""<aside class="edrawer" id="edrawer">
+<button class="etab" onclick="edT()">EXPERTS</button>
+<div class="epanel">
+<p class="ehead">EXPERT RANKINGS</p>
+<p class="esub">{esc(src)} · <a href="{url}" target="_blank" rel="noopener">source</a> ·
+A = best group. Audited on 803 historical legs: their top pick won 25% vs Travmodel's 40% —
+read as context, not gospel.</p>
+{''.join(parts)}
+</div></aside>""" + """<script>
+function edT(){var d=document.getElementById('edrawer');var o=d.classList.toggle('open');
+try{localStorage.setItem('tm_edrawer',o?'1':'0');}catch(e){}}
+try{if(localStorage.getItem('tm_edrawer')==='1')document.getElementById('edrawer').classList.add('open');}catch(e){}
+</script>"""
+
+
+def render_game(game, data, updated, experts=None):
     start_dt = datetime.fromisoformat(game["start"])
     tiles = []
     for leg, horses in data["legs"].items():
@@ -969,6 +1020,7 @@ try{if(localStorage.getItem('tm_drawer')==='1')document.getElementById('tdrawer'
 <button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button><button class="upbtn" onclick="tixOpen()">📷&nbsp; Upload My Ticket</button>
 </div>{stampbox(updated, start_dt.strftime('%H:%M'))}</div>
 {ticket_html}
+{experts_drawer(experts)}
 <div class="grid">{''.join('<div class="legrow">' + ''.join(tiles[i:i+2]) + '</div>' for i in range(0, len(tiles), 2))}</div>
 {printtix}
 {tix_block}
@@ -1221,8 +1273,22 @@ def update_game(game):
         log(f"update {gid} FAILED: {e}")
         return
     updated = datetime.now().strftime("%a %d %b · %H:%M")
+    exdir = WEB / "data" / "experts"
+    exdir.mkdir(parents=True, exist_ok=True)
+    exf = exdir / f"{gid}.json"
+    ex = None
+    try:
+        if exf.exists():
+            ex = json.loads(exf.read_text())
+        else:
+            import experts as _experts
+            ex = _experts.fetch_gt(data["track"], gid.split("_")[1], gid.split("_")[0])
+            if ex:
+                exf.write_text(json.dumps(ex, ensure_ascii=False))
+    except Exception as e:
+        log(f"experts fetch failed for {gid}: {e}")
     (WEB / "game").mkdir(parents=True, exist_ok=True)
-    (WEB / "game" / f"{gid}.html").write_text(render_game(game, data, updated))
+    (WEB / "game" / f"{gid}.html").write_text(render_game(game, data, updated, ex))
     (WEB / "data").mkdir(parents=True, exist_ok=True)
     snap = {"game": game, "data": {"track": data["track"], "type": data["type"],
             "legmeta": data["legmeta"], "fam_legs": data.get("fam_legs", []),
