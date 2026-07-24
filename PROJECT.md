@@ -56,4 +56,6 @@ manual analysis.
   - [x] Gallop feature via structured disqualification/place codes (archive strips TR comments —
         current regex feature is blind in training, live-only at predict time)
   - [x] Validate: market-weight × data-richness interaction (trust market less on thin-footprint horses)
-- [ ] Ticket optimizer: turn leg probabilities into a budget-constrained system (spik/gardera allocation)
+- [x] Ticket optimizer v1 (greedy budget allocator, shipped in site)
+- [ ] Optimizer v3 (from 23/7 Bergsåker + Jan's input): spik floor (<45% legs must carry 2 horses),
+  payout-aware allocation (dividend skew, skräll economics), expert/streck-vs-model divergence flag
