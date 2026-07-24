@@ -94,12 +94,26 @@ def try_make_past(gid, st):
         if winner is None:
             return False
         results[str(i)] = {"winner": winner, "odds": odds, "places": places}
-    html = webapp.render_past(gid, snap, results, st["start"])
+    pool = ((game.get("pools") or {}).get(gid.split("_")[0]) or {}).get("result", {}).get("payouts")
+    html = webapp.render_past(gid, snap, results, st["start"], pool)
     (DOCS / "past").mkdir(parents=True, exist_ok=True)
     (DOCS / "past" / f"{gid}.html").write_text(html)
     hits = sum(1 for l, r in results.items()
                if r["winner"] in snap["ticket"]["picks"].get(l, []))
-    st["outcome"] = f"Kupongen: {hits} av {len(results)} rätt"
+    ways = {0: 1}
+    for l, r in results.items():
+        picks = snap["ticket"]["picks"].get(l, [])
+        wc = 1 if r["winner"] in picks else 0
+        ww = len(picks) - wc
+        new = {}
+        for k, v in ways.items():
+            if wc: new[k+1] = new.get(k+1, 0) + v*wc
+            if ww: new[k] = new.get(k, 0) + v*ww
+        ways = new
+    win_kr = sum(ways.get(int(t), 0) * ((i.get("payout",0) if isinstance(i,dict) else i)/100)
+                 for t, i in (pool or {}).items())
+    net = win_kr - snap["ticket"]["cost"]
+    st["outcome"] = f"Kupongen: {hits} av {len(results)} — netto {net:+.0f} kr"
     biggest = max((r.get("odds") or 0) for r in results.values())
     st["note"] = f"Biggest winner odds: {biggest:.2f}" if biggest else "Auto-scored result"
     webapp.log(f"past page generated for {gid} ({hits}/{len(results)})")
