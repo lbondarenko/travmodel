@@ -6,7 +6,8 @@
 <style>
   :root{ --bg:#FAF8F3; --ink:#26241F; --muted:#867F73; --line:#E3DED4;
     --pick:#2E6B4A; --pick-bg:#EDF3EE; --head-bg:#26241F; --head-ink:#FAF8F3;
-    --exp:#8A5A1E; --card:#FFFFFF; --acc2:#46647F; --fam:#B45062; --fam-bg:#F7E7EA; }
+    --exp:#8A5A1E; --card:#FFFFFF; --acc2:#46647F; --fam:#B45062; --fam-bg:#F7E7EA;
+    --dww:min(320px, 88vw); }
   @media (prefers-color-scheme: dark){ :root{ --bg:#181A16; --ink:#E9E6DD; --muted:#98937F;
     --line:#37392F; --pick:#8CC3A4; --pick-bg:#26312A; --head-bg:#E9E6DD; --head-ink:#1D1F1B;
     --exp:#D4A860; --card:#22241F; --acc2:#93B4CE; --fam:#E39AAB; --fam-bg:#3A2A2E; } }
@@ -64,14 +65,16 @@
   .tdrawer.open{ transform:translateX(0); }
   @media (prefers-reduced-motion: reduce){ .tdrawer{ transition:none; } }
   .dwrail{ position:fixed; right:0; top:42%; z-index:70; display:flex;
-    flex-direction:column; gap:8px; }
+    flex-direction:column; gap:8px; transition:transform .25s ease; }
+  .dwrail.shift{ transform:translateX(calc(-1 * var(--dww))); }
+  @media (prefers-reduced-motion: reduce){ .dwrail{ transition:none; } }
   .dwtab{ width:42px; writing-mode:vertical-rl; border:none; border-radius:8px 0 0 8px;
     padding:16px 11px; cursor:pointer; color:#fff;
     font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.14em; }
   .dwtab-k{ background:var(--pick); }
   .dwtab-e{ background:var(--exp); }
   @media print{ .dwrail{ display:none; } }
-  .slipd{ width:min(300px, 86vw); height:100%; overflow-y:auto;
+  .slipd{ width:var(--dww); height:100%; overflow-y:auto;
     background:#FCFAF7; color:#211E1B; padding:24px 18px 30px;
     font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;
     font-size:12.5px; line-height:1.5; font-variant-numeric:tabular-nums;
@@ -102,7 +105,7 @@
   .edrawer.open{ transform:translateX(0); }
   @media (prefers-reduced-motion: reduce){ .edrawer{ transition:none; } }
   /* tabs moved into .dwrail */
-  .epanel{ width:min(320px, 88vw); height:100%; overflow-y:auto;
+  .epanel{ width:var(--dww); height:100%; overflow-y:auto;
     background:var(--card); color:var(--ink); padding:22px 18px 30px;
     border-left:3px solid var(--exp); box-shadow:-14px 0 34px rgba(0,0,0,.3);
     font-size:13px; }
@@ -248,7 +251,7 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
 (win probability) · green rows = model's top of the leg · program comments under each table</p>
 <button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button><button class="upbtn" onclick="tixOpen()">📷&nbsp; Upload My Ticket</button>
 </div><div class="stampbox"><span class="stamp-label">DATA SNAPSHOT</span>
-<span class="stamp-time">Fri 24 Jul · 17:23</span>
+<span class="stamp-time">Fri 24 Jul · 17:33</span>
 <span class="stamp-note">streck &amp; odds move until post 19:30 — auto-updates hourly, every 30 min in the last 4 h</span></div></div>
 <aside class="tdrawer dw" id="tdrawer"><div class="slipd">
   <p class="dlogo">TRAVMODEL<span>™</span></p>
@@ -256,7 +259,7 @@ document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_u
   <div class="drow"><span>Spel</span><b>V64</b></div>
   <div class="drow"><span>Bana</span><b>Östersund</b></div>
   <div class="drow"><span>Start</span><b>Mon 27 Jul · 19:30</b></div>
-  <div class="drow"><span>Data</span><b>Fri 24 Jul · 17:23</b></div>
+  <div class="drow"><span>Data</span><b>Fri 24 Jul · 17:33</b></div>
   <hr class="drule">
   <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR</th></tr><tr><td class='avd'>1</td><td class='hst'>3, 5, 8</td></tr><tr><td class='avd'>2</td><td class='hst'>7 Guli Nicke ★</td></tr><tr><td class='avd'>3</td><td class='hst'>6 Nons Ängla ★</td></tr><tr><td class='avd'>4</td><td class='hst'>3, 8</td></tr><tr><td class='avd'>5</td><td class='hst'>3, 6, 7, 12</td></tr><tr><td class='avd'>6</td><td class='hst'>1, 2</td></tr></table>
   <hr class="drule">
@@ -283,9 +286,11 @@ function dwGo(id){
   var opening=!d.classList.contains('open');
   if(t)t.classList.remove('open'); if(e)e.classList.remove('open');
   if(opening)d.classList.add('open');
+  var rail=document.querySelector('.dwrail');
+  if(rail)rail.classList.toggle('shift', opening);
   try{localStorage.setItem('tm_dw', opening?id:'');}catch(err){}
 }
-try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o); if(el)el.classList.add('open');}}catch(err){}
+try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o); if(el){el.classList.add('open'); var r=document.querySelector('.dwrail'); if(r)r.classList.add('shift');}}}catch(err){}
 </script>
 <div class="grid"><div class="legrow"><article class="tile">
 <div class="leghead"><h2>Leg 1</h2><span class="meta">2140m auto · ★ spik candidate</span></div>
@@ -318,7 +323,7 @@ try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o)
   <div class="drow"><span>Spel</span><b>V64</b></div>
   <div class="drow"><span>Bana</span><b>Östersund</b></div>
   <div class="drow"><span>Start</span><b>Mon 27 Jul · 19:30</b></div>
-  <div class="drow"><span>Data</span><b>Fri 24 Jul · 17:23</b></div>
+  <div class="drow"><span>Data</span><b>Fri 24 Jul · 17:33</b></div>
   <hr class="drule">
   <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR</th></tr><tr><td class='avd'>1</td><td class='hst'>3, 5, 8</td></tr><tr><td class='avd'>2</td><td class='hst'>7 Guli Nicke ★</td></tr><tr><td class='avd'>3</td><td class='hst'>6 Nons Ängla ★</td></tr><tr><td class='avd'>4</td><td class='hst'>3, 8</td></tr><tr><td class='avd'>5</td><td class='hst'>3, 6, 7, 12</td></tr><tr><td class='avd'>6</td><td class='hst'>1, 2</td></tr></table>
   <hr class="drule">

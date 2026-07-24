@@ -5,7 +5,8 @@
 <style>
   :root{ --bg:#FAF8F3; --ink:#26241F; --muted:#867F73; --line:#E3DED4;
     --pick:#2E6B4A; --pick-bg:#EDF3EE; --head-bg:#26241F; --head-ink:#FAF8F3;
-    --exp:#8A5A1E; --card:#FFFFFF; --acc2:#46647F; --fam:#B45062; --fam-bg:#F7E7EA; }
+    --exp:#8A5A1E; --card:#FFFFFF; --acc2:#46647F; --fam:#B45062; --fam-bg:#F7E7EA;
+    --dww:min(320px, 88vw); }
   @media (prefers-color-scheme: dark){ :root{ --bg:#181A16; --ink:#E9E6DD; --muted:#98937F;
     --line:#37392F; --pick:#8CC3A4; --pick-bg:#26312A; --head-bg:#E9E6DD; --head-ink:#1D1F1B;
     --exp:#D4A860; --card:#22241F; --acc2:#93B4CE; --fam:#E39AAB; --fam-bg:#3A2A2E; } }
@@ -63,14 +64,16 @@
   .tdrawer.open{ transform:translateX(0); }
   @media (prefers-reduced-motion: reduce){ .tdrawer{ transition:none; } }
   .dwrail{ position:fixed; right:0; top:42%; z-index:70; display:flex;
-    flex-direction:column; gap:8px; }
+    flex-direction:column; gap:8px; transition:transform .25s ease; }
+  .dwrail.shift{ transform:translateX(calc(-1 * var(--dww))); }
+  @media (prefers-reduced-motion: reduce){ .dwrail{ transition:none; } }
   .dwtab{ width:42px; writing-mode:vertical-rl; border:none; border-radius:8px 0 0 8px;
     padding:16px 11px; cursor:pointer; color:#fff;
     font:700 11px/1.2 "Avenir Next","Seravek",system-ui,sans-serif; letter-spacing:.14em; }
   .dwtab-k{ background:var(--pick); }
   .dwtab-e{ background:var(--exp); }
   @media print{ .dwrail{ display:none; } }
-  .slipd{ width:min(300px, 86vw); height:100%; overflow-y:auto;
+  .slipd{ width:var(--dww); height:100%; overflow-y:auto;
     background:#FCFAF7; color:#211E1B; padding:24px 18px 30px;
     font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;
     font-size:12.5px; line-height:1.5; font-variant-numeric:tabular-nums;
@@ -101,7 +104,7 @@
   .edrawer.open{ transform:translateX(0); }
   @media (prefers-reduced-motion: reduce){ .edrawer{ transition:none; } }
   /* tabs moved into .dwrail */
-  .epanel{ width:min(320px, 88vw); height:100%; overflow-y:auto;
+  .epanel{ width:var(--dww); height:100%; overflow-y:auto;
     background:var(--card); color:var(--ink); padding:22px 18px 30px;
     border-left:3px solid var(--exp); box-shadow:-14px 0 34px rgba(0,0,0,.3);
     font-size:13px; }
@@ -576,9 +579,11 @@ function dwGo(id){
   var opening=!d.classList.contains('open');
   if(t)t.classList.remove('open'); if(e)e.classList.remove('open');
   if(opening)d.classList.add('open');
+  var rail=document.querySelector('.dwrail');
+  if(rail)rail.classList.toggle('shift', opening);
   try{localStorage.setItem('tm_dw', opening?id:'');}catch(err){}
 }
-try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o); if(el)el.classList.add('open');}}catch(err){}
+try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o); if(el){el.classList.add('open'); var r=document.querySelector('.dwrail'); if(r)r.classList.add('shift');}}}catch(err){}
 </script>
 <footer><p>Picks were locked 30 minutes before start; results fetched from ATG. Not betting advice.</p></footer>
 </main></body></html>
