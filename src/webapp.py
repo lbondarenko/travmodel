@@ -1,6 +1,6 @@
 """travmodel web — local site with auto-updating model sheets.
 
-- Home page (/): the next 3 upcoming betting rounds (V86/V75/GS75/V64/V65),
+- Home page (/): the next 3 upcoming betting rounds (V86/V85/V75/GS75/V64/V65),
   each linking to a detail page.
 - Detail page (/game/<id>.html): per-leg tiles with V64/V86-streck vs the
   model's win probabilities, program comments for the model's top picks,
@@ -32,7 +32,7 @@ from train import prepare  # noqa: E402
 from sv_en import translate  # noqa: E402
 
 BASE = "https://www.atg.se/services/racinginfo/v1/api"
-GAME_TYPES = ["V86", "V75", "GS75", "V64", "V65"]
+GAME_TYPES = ["V86", "V85", "V75", "GS75", "V64", "V65"]
 PORT = 8030
 FULL_INTERVAL = 3600          # >4h to post: hourly
 CLOSE_INTERVAL = 1800         # <=4h to post: every 30 min
@@ -166,7 +166,7 @@ PAST_RACES = [
 
 # ---------- ticket builder ----------
 
-ROW_PRICE = {"V64": 1.0, "V65": 1.0, "V75": 0.5, "V86": 0.25, "GS75": 0.25}
+ROW_PRICE = {"V64": 1.0, "V65": 1.0, "V75": 0.5, "V86": 0.25, "V85": 0.5, "GS75": 0.25}
 TICKET_BUDGET = 50.0   # kronor
 MAX_PER_LEG = 5
 
