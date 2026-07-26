@@ -166,7 +166,7 @@ PAST_RACES = [
 
 # ---------- ticket builder ----------
 
-ROW_PRICE = {"V64": 1.0, "V65": 1.0, "V75": 0.5, "V86": 0.25, "V85": 0.5, "GS75": 0.25}
+ROW_PRICE = {"V64": 1.0, "V65": 1.0, "V75": 0.5, "V86": 0.25, "V85": 0.5, "GS75": 1.0}
 TICKET_BUDGET = 50.0   # kronor
 MAX_PER_LEG = 5
 
