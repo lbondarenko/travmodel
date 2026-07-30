@@ -1,8 +1,7 @@
 <!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="refresh" content="600">
 <script>(function(){var t=+localStorage.getItem("tm_ts")||0;if(!localStorage.getItem("tm_user")||Date.now()-t>604800000)location.replace("../login.html");})();</script>
-<title>V65 Bergen Sun 02 Aug 18:55 — Travmodel</title>
+<title>V64 Solvalla 30 Jul — result</title>
 <style>
   :root{ --bg:#FAF8F3; --ink:#26241F; --muted:#867F73; --line:#E3DED4;
     --pick:#2E6B4A; --pick-bg:#EDF3EE; --head-bg:#26241F; --head-ink:#FAF8F3;
@@ -239,6 +238,15 @@
     font-size:14px; color:var(--ink); }
   .addmenu a:hover{ background:var(--pick-bg); }
   footer{ margin-top:64px !important; }
+
+.resultbar{ background:var(--card); border:2px solid var(--exp); border-radius:12px;
+  padding:12px 16px; margin-bottom:18px; font-size:13.5px; line-height:1.6; }
+tr.win-hit td{ background:var(--pick-bg); }
+tr.win-hit td:nth-child(2){ color:var(--pick); font-weight:700; }
+tr.win-miss td{ background:color-mix(in srgb, #C23B2E 12%, transparent); }
+tr.win-miss td:nth-child(2){ color:#C23B2E; font-weight:700; }
+ul.infoul{ margin:4px 0 8px 18px; padding:0; }
+ul.infoul li{ font-size:13px; color:var(--muted); line-height:1.55; margin-bottom:4px; }
 </style></head><body><main>
 <div class="userchip">👤 <span id="tmu"></span> · <a href="#" id="tmlo">log out</a></div>
 <script>
@@ -246,88 +254,59 @@ document.getElementById('tmu').textContent=localStorage.getItem('tm_user')||'';
 document.getElementById('tmlo').onclick=function(){localStorage.removeItem('tm_user');location.reload();return false;};
 </script>
 <div class="pagehead"><div>
-<h1><a href="../index.html">←</a> V65 Bergen · Sunday 02 August 2026</h1>
-<p class="sub">First start 18:55 · streck (share of tickets) vs Travmodel
-(win probability) · green rows = model's top of the leg · program comments under each table</p>
+<h1><a href="../index.html">←</a> V64 Solvalla · Thursday 30 July 2026 — RESULT</h1>
+<p class="sub">Final locked streck vs Travmodel · 🥇 = winner · green = winner on our kupong, red = winner we missed</p>
 <button class="printbtn" onclick="window.print()">🖨️&nbsp; Skriv ut / Print</button><button class="upbtn" onclick="tixOpen()">📷&nbsp; Upload My Ticket</button>
-</div><div class="stampbox"><span class="stamp-label">DATA SNAPSHOT</span>
-<span class="stamp-time">Thu 30 Jul · 22:01</span>
-<span class="stamp-note">streck &amp; odds move until post 18:55 — auto-updates hourly, every 30 min in the last 4 h</span></div></div>
-<aside class="tdrawer dw" id="tdrawer"><div class="slipd">
-  <p class="dlogo">TRAVMODEL<span>™</span></p>
-  <hr class="drule solid">
-  <div class="drow"><span>Spel</span><b>V65</b></div>
-  <div class="drow"><span>Bana</span><b>Bergen</b></div>
-  <div class="drow"><span>Start</span><b>Sun 02 Aug · 18:55</b></div>
-  <div class="drow"><span>Data</span><b>Thu 30 Jul · 22:01</b></div>
-  <hr class="drule">
-  <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR</th></tr><tr><td class='avd'>1</td><td class='hst'>2, 3, 4, 5, 6</td></tr><tr><td class='avd'>2</td><td class='hst'>7 Alm Romeo ★</td></tr><tr><td class='avd'>3</td><td class='hst'>5 Caviar Junior ★</td></tr><tr><td class='avd'>4</td><td class='hst'>2 Speedy Vincent ★</td></tr><tr><td class='avd'>5</td><td class='hst'>1, 2, 4, 6, 10</td></tr><tr><td class='avd'>6</td><td class='hst'>3, 7</td></tr></table>
-  <hr class="drule">
-  <div class="drow"><span>5×1×1×1×5×2</span><b>= 50 rader</b></div>
-  <div class="drow"><span>50 × 1 kr</span><b>50.00 kr</b></div>
-  <div class="dtotal"><span>TOTALT</span><b>50.00 kr</b></div>
-  <p class="dnote">Modellens egen chans: ~0% att pricka alla 6.
-  Byggs om vid varje datauppdatering — kupongen kan ändras. ★ = spik.
-  Inget giltigt spel — spela hos atg.se om du vill.</p>
-  <div class="dstamp">EJ GILTIGT SPEL<small>ENDAST SKRYTRÄTTIGHETER</small></div>
-</div></aside>
-
-<div class="dwrail"><button class="dwtab dwtab-k" onclick="dwGo('tdrawer')">🎟️ KUPONG</button></div><script>
-function dwGo(id){
-  var t=document.getElementById('tdrawer'), e=document.getElementById('edrawer');
-  var d=document.getElementById(id); if(!d) return;
-  var opening=!d.classList.contains('open');
-  if(t)t.classList.remove('open'); if(e)e.classList.remove('open');
-  if(opening)d.classList.add('open');
-  var rail=document.querySelector('.dwrail');
-  if(rail)rail.classList.toggle('shift', opening);
-  try{localStorage.setItem('tm_dw', opening?id:'');}catch(err){}
-}
-try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o); if(el){el.classList.add('open'); var r=document.querySelector('.dwrail'); if(r)r.classList.add('shift');}}}catch(err){}
-</script>
+</div>
+<div class="stampbox"><span class="stamp-label">RESULTS FINAL</span>
+<span class="stamp-time">Thu 30 Jul</span>
+<span class="stamp-note">picks were locked 30 min before start — this page is a permanent record</span></div></div>
+<div class="resultbar"><b>RESULT: 4 OF 6.</b> 1 row(s) with 4 correct — below the minimum payout, rolled into the jackpot · net −40 kr. Open the 🎟️ drawer for the corrected kupong.</div>
 <div class="grid"><div class="legrow"><article class="tile">
-<div class="leghead"><h2>Leg 1</h2><span class="meta">2100m auto</span></div>
-<table><thead><tr><th>#</th><th>Horse</th><th class="r">Dist</th><th>Shoes</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th></tr></thead>
-<tbody><tr class='top'><td class='nr'>6</td><td>Weekend Vibe <span class='flag over'>OVERBET</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>S.Wassberg</td><td class='num'>42.2%</td><td class='num strong'>23.5%</td></tr><tr class='top'><td class='nr'>5</td><td>Rönnerdahl <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●<span class='schg' title='changed since last start'>*</span></td><td class='drv'>J.Berggren</td><td class='num'>5.6%</td><td class='num strong'>18.4%</td></tr><tr class=''><td class='nr'>4</td><td>Pensacola <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>M.Aadland</td><td class='num'>7.6%</td><td class='num strong'>17.3%</td></tr><tr class=''><td class='nr'>2</td><td>Avonaco <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>L.Hauge</td><td class='num'>6.7%</td><td class='num strong'>15.8%</td></tr><tr class=''><td class='nr'>3</td><td>Bravestile <span class='flag over'>OVERBET</span></td><td class='num till'></td><td class='shoes'>○●</td><td class='drv'>A.Wassberg</td><td class='num'>32.0%</td><td class='num strong'>12.5%</td></tr><tr class=''><td class='nr'>1</td><td>Mona Simone <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>○○</td><td class='drv'>O.Wassberg</td><td class='num'>5.8%</td><td class='num strong'>12.4%</td></tr></tbody></table>
-<div class="infos"><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#6 Weekend Vibe</b> (24%) — has raced at higher purse levels (class edge) · top speed figure (-3.8s vs a typical winner)</p><p class='info'><b>#5 Rönnerdahl</b> (18%) — shoe change tonight · top speed figure (-8.0s vs a typical winner)</p></div></article><article class="tile">
-<div class="leghead"><h2>Leg 2</h2><span class="meta">2100m auto</span></div>
-<table><thead><tr><th>#</th><th>Horse</th><th class="r">Dist</th><th>Shoes</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th></tr></thead>
-<tbody><tr class='top'><td class='nr'>7</td><td>Alm Romeo <span class='flag over'>OVERBET</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>M.Aadland</td><td class='num'>38.8%</td><td class='num strong'>14.5%</td></tr><tr class='top'><td class='nr'>1</td><td>Rano Elden <span class='flag over'>OVERBET</span></td><td class='num till'></td><td class='shoes'>○●<span class='schg' title='changed since last start'>*</span></td><td class='drv'>L.Hauge</td><td class='num'>36.6%</td><td class='num strong'>14.4%</td></tr><tr class=''><td class='nr'>8</td><td>Spik Otto <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>R.Tvedt</td><td class='num'>0.3%</td><td class='num strong'>13.9%</td></tr><tr class=''><td class='nr'>3</td><td>Mykle Kongen <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>S.Wassberg</td><td class='num'>3.8%</td><td class='num strong'>13.6%</td></tr><tr class=''><td class='nr'>5</td><td>Kvern Kvikk <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>D.Kvamsdal</td><td class='num'>2.7%</td><td class='num strong'>11.8%</td></tr><tr class=''><td class='nr'>4</td><td>Nilli Vårberg <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>J.Berggren</td><td class='num'>1.8%</td><td class='num strong'>11.7%</td></tr><tr class=''><td class='nr'>2</td><td>Åsmin</td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>E.Hauge</td><td class='num'>14.7%</td><td class='num strong'>11.1%</td></tr><tr class=''><td class='nr'>6</td><td>Huseby Minni <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>J.Landaas</td><td class='num'>1.4%</td><td class='num strong'>9.0%</td></tr></tbody></table>
-<div class="infos"><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#1 Rano Elden</b> (14%) — shoe change tonight</p></div></article></div><div class="legrow"><article class="tile">
-<div class="leghead"><h2>Leg 3</h2><span class="meta">1600m auto</span></div>
-<table><thead><tr><th>#</th><th>Horse</th><th class="r">Dist</th><th>Shoes</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th></tr></thead>
-<tbody><tr class='top'><td class='nr'>5</td><td>Caviar Junior <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>V.Steine</td><td class='num'>0.2%</td><td class='num strong'>10.2%</td></tr><tr class='top'><td class='nr'>9</td><td>It's Only Magic <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>D.Kvamsdal</td><td class='num'>0.6%</td><td class='num strong'>10.0%</td></tr><tr class=''><td class='nr'>10</td><td>Ossie Artist <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>R.Tvedt</td><td class='num'>1.7%</td><td class='num strong'>9.9%</td></tr><tr class=''><td class='nr'>3</td><td>M.L.'s Dynamite <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>L.Hauge</td><td class='num'>0.1%</td><td class='num strong'>9.9%</td></tr><tr class=''><td class='nr'>2</td><td>Capax H. <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>J.Landaas</td><td class='num'>0.1%</td><td class='num strong'>9.8%</td></tr><tr class=''><td class='nr'>4</td><td>Queen Of Dodo <span class='flag over'>OVERBET</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>S.Wassberg</td><td class='num'>66.2%</td><td class='num strong'>9.5%</td></tr><tr class=''><td class='nr'>6</td><td>Honey Express</td><td class='num till'></td><td class='shoes'>●●<span class='schg' title='changed since last start'>*</span></td><td class='drv'>O.Wassberg</td><td class='num'>8.6%</td><td class='num strong'>9.0%</td></tr><tr class=''><td class='nr'>1</td><td>Beauty</td><td class='num till'></td><td class='shoes'>○●<span class='schg' title='changed since last start'>*</span></td><td class='drv'>J.Berggren</td><td class='num'>9.0%</td><td class='num strong'>8.4%</td></tr><tr class=''><td class='nr'>8</td><td>Thai Blackpedia</td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>R.Ellingsen</td><td class='num'>0.0%</td><td class='num strong'>8.0%</td></tr><tr class=''><td class='nr'>11</td><td>Explosive Hangover <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>A.Wassberg</td><td class='num'>1.1%</td><td class='num strong'>8.0%</td></tr><tr class=''><td class='nr'>7</td><td>Jonny le Rocker</td><td class='num till'></td><td class='shoes'>○●</td><td class='drv'>H.Hauge</td><td class='num'>12.3%</td><td class='num strong'>7.2%</td></tr></tbody></table>
-<div class="infos"><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#5 Caviar Junior</b> (10%) — top speed figure (-8.0s vs a typical winner)</p><p class='info'><b>#9 It's Only Magic</b> (10%) — top speed figure (-8.0s vs a typical winner)</p></div></article><article class="tile">
-<div class="leghead"><h2>Leg 4</h2><span class="meta">2100m auto</span></div>
-<table><thead><tr><th>#</th><th>Horse</th><th class="r">Dist</th><th>Shoes</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th></tr></thead>
-<tbody><tr class='top'><td class='nr'>2</td><td>Speedy Vincent <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>D.Kvamsdal</td><td class='num'>12.1%</td><td class='num strong'>18.3%</td></tr><tr class='top'><td class='nr'>6</td><td>Vincent Sun <span class='flag over'>OVERBET</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>S.Wassberg</td><td class='num'>86.7%</td><td class='num strong'>16.0%</td></tr><tr class=''><td class='nr'>7</td><td>Devi Jameson <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>O.Wassberg</td><td class='num'>0.1%</td><td class='num strong'>15.6%</td></tr><tr class=''><td class='nr'>3</td><td>R.S. Dream <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>○●<span class='schg' title='changed since last start'>*</span></td><td class='drv'>J.Berggren</td><td class='num'>0.3%</td><td class='num strong'>14.6%</td></tr><tr class=''><td class='nr'>5</td><td>Vicious <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>M.Aadland</td><td class='num'>0.3%</td><td class='num strong'>13.6%</td></tr><tr class=''><td class='nr'>1</td><td>Farida <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>H.Håvardstun</td><td class='num'>0.2%</td><td class='num strong'>11.8%</td></tr><tr class=''><td class='nr'>4</td><td>Silversmith A.C. <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>L.Hauge</td><td class='num'>0.3%</td><td class='num strong'>10.0%</td></tr></tbody></table>
-<div class="infos"><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#2 Speedy Vincent</b> (18%) — top speed figure (-8.0s vs a typical winner)</p><p class='info'><b>#6 Vincent Sun</b> (16%) — top speed figure (-2.9s vs a typical winner)</p></div></article></div><div class="legrow"><article class="tile">
-<div class="leghead"><h2>Leg 5</h2><span class="meta">2600m volte</span></div>
-<table><thead><tr><th>#</th><th>Horse</th><th class="r">Dist</th><th>Shoes</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th></tr></thead>
-<tbody><tr class='top'><td class='nr'>4</td><td>Leonardus <span class='flag over'>OVERBET</span></td><td class='num till'>+20</td><td class='shoes'>●○<span class='schg' title='changed since last start'>*</span></td><td class='drv'>M.Aadland</td><td class='num'>25.4%</td><td class='num strong'>9.5%</td></tr><tr class='top'><td class='nr'>6</td><td>R.M.G. Tiger Feet</td><td class='num till'>+20</td><td class='shoes'>●●</td><td class='drv'>F.Ringheim</td><td class='num'>6.7%</td><td class='num strong'>7.6%</td></tr><tr class=''><td class='nr'>1</td><td>Village Gold</td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>E.Storetvedt</td><td class='num'>8.5%</td><td class='num strong'>7.3%</td></tr><tr class=''><td class='nr'>10</td><td>Juventus D.K.</td><td class='num till'>+40</td><td class='shoes'>●●<span class='schg' title='changed since last start'>*</span></td><td class='drv'>J.Berggren</td><td class='num'>0.2%</td><td class='num strong'>7.2%</td></tr><tr class=''><td class='nr'>2</td><td>Gaagaavicious</td><td class='num till'>+20</td><td class='shoes'>●●</td><td class='drv'>M.Opedal</td><td class='num'>2.1%</td><td class='num strong'>7.1%</td></tr><tr class=''><td class='nr'>3</td><td>Elegant Legs</td><td class='num till'>+20</td><td class='shoes'>●●</td><td class='drv'>O.Wassberg</td><td class='num'>14.9%</td><td class='num strong'>7.0%</td></tr><tr class=''><td class='nr'>7</td><td>Niceman</td><td class='num till'>+20</td><td class='shoes'>●●</td><td class='drv'>T.Wassberg</td><td class='num'>0.4%</td><td class='num strong'>6.8%</td></tr><tr class=''><td class='nr'>13</td><td>Explosive T.N.T.</td><td class='num till'>+40</td><td class='shoes'>●●</td><td class='drv'>S.Wassberg</td><td class='num'>5.6%</td><td class='num strong'>6.8%</td></tr><tr class=''><td class='nr'>15</td><td>Who's That Girl L.L.</td><td class='num till'>+40</td><td class='shoes'>●●</td><td class='drv'>D.Kvamsdal</td><td class='num'>3.2%</td><td class='num strong'>6.6%</td></tr><tr class=''><td class='nr'>9</td><td>Larrigan</td><td class='num till'>+40</td><td class='shoes'>●●</td><td class='drv'>T.Totland</td><td class='num'>0.0%</td><td class='num strong'>6.3%</td></tr><tr class=''><td class='nr'>5</td><td>Sweet Coat Genius <span class='flag over'>OVERBET</span></td><td class='num till'>+20</td><td class='shoes'>●●</td><td class='drv'>A.Wassberg</td><td class='num'>22.9%</td><td class='num strong'>6.3%</td></tr><tr class=''><td class='nr'>11</td><td>Sole Volo</td><td class='num till'>+40</td><td class='shoes'>●○</td><td class='drv'>S.Svendsen</td><td class='num'>5.0%</td><td class='num strong'>5.9%</td></tr><tr class=''><td class='nr'>12</td><td>Ottens Magoo</td><td class='num till'>+40</td><td class='shoes'>○●</td><td class='drv'>L.Hauge</td><td class='num'>0.0%</td><td class='num strong'>5.8%</td></tr><tr class=''><td class='nr'>14</td><td>Sun's Adele</td><td class='num till'>+40</td><td class='shoes'>●●</td><td class='drv'>C.Olsen</td><td class='num'>5.2%</td><td class='num strong'>5.2%</td></tr><tr class=''><td class='nr'>8</td><td>Lassie Lane</td><td class='num till'>+40</td><td class='shoes'>●●</td><td class='drv'>J.Landaas</td><td class='num'>0.0%</td><td class='num strong'>4.6%</td></tr></tbody></table>
-<div class="infos"><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#4 Leonardus</b> (10%) — shoe change tonight · top speed figure (-8.0s vs a typical winner) — caution: 2 gallops in last 5</p><p class='info'><b>#6 R.M.G. Tiger Feet</b> (8%) — top speed figure (-8.0s vs a typical winner)</p></div></article><article class="tile">
-<div class="leghead"><h2>Leg 6</h2><span class="meta">2100m volte</span></div>
-<table><thead><tr><th>#</th><th>Horse</th><th class="r">Dist</th><th>Shoes</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th></tr></thead>
-<tbody><tr class='top'><td class='nr'>7</td><td>Ros Venn</td><td class='num till'>+20</td><td class='shoes'>●○<span class='schg' title='changed since last start'>*</span></td><td class='drv'>R.Tvedt</td><td class='num'>14.9%</td><td class='num strong'>13.0%</td></tr><tr class='top'><td class='nr'>3</td><td>Lustra Modin</td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>S.Wassberg</td><td class='num'>8.4%</td><td class='num strong'>10.5%</td></tr><tr class=''><td class='nr'>6</td><td>Myr Rappen <span class='flag value'>VALUE</span></td><td class='num till'>+20</td><td class='shoes'>●●<span class='schg' title='changed since last start'>*</span></td><td class='drv'>D.Kvamsdal</td><td class='num'>2.6%</td><td class='num strong'>10.0%</td></tr><tr class=''><td class='nr'>9</td><td>Børtveit Rambo <span class='flag over'>OVERBET</span></td><td class='num till'>+20</td><td class='shoes'>●●</td><td class='drv'>A.Wassberg</td><td class='num'>23.4%</td><td class='num strong'>9.8%</td></tr><tr class=''><td class='nr'>2</td><td>Rapp Hera <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>C.Olsen</td><td class='num'>5.0%</td><td class='num strong'>8.9%</td></tr><tr class=''><td class='nr'>4</td><td>Kjærs Fryd <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>H.Hagen</td><td class='num'>5.6%</td><td class='num strong'>8.9%</td></tr><tr class=''><td class='nr'>8</td><td>Eidsnes Mattis <span class='flag value'>VALUE</span></td><td class='num till'>+20</td><td class='shoes'>●●</td><td class='drv'>M.Opedal</td><td class='num'>3.5%</td><td class='num strong'>8.8%</td></tr><tr class=''><td class='nr'>5</td><td>Kuven Lennart <span class='flag over'>OVERBET</span></td><td class='num till'>+20</td><td class='shoes'>●●</td><td class='drv'>T.Totland</td><td class='num'>15.8%</td><td class='num strong'>8.7%</td></tr><tr class=''><td class='nr'>1</td><td>Onkel Alf <span class='flag value'>VALUE</span></td><td class='num till'></td><td class='shoes'>●●</td><td class='drv'>E.Hauge</td><td class='num'>5.2%</td><td class='num strong'>8.0%</td></tr><tr class=''><td class='nr'>10</td><td>Linnea</td><td class='num till'>+20</td><td class='shoes'>●●</td><td class='drv'>M.Aadland</td><td class='num'>5.4%</td><td class='num strong'>6.9%</td></tr><tr class=''><td class='nr'>11</td><td>Mi Bella</td><td class='num till'>+20</td><td class='shoes'>○●</td><td class='drv'>L.Hauge</td><td class='num'>10.2%</td><td class='num strong'>6.5%</td></tr></tbody></table>
-<div class="infos"><p class='sechead model'>MODEL REASONING</p><p class='info'><b>#7 Ros Venn</b> (13%) — shoe change tonight</p></div></article></div></div>
+<div class="leghead"><h2>Leg 1</h2><span class="meta">2140m auto</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class=''><td class='nr'>5</td><td>Naranja Mearas <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>D.Wäjersten</td><td class='num'>54.3%</td><td class='num strong'>42.7%</td><td class='num'></td></tr><tr class='win-miss'><td class='nr'>7</td><td>Nickel Curve</td><td class='drv'>M.Djuse</td><td class='num'>16.7%</td><td class='num strong'>13.7%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>2</td><td>Mellby Orkide</td><td class='drv'>Ö.Kihlström</td><td class='num'>12.9%</td><td class='num strong'>12.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>1</td><td>Quickly My Love</td><td class='drv'>C.Jepson</td><td class='num'>3.7%</td><td class='num strong'>5.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>3</td><td>Instant Glory</td><td class='drv'>C.Lugauer</td><td class='num'>4.4%</td><td class='num strong'>4.7%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>11</td><td>Lovely Me</td><td class='drv'>D.Pieters</td><td class='num'>1.0%</td><td class='num strong'>4.6%</td><td class='num'></td></tr><tr class=''><td class='nr'>9</td><td>Sirius Mimmi</td><td class='drv'>O.Kylin Blom</td><td class='num'>1.1%</td><td class='num strong'>4.4%</td><td class='num'></td></tr><tr class=''><td class='nr'>10</td><td>Riptide Boko</td><td class='drv'>B.Goop</td><td class='num'>1.9%</td><td class='num strong'>4.0%</td><td class='num'></td></tr><tr class=''><td class='nr'>8</td><td>Penny Sting</td><td class='drv'>C.Sjöström</td><td class='num'>1.4%</td><td class='num strong'>3.0%</td><td class='num'></td></tr><tr class=''><td class='nr'>4</td><td>Abundance</td><td class='drv'>T.Pettersson</td><td class='num'>1.0%</td><td class='num strong'>2.9%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>12</td><td>Kirsi Zet</td><td class='drv'>D.Redén</td><td class='num'>0.9%</td><td class='num strong'>2.3%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #7 Nickel Curve at 5.19 — the model had 13.7% (ranked #2 of 11).</li><li>Our picks (5) missed the winner. ✗</li></ul></div></article><article class="tile">
+<div class="leghead"><h2>Leg 2</h2><span class="meta">2140m auto</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class='win-hit'><td class='nr'>3</td><td>Magnification <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>D.Wäjersten</td><td class='num'>35.9%</td><td class='num strong'>31.5%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>2</td><td>Royal Steel <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>M.Djuse</td><td class='num'>24.0%</td><td class='num strong'>30.0%</td><td class='num'></td></tr><tr class=''><td class='nr'>10</td><td>Västerbo Sparkly</td><td class='drv'>R.Bakker</td><td class='num'>23.2%</td><td class='num strong'>16.8%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>9</td><td>Show Me Heaven</td><td class='drv'>C.Sjöström</td><td class='num'>11.2%</td><td class='num strong'>8.3%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>5</td><td>Impertinent</td><td class='drv'>Z.Jonasson</td><td class='num'>1.1%</td><td class='num strong'>4.5%</td><td class='num'></td></tr><tr class=''><td class='nr'>7</td><td>Rödluvan Newport</td><td class='drv'>F.Verkaik</td><td class='num'>3.0%</td><td class='num strong'>3.2%</td><td class='num'></td></tr><tr class=''><td class='nr'>1</td><td>Pure Amare</td><td class='drv'>P.Mahony</td><td class='num'>0.7%</td><td class='num strong'>2.7%</td><td class='num'></td></tr><tr class=''><td class='nr'>4</td><td>Lillemor Games</td><td class='drv'>F.Molin</td><td class='num'>0.4%</td><td class='num strong'>2.0%</td><td class='num'></td></tr><tr class=''><td class='nr'>6</td><td>Tidig Tooma</td><td class='drv'>J.Ivanov</td><td class='num'>0.2%</td><td class='num strong'>1.2%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #3 Magnification at 3.48 — the model had 31.5% (ranked #1 of 9).</li><li>Our ticket covered the winner (picks: 2, 3). ✓</li></ul></div></article></div><div class="legrow"><article class="tile">
+<div class="leghead"><h2>Leg 3</h2><span class="meta">2140m auto</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class=''><td class='nr'>3</td><td>Gunpoint <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>A.Bood</td><td class='num'>34.3%</td><td class='num strong'>29.9%</td><td class='num'>2</td></tr><tr class='win-miss'><td class='nr'>1</td><td>Okocha Boko</td><td class='drv'>F.Plassen</td><td class='num'>29.5%</td><td class='num strong'>19.0%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>12</td><td>UnbelievableTalis.</td><td class='drv'>H.Kihle</td><td class='num'>14.1%</td><td class='num strong'>15.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>11</td><td>Grasshopper R.L.</td><td class='drv'>A.Hanley</td><td class='num'>4.5%</td><td class='num strong'>7.6%</td><td class='num'></td></tr><tr class=''><td class='nr'>2</td><td>General Patton</td><td class='drv'>M.Lindblom</td><td class='num'>9.8%</td><td class='num strong'>7.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>5</td><td>Over the Limit</td><td class='drv'>H.Bergström</td><td class='num'>2.9%</td><td class='num strong'>5.2%</td><td class='num'></td></tr><tr class=''><td class='nr'>10</td><td>Ahtohallan</td><td class='drv'>E.Strandberg</td><td class='num'>1.2%</td><td class='num strong'>4.1%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>6</td><td>Gone Fishing N.O.</td><td class='drv'>M.Djuse</td><td class='num'>1.4%</td><td class='num strong'>3.8%</td><td class='num'></td></tr><tr class=''><td class='nr'>8</td><td>One Big Bang</td><td class='drv'>L.Lönn</td><td class='num'>0.8%</td><td class='num strong'>3.1%</td><td class='num'></td></tr><tr class=''><td class='nr'>7</td><td>Gotti</td><td class='drv'>P.Gyllenberg</td><td class='num'>1.0%</td><td class='num strong'>3.0%</td><td class='num'></td></tr><tr class=''><td class='nr'>9</td><td>Zolatin</td><td class='drv'>V.Sundgren</td><td class='num'>0.3%</td><td class='num strong'>1.2%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #1 Okocha Boko at 3.28 — the model had 19.0% (ranked #2 of 11).</li><li>Our picks (3) missed the winner. ✗</li></ul></div></article><article class="tile">
+<div class="leghead"><h2>Leg 4</h2><span class="meta">2140m auto</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class='win-hit'><td class='nr'>7</td><td>Keep Asking <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>Ö.Kihlström</td><td class='num'>67.0%</td><td class='num strong'>46.3%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>5</td><td>Lando Mearas <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>D.Wäjersten</td><td class='num'>19.8%</td><td class='num strong'>23.2%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>6</td><td>Killer Rain <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>R.Bakker</td><td class='num'>5.9%</td><td class='num strong'>12.7%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>1</td><td>Donatello Face <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>O.Kylin Blom</td><td class='num'>2.6%</td><td class='num strong'>7.6%</td><td class='num'></td></tr><tr class=''><td class='nr'>4</td><td>Feldenkrais Pal <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>C.Jepson</td><td class='num'>2.0%</td><td class='num strong'>6.1%</td><td class='num'></td></tr><tr class=''><td class='nr'>2</td><td>Fly Top</td><td class='drv'>B.Goop</td><td class='num'>2.3%</td><td class='num strong'>2.5%</td><td class='num'></td></tr><tr class=''><td class='nr'>3</td><td>Romulus Tooma</td><td class='drv'>P.Norman</td><td class='num'>0.3%</td><td class='num strong'>1.7%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #7 Keep Asking at 2.19 — the model had 46.3% (ranked #1 of 7).</li><li>Our ticket covered the winner (picks: 1, 4, 5, 6, 7). ✓</li></ul></div></article></div><div class="legrow"><article class="tile">
+<div class="leghead"><h2>Leg 5</h2><span class="meta">2140m volte</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class='win-hit'><td class='nr'>8</td><td>Balotelli D.E. <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>R.Bakker</td><td class='num'>35.3%</td><td class='num strong'>35.5%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>11</td><td>Elliott <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>T.Johansson</td><td class='num'>8.6%</td><td class='num strong'>16.5%</td><td class='num'></td></tr><tr class=''><td class='nr'>7</td><td>Pixen</td><td class='drv'>M.Djuse</td><td class='num'>17.9%</td><td class='num strong'>13.4%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>6</td><td>Yukon Flow</td><td class='drv'>C.Jepson</td><td class='num'>13.6%</td><td class='num strong'>6.3%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>2</td><td>Clog</td><td class='drv'>B.Goop</td><td class='num'>6.8%</td><td class='num strong'>5.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>13</td><td>Dixon Face</td><td class='drv'>R.Skoglund</td><td class='num'>6.8%</td><td class='num strong'>4.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>9</td><td>Occhio Boko</td><td class='drv'>C.Lugauer</td><td class='num'>4.9%</td><td class='num strong'>4.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>1</td><td>Hedda</td><td class='drv'>P.Norman</td><td class='num'>1.6%</td><td class='num strong'>4.6%</td><td class='num'></td></tr><tr class=''><td class='nr'>12</td><td>Mister Perfect</td><td class='drv'>P.Karlsson</td><td class='num'>2.7%</td><td class='num strong'>3.5%</td><td class='num'></td></tr><tr class=''><td class='nr'>5</td><td>Oliveira</td><td class='drv'>C.Sjöström</td><td class='num'>0.7%</td><td class='num strong'>1.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>10</td><td>LilliPilli Templar</td><td class='drv'>U.Ohlsson</td><td class='num'>0.4%</td><td class='num strong'>1.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>3</td><td>Who's Katla</td><td class='drv'>L.Carlsson</td><td class='num'>0.4%</td><td class='num strong'>0.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>4</td><td>Västerbo Love Life</td><td class='drv'>O.Andersson</td><td class='num'>0.3%</td><td class='num strong'>0.8%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #8 Balotelli D.E. at 2.55 — the model had 35.5% (ranked #1 of 13).</li><li>Our ticket covered the winner (picks: 8, 11). ✓</li></ul></div></article><article class="tile">
+<div class="leghead"><h2>Leg 6</h2><span class="meta">2140m auto</span></div>
+<table><thead><tr><th>#</th><th>Horse</th><th>Driver</th><th class="r">Streck</th><th class="r">Model</th><th class="r">Plc</th></tr></thead>
+<tbody><tr class=''><td class='nr'>2</td><td>One Express <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>C.Jepson</td><td class='num'>27.8%</td><td class='num strong'>25.7%</td><td class='num'></td></tr><tr class='win-hit'><td class='nr'>5</td><td>Kodiak Zet <span class='famtag' style='color:var(--pick)'>OUR PICK</span></td><td class='drv'>Ö.Kihlström</td><td class='num'>25.6%</td><td class='num strong'>21.6%</td><td class='num'>🥇</td></tr><tr class=''><td class='nr'>7</td><td>In Fine Fettle</td><td class='drv'>D.Wäjersten</td><td class='num'>13.4%</td><td class='num strong'>12.6%</td><td class='num'></td></tr><tr class=''><td class='nr'>12</td><td>Reagan Boko</td><td class='drv'>R.Bakker</td><td class='num'>8.9%</td><td class='num strong'>10.5%</td><td class='num'>3</td></tr><tr class=''><td class='nr'>3</td><td>Prince of Euro</td><td class='drv'>P.Nordström</td><td class='num'>11.3%</td><td class='num strong'>10.3%</td><td class='num'></td></tr><tr class=''><td class='nr'>1</td><td>Bourbon Phantasy</td><td class='drv'>M.Djuse</td><td class='num'>4.5%</td><td class='num strong'>5.9%</td><td class='num'></td></tr><tr class=''><td class='nr'>8</td><td>Nanda Devi Cut</td><td class='drv'>M.Djuse</td><td class='num'>3.3%</td><td class='num strong'>4.0%</td><td class='num'></td></tr><tr class=''><td class='nr'>6</td><td>No Hitter</td><td class='drv'>B.Goop</td><td class='num'>3.2%</td><td class='num strong'>3.1%</td><td class='num'></td></tr><tr class=''><td class='nr'>4</td><td>Thor Tooma</td><td class='drv'>U.Ohlsson</td><td class='num'>0.8%</td><td class='num strong'>2.7%</td><td class='num'>2</td></tr><tr class=''><td class='nr'>11</td><td>Outer Space</td><td class='drv'>R.Skoglund</td><td class='num'>0.6%</td><td class='num strong'>2.4%</td><td class='num'></td></tr><tr class=''><td class='nr'>9</td><td>Bys Arigato</td><td class='drv'>K.Oscarsson</td><td class='num'>0.4%</td><td class='num strong'>1.3%</td><td class='num'></td></tr></tbody></table>
+<div class="infos"><p class='sechead tr'>SUMMARY</p>
+<ul class='infoul'><li>Winner: #5 Kodiak Zet at 3.34 — the model had 21.6% (ranked #2 of 11).</li><li>Our ticket covered the winner (picks: 2, 5). ✓</li></ul></div></article></div></div>
 <section class="printtix"><div class="tickrow" id="ptrow"><div class="tickcol"><div class="slipd">
   <p class="dlogo">TRAVMODEL<span>™</span></p>
   <hr class="drule solid">
-  <div class="drow"><span>Spel</span><b>V65</b></div>
-  <div class="drow"><span>Bana</span><b>Bergen</b></div>
-  <div class="drow"><span>Start</span><b>Sun 02 Aug · 18:55</b></div>
-  <div class="drow"><span>Data</span><b>Thu 30 Jul · 22:01</b></div>
+  <div class="drow"><span>Spel</span><b>V64</b></div>
+  <div class="drow"><span>Bana</span><b>Solvalla</b></div>
+  <div class="drow"><span>Start</span><b>Thu 30 Jul · 19:30</b></div>
+  <div class="drow"><span>Status</span><b>RÄTTAD</b></div>
   <hr class="drule">
-  <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR</th></tr><tr><td class='avd'>1</td><td class='hst'>2, 3, 4, 5, 6</td></tr><tr><td class='avd'>2</td><td class='hst'>7 Alm Romeo ★</td></tr><tr><td class='avd'>3</td><td class='hst'>5 Caviar Junior ★</td></tr><tr><td class='avd'>4</td><td class='hst'>2 Speedy Vincent ★</td></tr><tr><td class='avd'>5</td><td class='hst'>1, 2, 4, 6, 10</td></tr><tr><td class='avd'>6</td><td class='hst'>3, 7</td></tr></table>
+  <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR · RÄTT?</th></tr><tr><td class='avd'>1</td><td class='hst'>5 Naranja Mearas ★ <span style="color:#C23B2E">✗</span></td></tr><tr><td class='avd'>2</td><td class='hst'>2, 3 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>3</td><td class='hst'>3 Gunpoint ★ <span style="color:#C23B2E">✗</span></td></tr><tr><td class='avd'>4</td><td class='hst'>1, 4, 5, 6, 7 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>5</td><td class='hst'>8, 11 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>6</td><td class='hst'>2, 5 <span style="color:#2E6B4A">✓</span></td></tr></table>
   <hr class="drule">
-  <div class="drow"><span>5×1×1×1×5×2</span><b>= 50 rader</b></div>
-  <div class="drow"><span>50 × 1 kr</span><b>50.00 kr</b></div>
-  <div class="dtotal"><span>TOTALT</span><b>50.00 kr</b></div>
-  <p class="dnote">Modellens egen chans: ~0% att pricka alla 6.
-  Byggs om vid varje datauppdatering — kupongen kan ändras. ★ = spik.
-  Inget giltigt spel — spela hos atg.se om du vill.</p>
-  <div class="dstamp">EJ GILTIGT SPEL<small>ENDAST SKRYTRÄTTIGHETER</small></div>
-</div></div></div></section>
+  <div class="drow"><span>1×2×1×5×2×2</span><b>= 40 rader</b></div>
+  <div class="drow"><span>40 × 1 kr</span><b>40.00 kr</b></div>
+  <div class="dtotal"><span>RESULTAT</span><b>4 AV 6</b></div>
+  <div class="dstamp">4 AV 6<small>LÅST FÖRE START · AUTORÄTTAD</small></div></div></div></div></section>
 
 <div class="modalback" id="tixmodal">
 <div class="modal">
@@ -361,7 +340,7 @@ try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o)
 <script src="../jsqr.js"></script>
 <script>
 (function(){
-var TM = {"game": "V65_2026-08-02_77_1", "modelName": "50 rader · 50 kr", "legs": {"1": [6, 5, 4, 2, 3, 1], "2": [7, 1, 8, 3, 5, 4, 2, 6], "3": [5, 9, 10, 3, 2, 4, 6, 1, 8, 11, 7], "4": [2, 6, 7, 3, 5, 1, 4], "5": [4, 6, 1, 10, 2, 3, 7, 13, 15, 9, 5, 11, 12, 14, 8], "6": [7, 3, 6, 9, 2, 4, 8, 5, 1, 10, 11]}, "model": {"1": [2, 3, 4, 5, 6], "2": [7], "3": [5], "4": [2], "5": [1, 2, 4, 6, 10], "6": [3, 7]}, "spikNames": {"2": "7 Alm Romeo ★", "3": "5 Caviar Junior ★", "4": "2 Speedy Vincent ★"}, "winners": {}};
+var TM = {"game": "V64_2026-07-30_5_4", "modelName": "40 rader · 40 kr", "legs": {"1": [5, 7, 2, 1, 3, 11, 9, 10, 8, 4, 12], "2": [3, 2, 10, 9, 5, 7, 1, 4, 6], "3": [3, 1, 12, 11, 2, 5, 10, 6, 8, 7, 9], "4": [7, 5, 6, 1, 4, 2, 3], "5": [8, 11, 7, 6, 2, 13, 9, 1, 12, 5, 10, 3, 4], "6": [2, 5, 7, 12, 3, 1, 8, 6, 4, 11, 9]}, "model": {"1": [5], "2": [2, 3], "3": [3], "4": [1, 4, 5, 6, 7], "5": [8, 11], "6": [2, 5]}, "spikNames": {"1": "5 Naranja Mearas ★", "3": "3 Gunpoint ★"}, "winners": {"1": 7, "2": 3, "3": 1, "4": 7, "5": 8, "6": 5}};
 var KEY = "tm_tix_v1";
 function user(){ return localStorage.getItem("tm_user")||"?"; }
 function store(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
@@ -579,36 +558,32 @@ document.querySelectorAll(".tile table").forEach(function(tb){
 })();
 </script>
 
-<footer>
-<p class="legend-title">WHAT THE LABELS MEAN</p>
-<dl class="legend">
-<dt><span class='flag value'>VALUE</span></dt>
-<dd>The crowd likes this horse <em>less</em> than it deserves — the model's win chance is at least
-1.3× its share of the betting pool. A better deal than its price, not a guaranteed winner.</dd>
-<dt><span class='flag over'>OVERBET</span></dt>
-<dd>The crowd likes this horse <em>more</em> than it deserves — the model's chance is under 0.7×
-its betting share (flagged only when 15%+ of the money is on it). Often a decent horse at a bad price.</dd>
-<dt>★ spik</dt>
-<dd>Banker candidate: the leg's top horse is strong enough (45%+ model chance) to carry the leg alone
-— passes the classic rule "only bank a horse whose real chance ≥ its betting percentage".</dd>
-<dt>♥</dt>
-<dd>Family rule: Pralines is Jan's own horse. When she races she is always the spik on the kupong,
-whatever the statistics say.</dd>
-<dt>Green row</dt>
-<dd>The model's top of the leg (top two when the leg is open).</dd>
-<dt>+20 / +40</dt>
-<dd>Distance handicap (tillägg): the horse starts that many metres behind the base distance —
-better horses give ground in volt starts.</dd>
-<dt>●● / ○○</dt>
-<dd>Shoes front/back: ● = shoe on, ○ = barefoot. An amber * means it changed since the last start —
-first-time barefoot is the classic "stable means business" signal.</dd>
-<dt>Driver %</dt>
-<dd>The driver's win rate last season.</dd>
-<dt>Streck vs Model</dt>
-<dd>Streck = share of all tickets that include the horse. Model = win probability from Travmodel.
-The gap between them is where the flags come from.</dd>
-</dl>
-<p>Travmodel v2 · conditional logit on 17,356 Nordic races · market-blended ·
-data from ATG's open API · page auto-reloads every 10 min · not betting advice, not a valid bet.</p>
-</footer>
+<aside class="tdrawer dw" id="tdrawer"><div class="slipd">
+  <p class="dlogo">TRAVMODEL<span>™</span></p>
+  <hr class="drule solid">
+  <div class="drow"><span>Spel</span><b>V64</b></div>
+  <div class="drow"><span>Bana</span><b>Solvalla</b></div>
+  <div class="drow"><span>Start</span><b>Thu 30 Jul · 19:30</b></div>
+  <div class="drow"><span>Status</span><b>RÄTTAD</b></div>
+  <hr class="drule">
+  <table class="dlegs"><tr><th>AVD</th><th>HÄSTAR · RÄTT?</th></tr><tr><td class='avd'>1</td><td class='hst'>5 Naranja Mearas ★ <span style="color:#C23B2E">✗</span></td></tr><tr><td class='avd'>2</td><td class='hst'>2, 3 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>3</td><td class='hst'>3 Gunpoint ★ <span style="color:#C23B2E">✗</span></td></tr><tr><td class='avd'>4</td><td class='hst'>1, 4, 5, 6, 7 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>5</td><td class='hst'>8, 11 <span style="color:#2E6B4A">✓</span></td></tr><tr><td class='avd'>6</td><td class='hst'>2, 5 <span style="color:#2E6B4A">✓</span></td></tr></table>
+  <hr class="drule">
+  <div class="drow"><span>1×2×1×5×2×2</span><b>= 40 rader</b></div>
+  <div class="drow"><span>40 × 1 kr</span><b>40.00 kr</b></div>
+  <div class="dtotal"><span>RESULTAT</span><b>4 AV 6</b></div>
+  <div class="dstamp">4 AV 6<small>LÅST FÖRE START · AUTORÄTTAD</small></div></div></aside>
+<div class="dwrail"><button class="dwtab dwtab-k" onclick="dwGo('tdrawer')">🎟️ KUPONG</button><button class="dwtab dwtab-e" onclick="dwGo('edrawer')">📋 EXPERTS</button></div><script>
+function dwGo(id){
+  var t=document.getElementById('tdrawer'), e=document.getElementById('edrawer');
+  var d=document.getElementById(id); if(!d) return;
+  var opening=!d.classList.contains('open');
+  if(t)t.classList.remove('open'); if(e)e.classList.remove('open');
+  if(opening)d.classList.add('open');
+  var rail=document.querySelector('.dwrail');
+  if(rail)rail.classList.toggle('shift', opening);
+  try{localStorage.setItem('tm_dw', opening?id:'');}catch(err){}
+}
+try{var o=localStorage.getItem('tm_dw'); if(o){var el=document.getElementById(o); if(el){el.classList.add('open'); var r=document.querySelector('.dwrail'); if(r)r.classList.add('shift');}}}catch(err){}
+</script>
+<footer><p>Picks were locked 30 minutes before start; results fetched from ATG. Not betting advice.</p></footer>
 </main></body></html>
